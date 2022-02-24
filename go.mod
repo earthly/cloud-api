@@ -1,4 +1,4 @@
-module github.com/earthly/cloud/api/public
+module github.com/earthly/cloud-api
 
 go 1.17
 
