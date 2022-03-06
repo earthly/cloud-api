@@ -1,0 +1,130 @@
+
+syntax = "proto3";
+package api.public.logstream;
+option go_package = "./logstream";
+
+import "api/public/logstream/manifest.proto";
+import "api/public/logstream/delta.proto";
+
+// Ingester is a service that takes in deltas and stores them.
+service Ingester {
+    rpc PassDelta (stream PassDeltaRequest) returns (stream PassDeltaReply) {}
+    rpc Snapshot (SnapshotRequest) returns (SnapshotReply) {}
+}
+
+message PassDeltaRequest {
+    string build_id = 1;
+    Delta delta = 2;
+    bool test_retry_error = 3;
+    bool flush = 4;
+}
+
+message PassDeltaReply {
+    oneof pass_delta_reply_oneof {
+        string assign_build_id = 1;
+        Indices repeat = 2;
+        Indices ack = 3;
+        // eof_confirm is sent after the last delta is received
+        // after the eofConfirm message, the client closes the stream
+        // (repeats will not be served from this point).
+        bool eof_confirm = 4;
+        bool flush_confirm = 5;
+    }
+    
+    message Indices {
+        int64 manifest_order_id = 1;
+        map<string, int64> log_seek_indices = 2;
+    }
+}
+
+message SnapshotRequest {
+    string build_id = 1;
+}
+
+message SnapshotReply {
+    string build_id = 1;
+    BuildManifest manifest = 2;
+}
+
+// LogStreamRead is a service that serves logs.
+service LogStreamRead {
+    // GetManifest returns the manifest for a build, from a snapshot.
+    rpc GetManifest (GetManifestRequest) returns (GetManifestReply) {}
+    // GetLog returns the logs for a build, from a snapshot.
+    rpc GetLog (GetLogRequest) returns (GetLogReply) {}
+    // Subscribe returns a stream of deltas for a given build.
+    rpc Subscribe (SubscribeRequest) returns (stream SubscribeReply) {}
+    // ReadLog returns a stream of log lines for a given build and target,
+    // using both any available snapshot and any that might follow deltas.
+    // If the follow option is used, then the stream remains open, until
+    // the target has finished.
+    rpc ReadLog (ReadLogRequest) returns (stream ReadLogReply) {}
+}
+
+message GetManifestRequest {
+    string build_id = 1;
+    // snapshot_id is the ID of the snapshot to get the manifest for.
+    // If not provided, the latest snapshot will be used.
+    string snapshot_id = 2;
+}
+
+message GetManifestReply {
+    BuildManifest manifest = 1;
+}
+
+message GetLogRequest {
+    string build_id = 1;
+    string snapshot_id = 2;
+    string target_id = 3;
+    // start_seek_index is the index to start reading from.
+    // If negative, the server will return data starting from the last N bytes,
+    // where N = len + start_seek_index.
+    int64 start_seek_index = 4;
+    // end_seek_index is the end index to read up to.
+    // If negative, the server will return data starting up to the last N bytes,
+    // where N = len + end_seek_index.
+    // If zero, the server will return data starting up to the end of the log.
+    int64 end_seek_index = 5;
+}
+
+message GetLogReply {
+    bytes data = 1;
+    int64 start_seek_index = 2;
+    int64 end_seek_index = 3;
+}
+
+message SubscribeRequest {
+    string build_id = 1;
+    bool include_manifest = 2;
+    int64 next_manifest_order_id = 3;
+    bool include_new_targets = 4;
+    map<string, int64> target_seek_indices = 5;
+}
+
+message SubscribeReply {
+    Delta delta = 1;    
+}
+
+message ReadLogRequest {
+    string build_id = 1;
+    string target_id = 2;
+    // start_seek_index is the index to start reading from.
+    // If negative, the server will return data starting from the last N bytes,
+    // where N = len + start_seek_index.
+    int64 start_seek_index = 3;
+    // end_seek_index is the end index to read up to.
+    // If negative, the server will return data starting up to the last N bytes,
+    // where N = len + end_seek_index.
+    // If zero, the server will return data starting up to the end of the log.
+    int64 end_seek_index = 4;
+    // follow should be set if the reply should include ongoing updates.
+    // This is similar to "tail -f".
+    bool follow = 5;
+}
+
+message ReadLogReply {
+    bytes data = 1;
+    int64 start_seek_index = 2;
+    int64 end_seek_index = 3;
+    bool eof = 4;
+}
