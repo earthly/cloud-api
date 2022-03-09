@@ -1,0 +1,27 @@
+syntax = "proto3";
+package api.public.projects;
+option go_package = "./projects";
+
+message ManualBuildRequest {
+  repeated Target targets = 1;
+}
+
+message ManualBuildResponse {
+  string build_id = 1;
+}
+
+message Target {
+  string reference = 1;
+  repeated TargetArg args = 2;
+  repeated TargetSecret secrets = 4;
+}
+
+message TargetArg {
+  string name = 1;
+  string value = 2;
+}
+
+message TargetSecret {
+  string name = 1;
+  string value = 2;
+}
