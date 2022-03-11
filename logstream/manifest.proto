@@ -1,0 +1,68 @@
+
+syntax = "proto3";
+package api.public.logstream;
+option go_package = "./logstream";
+
+enum BuildStatus {
+    BUILD_STATUS_UNKNOWN = 0;
+    BUILD_STATUS_NOT_STARTED = 1;
+    BUILD_STATUS_IN_PROGRESS = 2;
+    BUILD_STATUS_SUCCESS = 3;
+    BUILD_STATUS_FAILURE = 4;
+    BUILD_STATUS_CANCELLED = 5;
+}
+
+message BuildManifest {
+    int32 version = 1;
+    int64 created_at = 2;
+    int64 started_at = 3;
+    int64 finished_at = 4;
+    BuildStatus status = 5;
+    map<string, TargetManifest> targets = 6;
+    string main_target = 7;
+    string failed_target = 8;
+    string failed_summary = 9;
+
+    // The following are not updated by deltas. They are
+    // only set by the snapshotter.
+
+    // snapshot_id is the identifier assigned to the snapshot.
+    string snapshot_id = 10;
+    // snapshot_order_id is the ordering ID for the manifest as stored
+    // in snapshot state.
+    int64 snapshot_order_id = 11;
+    // snapshot_eof indicates whether the manifest as stored in snapshot
+    // state is complete and there will be no more changes to it.
+    bool snapshot_eof = 12;
+}
+
+message TargetManifest {
+    string name = 1;
+    repeated string override_args = 2;
+    string platform = 3;
+    BuildStatus status = 4;
+    int64 started_at = 5;
+    int64 finished_at = 6;
+    repeated CommandManifest commands = 7;
+
+    // The following are not updated by deltas. They are
+    // only set by the snapshotter.
+    
+    // snapshot_size is the size of the log data for this target.
+    int64 snapshot_size = 8;
+    // snapshot_eof is true if the log data in the snapshot
+    // is complete for this target.
+    bool snapshot_eof = 9;
+}
+
+message CommandManifest {
+    string name = 1;
+    BuildStatus status = 2;
+    bool is_cached = 3;
+    bool is_push = 4;
+    bool is_local = 5;
+    int64 started_at = 6;
+    int64 finished_at = 7;
+    bool has_progress = 8;
+    int32 progress = 9;
+}
