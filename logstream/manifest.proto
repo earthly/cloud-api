@@ -23,17 +23,20 @@ message BuildManifest {
     string failed_target = 8;
     string failed_summary = 9;
 
+    // user_id is the UUID of the user that ran the build.
+    string user_id = 10;
+
     // The following are not updated by deltas. They are
     // only set by the snapshotter.
 
     // snapshot_id is the identifier assigned to the snapshot.
-    string snapshot_id = 10;
+    string snapshot_id = 11;
     // snapshot_order_id is the ordering ID for the manifest as stored
     // in snapshot state.
-    int64 snapshot_order_id = 11;
+    int64 snapshot_order_id = 12;
     // snapshot_eof indicates whether the manifest as stored in snapshot
     // state is complete and there will be no more changes to it.
-    bool snapshot_eof = 12;
+    bool snapshot_eof = 13;
 }
 
 message TargetManifest {
