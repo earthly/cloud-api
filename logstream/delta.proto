@@ -3,7 +3,7 @@ syntax = "proto3";
 package api.public.logstream;
 option go_package = "./logstream";
 
-import "api/public/logstream/manifest.proto";
+import "manifest.proto";
 
 message Delta {
     int32 version = 1;
