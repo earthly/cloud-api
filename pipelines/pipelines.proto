@@ -1,0 +1,40 @@
+syntax = "proto3";
+package api.public.pipelines;
+option go_package = "./pipelines";
+
+import "google/api/annotations.proto";
+
+service Pipelines {
+  rpc ManualBuild(ManualBuildRequest) returns (ManualBuildResponse) {
+    option (google.api.http) = {
+      post: "/api/v0/projects/{project_name}/pipelines/{pipeline_id}/builds"
+      body: "*"
+    };
+  }
+}
+
+message ManualBuildRequest {
+  string project_name = 1;
+  string pipeline_id = 2;
+  repeated Target targets = 3;
+}
+
+message ManualBuildResponse {
+  string build_id = 1;
+}
+
+message Target {
+  string reference = 1;
+  repeated TargetArg args = 2;
+  repeated TargetSecret secrets = 4;
+}
+
+message TargetArg {
+  string name = 1;
+  string value = 2;
+}
+
+message TargetSecret {
+  string name = 1;
+  string value = 2;
+}

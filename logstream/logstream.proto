@@ -3,8 +3,8 @@ syntax = "proto3";
 package api.public.logstream;
 option go_package = "./logstream";
 
-import "api/public/logstream/manifest.proto";
-import "api/public/logstream/delta.proto";
+import "manifest.proto";
+import "delta.proto";
 
 // Ingester is a service that takes in deltas and stores them.
 service Ingester {
