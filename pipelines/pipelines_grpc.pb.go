@@ -23,6 +23,8 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type PipelinesClient interface {
 	ManualBuild(ctx context.Context, in *ManualBuildRequest, opts ...grpc.CallOption) (*ManualBuildResponse, error)
+	CreateBuildkit(ctx context.Context, in *CreateBuildkitRequest, opts ...grpc.CallOption) (*CreateBuildkitResponse, error)
+	ListBuildkits(ctx context.Context, in *ListBuildkitsRequest, opts ...grpc.CallOption) (*ListBuildkitsResponse, error)
 }
 
 type pipelinesClient struct {
@@ -42,11 +44,31 @@ func (c *pipelinesClient) ManualBuild(ctx context.Context, in *ManualBuildReques
 	return out, nil
 }
 
+func (c *pipelinesClient) CreateBuildkit(ctx context.Context, in *CreateBuildkitRequest, opts ...grpc.CallOption) (*CreateBuildkitResponse, error) {
+	out := new(CreateBuildkitResponse)
+	err := c.cc.Invoke(ctx, "/api.public.pipelines.Pipelines/CreateBuildkit", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *pipelinesClient) ListBuildkits(ctx context.Context, in *ListBuildkitsRequest, opts ...grpc.CallOption) (*ListBuildkitsResponse, error) {
+	out := new(ListBuildkitsResponse)
+	err := c.cc.Invoke(ctx, "/api.public.pipelines.Pipelines/ListBuildkits", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // PipelinesServer is the server API for Pipelines service.
 // All implementations must embed UnimplementedPipelinesServer
 // for forward compatibility
 type PipelinesServer interface {
 	ManualBuild(context.Context, *ManualBuildRequest) (*ManualBuildResponse, error)
+	CreateBuildkit(context.Context, *CreateBuildkitRequest) (*CreateBuildkitResponse, error)
+	ListBuildkits(context.Context, *ListBuildkitsRequest) (*ListBuildkitsResponse, error)
 	mustEmbedUnimplementedPipelinesServer()
 }
 
@@ -56,6 +78,12 @@ type UnimplementedPipelinesServer struct {
 
 func (UnimplementedPipelinesServer) ManualBuild(context.Context, *ManualBuildRequest) (*ManualBuildResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ManualBuild not implemented")
+}
+func (UnimplementedPipelinesServer) CreateBuildkit(context.Context, *CreateBuildkitRequest) (*CreateBuildkitResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateBuildkit not implemented")
+}
+func (UnimplementedPipelinesServer) ListBuildkits(context.Context, *ListBuildkitsRequest) (*ListBuildkitsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListBuildkits not implemented")
 }
 func (UnimplementedPipelinesServer) mustEmbedUnimplementedPipelinesServer() {}
 
@@ -88,6 +116,42 @@ func _Pipelines_ManualBuild_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Pipelines_CreateBuildkit_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateBuildkitRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PipelinesServer).CreateBuildkit(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.public.pipelines.Pipelines/CreateBuildkit",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PipelinesServer).CreateBuildkit(ctx, req.(*CreateBuildkitRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Pipelines_ListBuildkits_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListBuildkitsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PipelinesServer).ListBuildkits(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.public.pipelines.Pipelines/ListBuildkits",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PipelinesServer).ListBuildkits(ctx, req.(*ListBuildkitsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Pipelines_ServiceDesc is the grpc.ServiceDesc for Pipelines service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -98,6 +162,14 @@ var Pipelines_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ManualBuild",
 			Handler:    _Pipelines_ManualBuild_Handler,
+		},
+		{
+			MethodName: "CreateBuildkit",
+			Handler:    _Pipelines_CreateBuildkit_Handler,
+		},
+		{
+			MethodName: "ListBuildkits",
+			Handler:    _Pipelines_ListBuildkits_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

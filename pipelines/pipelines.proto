@@ -7,16 +7,28 @@ import "google/api/annotations.proto";
 service Pipelines {
   rpc ManualBuild(ManualBuildRequest) returns (ManualBuildResponse) {
     option (google.api.http) = {
-      post: "/api/v0/projects/{project_name}/pipelines/{pipeline_id}/builds"
+      post: "/api/v0/projects/{project_id}/pipelines/{pipeline_id}/builds"
       body: "*"
+    };
+  }
+  rpc CreateBuildkit(CreateBuildkitRequest) returns (CreateBuildkitResponse) {
+    option (google.api.http) = {
+      post: "/api/v0/buildkits"
+      body: "*"
+    };
+  }
+  rpc ListBuildkits(ListBuildkitsRequest) returns (ListBuildkitsResponse) {
+    option (google.api.http) = {
+      get: "/api/v0/buildkits"
     };
   }
 }
 
 message ManualBuildRequest {
-  string project_name = 1;
-  string pipeline_id = 2;
-  repeated Target targets = 3;
+  string org_id = 1;
+  string project_id = 2;
+  string pipeline_id = 3;
+  repeated Target targets = 4;
 }
 
 message ManualBuildResponse {
@@ -37,4 +49,31 @@ message TargetArg {
 message TargetSecret {
   string name = 1;
   string value = 2;
+}
+
+message CreateBuildkitRequest {
+  string org_id = 1;
+  string name = 2;
+  BuildkitArchitecture arch = 3;
+  bytes tls_public_key = 4;
+  bytes tls_private_key = 5;
+}
+
+enum BuildkitArchitecture {
+  AMD64 = 0;
+  ARM64 = 1;
+}
+
+message CreateBuildkitResponse {}
+
+message ListBuildkitsRequest {
+  string org_id = 1;
+}
+
+message ListBuildkitsResponse {
+  message BuildkitInstance {
+    string name = 1;
+    BuildkitArchitecture arch = 2;
+  }
+  repeated BuildkitInstance instances = 1;
 }
