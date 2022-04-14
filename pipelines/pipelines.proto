@@ -5,21 +5,41 @@ option go_package = "./pipelines";
 import "google/api/annotations.proto";
 
 service Pipelines {
+  // ManualBuild manually triggers a Pipeline build with the
+  // provided Targets, Args and Secrets. The new build_id is returned.
   rpc ManualBuild(ManualBuildRequest) returns (ManualBuildResponse) {
     option (google.api.http) = {
       post: "/api/v0/projects/{project_id}/pipelines/{pipeline_id}/builds"
       body: "*"
     };
   }
+  // CreateBuildkit starts a new Hosted Buildkit instance using the latest AMI version.
+  // The Buildkit instance can be used by users for their local Cloud or 3rd-party CI builds.
   rpc CreateBuildkit(CreateBuildkitRequest) returns (CreateBuildkitResponse) {
     option (google.api.http) = {
       post: "/api/v0/buildkits"
       body: "*"
     };
   }
+  // ListBuildkits returns a list of Buildkit instances available in the organization.
   rpc ListBuildkits(ListBuildkitsRequest) returns (ListBuildkitsResponse) {
     option (google.api.http) = {
       get: "/api/v0/buildkits"
+    };
+  }
+  // UpdateBuildkit updates a buildkit instance to the latest version.
+  // (I.e. the latest AMI we have in AWS).
+  // Calling this may result in some down-time on the instance while it updates.
+  rpc UpdateBuildkit(UpdateBuildkitRequest) returns (UpdateBuildkitResponse) {
+    option (google.api.http) = {
+      post: "/api/v0/buildkits/{name}/update"
+      body: "*"
+    };
+  }
+  // DeleteBuildkit decommissions a Buildkit instance.
+  rpc DeleteBuildkit(DeleteBuildkitRequest) returns (DeleteBuildkitResponse) {
+    option (google.api.http) = {
+      delete: "/api/v0/buildkits/{name}"
     };
   }
 }
@@ -77,3 +97,17 @@ message ListBuildkitsResponse {
   }
   repeated BuildkitInstance instances = 1;
 }
+
+message UpdateBuildkitRequest {
+  string org_id = 1;
+  string name = 2;
+}
+
+message UpdateBuildkitResponse {}
+
+message DeleteBuildkitRequest {
+  string org_id = 1;
+  string name = 2;
+}
+
+message DeleteBuildkitResponse{}

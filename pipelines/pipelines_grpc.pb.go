@@ -22,9 +22,20 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type PipelinesClient interface {
+	// ManualBuild manually triggers a Pipeline build with the
+	// provided Targets, Args and Secrets. The new build_id is returned.
 	ManualBuild(ctx context.Context, in *ManualBuildRequest, opts ...grpc.CallOption) (*ManualBuildResponse, error)
+	// CreateBuildkit starts a new Hosted Buildkit instance using the latest AMI version.
+	// The Buildkit instance can be used by users for their local Cloud or 3rd-party CI builds.
 	CreateBuildkit(ctx context.Context, in *CreateBuildkitRequest, opts ...grpc.CallOption) (*CreateBuildkitResponse, error)
+	// ListBuildkits returns a list of Buildkit instances available in the organization.
 	ListBuildkits(ctx context.Context, in *ListBuildkitsRequest, opts ...grpc.CallOption) (*ListBuildkitsResponse, error)
+	// UpdateBuildkit updates a buildkit instance to the latest version.
+	// (I.e. the latest AMI we have in AWS).
+	// Calling this may result in some down-time on the instance while it updates.
+	UpdateBuildkit(ctx context.Context, in *UpdateBuildkitRequest, opts ...grpc.CallOption) (*UpdateBuildkitResponse, error)
+	// DeleteBuildkit decommissions a Buildkit instance.
+	DeleteBuildkit(ctx context.Context, in *DeleteBuildkitRequest, opts ...grpc.CallOption) (*DeleteBuildkitResponse, error)
 }
 
 type pipelinesClient struct {
@@ -62,13 +73,42 @@ func (c *pipelinesClient) ListBuildkits(ctx context.Context, in *ListBuildkitsRe
 	return out, nil
 }
 
+func (c *pipelinesClient) UpdateBuildkit(ctx context.Context, in *UpdateBuildkitRequest, opts ...grpc.CallOption) (*UpdateBuildkitResponse, error) {
+	out := new(UpdateBuildkitResponse)
+	err := c.cc.Invoke(ctx, "/api.public.pipelines.Pipelines/UpdateBuildkit", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *pipelinesClient) DeleteBuildkit(ctx context.Context, in *DeleteBuildkitRequest, opts ...grpc.CallOption) (*DeleteBuildkitResponse, error) {
+	out := new(DeleteBuildkitResponse)
+	err := c.cc.Invoke(ctx, "/api.public.pipelines.Pipelines/DeleteBuildkit", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // PipelinesServer is the server API for Pipelines service.
 // All implementations must embed UnimplementedPipelinesServer
 // for forward compatibility
 type PipelinesServer interface {
+	// ManualBuild manually triggers a Pipeline build with the
+	// provided Targets, Args and Secrets. The new build_id is returned.
 	ManualBuild(context.Context, *ManualBuildRequest) (*ManualBuildResponse, error)
+	// CreateBuildkit starts a new Hosted Buildkit instance using the latest AMI version.
+	// The Buildkit instance can be used by users for their local Cloud or 3rd-party CI builds.
 	CreateBuildkit(context.Context, *CreateBuildkitRequest) (*CreateBuildkitResponse, error)
+	// ListBuildkits returns a list of Buildkit instances available in the organization.
 	ListBuildkits(context.Context, *ListBuildkitsRequest) (*ListBuildkitsResponse, error)
+	// UpdateBuildkit updates a buildkit instance to the latest version.
+	// (I.e. the latest AMI we have in AWS).
+	// Calling this may result in some down-time on the instance while it updates.
+	UpdateBuildkit(context.Context, *UpdateBuildkitRequest) (*UpdateBuildkitResponse, error)
+	// DeleteBuildkit decommissions a Buildkit instance.
+	DeleteBuildkit(context.Context, *DeleteBuildkitRequest) (*DeleteBuildkitResponse, error)
 	mustEmbedUnimplementedPipelinesServer()
 }
 
@@ -84,6 +124,12 @@ func (UnimplementedPipelinesServer) CreateBuildkit(context.Context, *CreateBuild
 }
 func (UnimplementedPipelinesServer) ListBuildkits(context.Context, *ListBuildkitsRequest) (*ListBuildkitsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListBuildkits not implemented")
+}
+func (UnimplementedPipelinesServer) UpdateBuildkit(context.Context, *UpdateBuildkitRequest) (*UpdateBuildkitResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateBuildkit not implemented")
+}
+func (UnimplementedPipelinesServer) DeleteBuildkit(context.Context, *DeleteBuildkitRequest) (*DeleteBuildkitResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteBuildkit not implemented")
 }
 func (UnimplementedPipelinesServer) mustEmbedUnimplementedPipelinesServer() {}
 
@@ -152,6 +198,42 @@ func _Pipelines_ListBuildkits_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Pipelines_UpdateBuildkit_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateBuildkitRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PipelinesServer).UpdateBuildkit(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.public.pipelines.Pipelines/UpdateBuildkit",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PipelinesServer).UpdateBuildkit(ctx, req.(*UpdateBuildkitRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Pipelines_DeleteBuildkit_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteBuildkitRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PipelinesServer).DeleteBuildkit(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.public.pipelines.Pipelines/DeleteBuildkit",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PipelinesServer).DeleteBuildkit(ctx, req.(*DeleteBuildkitRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Pipelines_ServiceDesc is the grpc.ServiceDesc for Pipelines service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -170,6 +252,14 @@ var Pipelines_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListBuildkits",
 			Handler:    _Pipelines_ListBuildkits_Handler,
+		},
+		{
+			MethodName: "UpdateBuildkit",
+			Handler:    _Pipelines_UpdateBuildkit_Handler,
+		},
+		{
+			MethodName: "DeleteBuildkit",
+			Handler:    _Pipelines_DeleteBuildkit_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
