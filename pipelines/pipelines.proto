@@ -73,28 +73,24 @@ message TargetSecret {
 
 message CreateBuildkitRequest {
   string org_id = 1;
-  string name = 2;
-  BuildkitArchitecture arch = 3;
-  bytes tls_public_key = 4;
-  bytes tls_private_key = 5;
-}
-
-enum BuildkitArchitecture {
-  AMD64 = 0;
-  ARM64 = 1;
+  string name = 2; // characters should be valid within a URL
+  string platform = 3; // Supported values now are: linux/amd64, linux/arm64
+  bytes tls_public_key = 5;
+  bytes tls_private_key = 6;
 }
 
 enum BuildkitStatus {
-  CREATING = 0;
-  OPERATIONAL = 1;
-  OFFLINE = 2;
-  DESTROYING = 3;
+  BUILDKIT_STATUS_UNSPECIFIED = 0;
+  BUILDKIT_STATUS_CREATING = 1;
+  BUILDKIT_STATUS_OPERATIONAL = 2;
+  BUILDKIT_STATUS_OFFLINE = 3;
+  BUILDKIT_STATUS_DESTROYING = 4;
 }
 
 message CreateBuildkitResponse {
   string public_ip = 1;
   BuildkitStatus status = 2;
-  string availability_zone = 3;
+  string version = 3;
 }
 
 message ListBuildkitsRequest {
@@ -105,14 +101,12 @@ message ListBuildkitsResponse {
   message BuildkitInstance {
     string user_id = 1;
     string name = 2;
-    BuildkitArchitecture arch = 3;
+    string platform = 3;
     BuildkitStatus status = 4;
     string public_ip = 5;
-    string availability_zone = 6;
+    string version = 6;
   }
   repeated BuildkitInstance instances = 1;
-  BuildkitStatus status = 2;
-  string availability_zone = 3;
 }
 
 message UpdateBuildkitRequest {
