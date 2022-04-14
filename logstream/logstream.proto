@@ -13,10 +13,14 @@ service Ingester {
 }
 
 message PassDeltaRequest {
-    string build_id = 1;
-    Delta delta = 2;
-    bool test_retry_error = 3;
-    bool flush = 4;
+    string org_id = 1;
+    string build_id = 2;
+    // project_id is the ID of the CI Project containing the build.
+    // It can be left empty for builds that are not run on the CI.
+    string project_id = 3;
+    Delta delta = 4;
+    bool test_retry_error = 5;
+    bool flush = 6;
 }
 
 message PassDeltaReply {
@@ -38,7 +42,11 @@ message PassDeltaReply {
 }
 
 message SnapshotRequest {
-    string build_id = 1;
+    string org_id = 1;
+    string build_id = 2;
+    // project_id is the ID of the CI Project containing the build.
+    // It can be left empty for builds that are not run on the CI.
+    string project_id = 3;
 }
 
 message SnapshotReply {
@@ -62,10 +70,11 @@ service LogStreamRead {
 }
 
 message GetManifestRequest {
-    string build_id = 1;
+    string org_id = 1;
+    string build_id = 2;
     // snapshot_id is the ID of the snapshot to get the manifest for.
     // If not provided, the latest snapshot will be used.
-    string snapshot_id = 2;
+    string snapshot_id = 3;
 }
 
 message GetManifestReply {
@@ -73,8 +82,43 @@ message GetManifestReply {
 }
 
 message GetLogRequest {
-    string build_id = 1;
-    string snapshot_id = 2;
+    string org_id = 1;
+    string build_id = 2;
+    string snapshot_id = 3;
+    string target_id = 4;
+    // start_seek_index is the index to start reading from.
+    // If negative, the server will return data starting from the last N bytes,
+    // where N = len + start_seek_index.
+    int64 start_seek_index = 5;
+    // end_seek_index is the end index to read up to.
+    // If negative, the server will return data starting up to the last N bytes,
+    // where N = len + end_seek_index.
+    // If zero, the server will return data starting up to the end of the log.
+    int64 end_seek_index = 6;
+}
+
+message GetLogReply {
+    bytes data = 1;
+    int64 start_seek_index = 2;
+    int64 end_seek_index = 3;
+}
+
+message SubscribeRequest {
+    string org_id = 1;
+    string build_id = 2;
+    bool include_manifest = 3;
+    int64 next_manifest_order_id = 4;
+    bool include_new_targets = 5;
+    map<string, int64> target_seek_indices = 6;
+}
+
+message SubscribeReply {
+    Delta delta = 1;    
+}
+
+message ReadLogRequest {
+    string org_id = 1;
+    string build_id = 2;
     string target_id = 3;
     // start_seek_index is the index to start reading from.
     // If negative, the server will return data starting from the last N bytes,
@@ -85,41 +129,9 @@ message GetLogRequest {
     // where N = len + end_seek_index.
     // If zero, the server will return data starting up to the end of the log.
     int64 end_seek_index = 5;
-}
-
-message GetLogReply {
-    bytes data = 1;
-    int64 start_seek_index = 2;
-    int64 end_seek_index = 3;
-}
-
-message SubscribeRequest {
-    string build_id = 1;
-    bool include_manifest = 2;
-    int64 next_manifest_order_id = 3;
-    bool include_new_targets = 4;
-    map<string, int64> target_seek_indices = 5;
-}
-
-message SubscribeReply {
-    Delta delta = 1;    
-}
-
-message ReadLogRequest {
-    string build_id = 1;
-    string target_id = 2;
-    // start_seek_index is the index to start reading from.
-    // If negative, the server will return data starting from the last N bytes,
-    // where N = len + start_seek_index.
-    int64 start_seek_index = 3;
-    // end_seek_index is the end index to read up to.
-    // If negative, the server will return data starting up to the last N bytes,
-    // where N = len + end_seek_index.
-    // If zero, the server will return data starting up to the end of the log.
-    int64 end_seek_index = 4;
     // follow should be set if the reply should include ongoing updates.
     // This is similar to "tail -f".
-    bool follow = 5;
+    bool follow = 6;
 }
 
 message ReadLogReply {
