@@ -84,7 +84,18 @@ enum BuildkitArchitecture {
   ARM64 = 1;
 }
 
-message CreateBuildkitResponse {}
+enum BuildkitStatus {
+  CREATING = 0;
+  OPERATIONAL = 1;
+  OFFLINE = 2;
+  DESTROYING = 3;
+}
+
+message CreateBuildkitResponse {
+  string public_ip = 1;
+  BuildkitStatus status = 2;
+  string availability_zone = 3;
+}
 
 message ListBuildkitsRequest {
   string org_id = 1;
@@ -92,10 +103,16 @@ message ListBuildkitsRequest {
 
 message ListBuildkitsResponse {
   message BuildkitInstance {
-    string name = 1;
-    BuildkitArchitecture arch = 2;
+    string user_id = 1;
+    string name = 2;
+    BuildkitArchitecture arch = 3;
+    BuildkitStatus status = 4;
+    string public_ip = 5;
+    string availability_zone = 6;
   }
   repeated BuildkitInstance instances = 1;
+  BuildkitStatus status = 2;
+  string availability_zone = 3;
 }
 
 message UpdateBuildkitRequest {
