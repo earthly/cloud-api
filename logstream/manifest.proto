@@ -25,18 +25,23 @@ message BuildManifest {
 
     // user_id is the UUID of the user that ran the build.
     string user_id = 10;
+    // org_id is the Organization the build belongs to.
+    string org_id = 11;
+    // project_id is the ID of the CI Project containing the build.
+    // It my be empty for builds that are not run on the CI.
+    string project_id = 12;
 
     // The following are not updated by deltas. They are
     // only set by the snapshotter.
 
     // snapshot_id is the identifier assigned to the snapshot.
-    string snapshot_id = 11;
+    string snapshot_id = 13;
     // snapshot_order_id is the ordering ID for the manifest as stored
     // in snapshot state.
-    int64 snapshot_order_id = 12;
+    int64 snapshot_order_id = 14;
     // snapshot_eof indicates whether the manifest as stored in snapshot
     // state is complete and there will be no more changes to it.
-    bool snapshot_eof = 13;
+    bool snapshot_eof = 15;
 }
 
 message TargetManifest {
