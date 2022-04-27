@@ -25,7 +25,7 @@ type PipelinesClient interface {
 	// ManualBuild manually triggers a Pipeline build with the
 	// provided Targets, Args and Secrets. The new build_id is returned.
 	ManualBuild(ctx context.Context, in *ManualBuildRequest, opts ...grpc.CallOption) (*ManualBuildResponse, error)
-	// CreateBuildkit starts a new Hosted Buildkit instance using the latest AMI version.
+	// CreateBuildkit starts a new Managed Buildkit instance using the latest AMI version.
 	// The Buildkit instance can be used by users for their local Cloud or 3rd-party CI builds.
 	CreateBuildkit(ctx context.Context, in *CreateBuildkitRequest, opts ...grpc.CallOption) (*CreateBuildkitResponse, error)
 	// ListBuildkits returns a list of Buildkit instances available in the organization.
@@ -98,7 +98,7 @@ type PipelinesServer interface {
 	// ManualBuild manually triggers a Pipeline build with the
 	// provided Targets, Args and Secrets. The new build_id is returned.
 	ManualBuild(context.Context, *ManualBuildRequest) (*ManualBuildResponse, error)
-	// CreateBuildkit starts a new Hosted Buildkit instance using the latest AMI version.
+	// CreateBuildkit starts a new Managed Buildkit instance using the latest AMI version.
 	// The Buildkit instance can be used by users for their local Cloud or 3rd-party CI builds.
 	CreateBuildkit(context.Context, *CreateBuildkitRequest) (*CreateBuildkitResponse, error)
 	// ListBuildkits returns a list of Buildkit instances available in the organization.

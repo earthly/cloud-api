@@ -13,7 +13,7 @@ service Pipelines {
       body: "*"
     };
   }
-  // CreateBuildkit starts a new Hosted Buildkit instance using the latest AMI version.
+  // CreateBuildkit starts a new Managed Buildkit instance using the latest AMI version.
   // The Buildkit instance can be used by users for their local Cloud or 3rd-party CI builds.
   rpc CreateBuildkit(CreateBuildkitRequest) returns (CreateBuildkitResponse) {
     option (google.api.http) = {
