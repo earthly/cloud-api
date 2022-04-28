@@ -13,33 +13,33 @@ service Pipelines {
       body: "*"
     };
   }
-  // CreateBuildkit starts a new Hosted Buildkit instance using the latest AMI version.
-  // The Buildkit instance can be used by users for their local Cloud or 3rd-party CI builds.
-  rpc CreateBuildkit(CreateBuildkitRequest) returns (CreateBuildkitResponse) {
+  // LaunchSatellite starts a new Earthly Satellite instance on the latest version.
+  // The instance can be used by users to build their local, Cloud, or 3rd-party CI builds.
+  rpc LaunchSatellite(LaunchSatelliteRequest) returns (LaunchSatelliteResponse) {
     option (google.api.http) = {
-      post: "/api/v0/buildkits"
+      post: "/api/v0/satellites"
       body: "*"
     };
   }
-  // ListBuildkits returns a list of Buildkit instances available in the organization.
-  rpc ListBuildkits(ListBuildkitsRequest) returns (ListBuildkitsResponse) {
+  // ListSatellites returns a list of Earthly Satellite instances available in the organization.
+  rpc ListSatellites(ListSatellitesRequest) returns (ListSatellitesResponse) {
     option (google.api.http) = {
-      get: "/api/v0/buildkits"
+      get: "/api/v0/satellites"
     };
   }
-  // UpdateBuildkit updates a buildkit instance to the latest version.
+  // UpdateSatellite updates a Satellite instance to the latest version.
   // (I.e. the latest AMI we have in AWS).
   // Calling this may result in some down-time on the instance while it updates.
-  rpc UpdateBuildkit(UpdateBuildkitRequest) returns (UpdateBuildkitResponse) {
+  rpc UpdateSatellite(UpdateSatelliteRequest) returns (UpdateSatelliteResponse) {
     option (google.api.http) = {
-      post: "/api/v0/buildkits/{name}/update"
+      post: "/api/v0/satellites/{name}/update"
       body: "*"
     };
   }
-  // DeleteBuildkit decommissions a Buildkit instance.
-  rpc DeleteBuildkit(DeleteBuildkitRequest) returns (DeleteBuildkitResponse) {
+  // DeleteSatellite decommissions a Satellite instance.
+  rpc DeleteSatellite(DeleteSatelliteRequest) returns (DeleteSatelliteResponse) {
     option (google.api.http) = {
-      delete: "/api/v0/buildkits/{name}"
+      delete: "/api/v0/satellites/{name}"
     };
   }
 }
@@ -71,54 +71,52 @@ message TargetSecret {
   string value = 2;
 }
 
-message CreateBuildkitRequest {
+message LaunchSatelliteRequest {
   string org_id = 1;
   string name = 2; // characters should be valid within a URL
   string platform = 3; // Supported values now are: linux/amd64, linux/arm64
-  bytes tls_public_key = 5;
-  bytes tls_private_key = 6;
 }
 
-enum BuildkitStatus {
-  BUILDKIT_STATUS_UNSPECIFIED = 0;
-  BUILDKIT_STATUS_CREATING = 1;
-  BUILDKIT_STATUS_OPERATIONAL = 2;
-  BUILDKIT_STATUS_OFFLINE = 3;
-  BUILDKIT_STATUS_DESTROYING = 4;
+enum SatelliteStatus {
+  SATELLITE_STATUS_UNSPECIFIED = 0;
+  SATELLITE_STATUS_CREATING = 1;
+  SATELLITE_STATUS_OPERATIONAL = 2;
+  SATELLITE_STATUS_OFFLINE = 3;
+  SATELLITE_STATUS_DESTROYING = 4;
 }
 
-message CreateBuildkitResponse {
+message LaunchSatelliteResponse {
   string public_ip = 1;
-  BuildkitStatus status = 2;
+  SatelliteStatus status = 2;
   string version = 3;
 }
 
-message ListBuildkitsRequest {
+message ListSatellitesRequest {
   string org_id = 1;
 }
 
-message ListBuildkitsResponse {
-  message BuildkitInstance {
+message ListSatellitesResponse {
+  message SatelliteInstance {
     string user_id = 1;
     string name = 2;
     string platform = 3;
-    BuildkitStatus status = 4;
+    SatelliteStatus status = 4;
     string public_ip = 5;
     string version = 6;
   }
-  repeated BuildkitInstance instances = 1;
+  repeated SatelliteInstance instances = 1;
 }
 
-message UpdateBuildkitRequest {
+message UpdateSatelliteRequest {
   string org_id = 1;
   string name = 2;
 }
 
-message UpdateBuildkitResponse {}
+message UpdateSatelliteResponse {}
 
-message DeleteBuildkitRequest {
+message DeleteSatelliteRequest {
   string org_id = 1;
   string name = 2;
 }
 
-message DeleteBuildkitResponse{}
+message DeleteSatelliteResponse{}
