@@ -75,8 +75,6 @@ message LaunchSatelliteRequest {
   string org_id = 1;
   string name = 2; // characters should be valid within a URL
   string platform = 3; // Supported values now are: linux/amd64, linux/arm64
-  bytes tls_public_key = 5;
-  bytes tls_private_key = 6;
 }
 
 enum SatelliteStatus {
