@@ -25,17 +25,17 @@ type PipelinesClient interface {
 	// ManualBuild manually triggers a Pipeline build with the
 	// provided Targets, Args and Secrets. The new build_id is returned.
 	ManualBuild(ctx context.Context, in *ManualBuildRequest, opts ...grpc.CallOption) (*ManualBuildResponse, error)
-	// CreateBuildkit starts a new Managed Buildkit instance using the latest AMI version.
-	// The Buildkit instance can be used by users for their local Cloud or 3rd-party CI builds.
-	CreateBuildkit(ctx context.Context, in *CreateBuildkitRequest, opts ...grpc.CallOption) (*CreateBuildkitResponse, error)
-	// ListBuildkits returns a list of Buildkit instances available in the organization.
-	ListBuildkits(ctx context.Context, in *ListBuildkitsRequest, opts ...grpc.CallOption) (*ListBuildkitsResponse, error)
-	// UpdateBuildkit updates a buildkit instance to the latest version.
+	// LaunchSatellite starts a new Earthly Satellite instance on the latest version.
+	// The instance can be used by users to build their local, Cloud, or 3rd-party CI builds.
+	LaunchSatellite(ctx context.Context, in *LaunchSatelliteRequest, opts ...grpc.CallOption) (*LaunchSatelliteResponse, error)
+	// ListSatellites returns a list of Earthly Satellite instances available in the organization.
+	ListSatellites(ctx context.Context, in *ListSatellitesRequest, opts ...grpc.CallOption) (*ListSatellitesResponse, error)
+	// UpdateSatellite updates a Satellite instance to the latest version.
 	// (I.e. the latest AMI we have in AWS).
 	// Calling this may result in some down-time on the instance while it updates.
-	UpdateBuildkit(ctx context.Context, in *UpdateBuildkitRequest, opts ...grpc.CallOption) (*UpdateBuildkitResponse, error)
-	// DeleteBuildkit decommissions a Buildkit instance.
-	DeleteBuildkit(ctx context.Context, in *DeleteBuildkitRequest, opts ...grpc.CallOption) (*DeleteBuildkitResponse, error)
+	UpdateSatellite(ctx context.Context, in *UpdateSatelliteRequest, opts ...grpc.CallOption) (*UpdateSatelliteResponse, error)
+	// DeleteSatellite decommissions a Satellite instance.
+	DeleteSatellite(ctx context.Context, in *DeleteSatelliteRequest, opts ...grpc.CallOption) (*DeleteSatelliteResponse, error)
 }
 
 type pipelinesClient struct {
@@ -55,36 +55,36 @@ func (c *pipelinesClient) ManualBuild(ctx context.Context, in *ManualBuildReques
 	return out, nil
 }
 
-func (c *pipelinesClient) CreateBuildkit(ctx context.Context, in *CreateBuildkitRequest, opts ...grpc.CallOption) (*CreateBuildkitResponse, error) {
-	out := new(CreateBuildkitResponse)
-	err := c.cc.Invoke(ctx, "/api.public.pipelines.Pipelines/CreateBuildkit", in, out, opts...)
+func (c *pipelinesClient) LaunchSatellite(ctx context.Context, in *LaunchSatelliteRequest, opts ...grpc.CallOption) (*LaunchSatelliteResponse, error) {
+	out := new(LaunchSatelliteResponse)
+	err := c.cc.Invoke(ctx, "/api.public.pipelines.Pipelines/LaunchSatellite", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *pipelinesClient) ListBuildkits(ctx context.Context, in *ListBuildkitsRequest, opts ...grpc.CallOption) (*ListBuildkitsResponse, error) {
-	out := new(ListBuildkitsResponse)
-	err := c.cc.Invoke(ctx, "/api.public.pipelines.Pipelines/ListBuildkits", in, out, opts...)
+func (c *pipelinesClient) ListSatellites(ctx context.Context, in *ListSatellitesRequest, opts ...grpc.CallOption) (*ListSatellitesResponse, error) {
+	out := new(ListSatellitesResponse)
+	err := c.cc.Invoke(ctx, "/api.public.pipelines.Pipelines/ListSatellites", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *pipelinesClient) UpdateBuildkit(ctx context.Context, in *UpdateBuildkitRequest, opts ...grpc.CallOption) (*UpdateBuildkitResponse, error) {
-	out := new(UpdateBuildkitResponse)
-	err := c.cc.Invoke(ctx, "/api.public.pipelines.Pipelines/UpdateBuildkit", in, out, opts...)
+func (c *pipelinesClient) UpdateSatellite(ctx context.Context, in *UpdateSatelliteRequest, opts ...grpc.CallOption) (*UpdateSatelliteResponse, error) {
+	out := new(UpdateSatelliteResponse)
+	err := c.cc.Invoke(ctx, "/api.public.pipelines.Pipelines/UpdateSatellite", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *pipelinesClient) DeleteBuildkit(ctx context.Context, in *DeleteBuildkitRequest, opts ...grpc.CallOption) (*DeleteBuildkitResponse, error) {
-	out := new(DeleteBuildkitResponse)
-	err := c.cc.Invoke(ctx, "/api.public.pipelines.Pipelines/DeleteBuildkit", in, out, opts...)
+func (c *pipelinesClient) DeleteSatellite(ctx context.Context, in *DeleteSatelliteRequest, opts ...grpc.CallOption) (*DeleteSatelliteResponse, error) {
+	out := new(DeleteSatelliteResponse)
+	err := c.cc.Invoke(ctx, "/api.public.pipelines.Pipelines/DeleteSatellite", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -98,17 +98,17 @@ type PipelinesServer interface {
 	// ManualBuild manually triggers a Pipeline build with the
 	// provided Targets, Args and Secrets. The new build_id is returned.
 	ManualBuild(context.Context, *ManualBuildRequest) (*ManualBuildResponse, error)
-	// CreateBuildkit starts a new Managed Buildkit instance using the latest AMI version.
-	// The Buildkit instance can be used by users for their local Cloud or 3rd-party CI builds.
-	CreateBuildkit(context.Context, *CreateBuildkitRequest) (*CreateBuildkitResponse, error)
-	// ListBuildkits returns a list of Buildkit instances available in the organization.
-	ListBuildkits(context.Context, *ListBuildkitsRequest) (*ListBuildkitsResponse, error)
-	// UpdateBuildkit updates a buildkit instance to the latest version.
+	// LaunchSatellite starts a new Earthly Satellite instance on the latest version.
+	// The instance can be used by users to build their local, Cloud, or 3rd-party CI builds.
+	LaunchSatellite(context.Context, *LaunchSatelliteRequest) (*LaunchSatelliteResponse, error)
+	// ListSatellites returns a list of Earthly Satellite instances available in the organization.
+	ListSatellites(context.Context, *ListSatellitesRequest) (*ListSatellitesResponse, error)
+	// UpdateSatellite updates a Satellite instance to the latest version.
 	// (I.e. the latest AMI we have in AWS).
 	// Calling this may result in some down-time on the instance while it updates.
-	UpdateBuildkit(context.Context, *UpdateBuildkitRequest) (*UpdateBuildkitResponse, error)
-	// DeleteBuildkit decommissions a Buildkit instance.
-	DeleteBuildkit(context.Context, *DeleteBuildkitRequest) (*DeleteBuildkitResponse, error)
+	UpdateSatellite(context.Context, *UpdateSatelliteRequest) (*UpdateSatelliteResponse, error)
+	// DeleteSatellite decommissions a Satellite instance.
+	DeleteSatellite(context.Context, *DeleteSatelliteRequest) (*DeleteSatelliteResponse, error)
 	mustEmbedUnimplementedPipelinesServer()
 }
 
@@ -119,17 +119,17 @@ type UnimplementedPipelinesServer struct {
 func (UnimplementedPipelinesServer) ManualBuild(context.Context, *ManualBuildRequest) (*ManualBuildResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ManualBuild not implemented")
 }
-func (UnimplementedPipelinesServer) CreateBuildkit(context.Context, *CreateBuildkitRequest) (*CreateBuildkitResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreateBuildkit not implemented")
+func (UnimplementedPipelinesServer) LaunchSatellite(context.Context, *LaunchSatelliteRequest) (*LaunchSatelliteResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method LaunchSatellite not implemented")
 }
-func (UnimplementedPipelinesServer) ListBuildkits(context.Context, *ListBuildkitsRequest) (*ListBuildkitsResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ListBuildkits not implemented")
+func (UnimplementedPipelinesServer) ListSatellites(context.Context, *ListSatellitesRequest) (*ListSatellitesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListSatellites not implemented")
 }
-func (UnimplementedPipelinesServer) UpdateBuildkit(context.Context, *UpdateBuildkitRequest) (*UpdateBuildkitResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UpdateBuildkit not implemented")
+func (UnimplementedPipelinesServer) UpdateSatellite(context.Context, *UpdateSatelliteRequest) (*UpdateSatelliteResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateSatellite not implemented")
 }
-func (UnimplementedPipelinesServer) DeleteBuildkit(context.Context, *DeleteBuildkitRequest) (*DeleteBuildkitResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method DeleteBuildkit not implemented")
+func (UnimplementedPipelinesServer) DeleteSatellite(context.Context, *DeleteSatelliteRequest) (*DeleteSatelliteResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteSatellite not implemented")
 }
 func (UnimplementedPipelinesServer) mustEmbedUnimplementedPipelinesServer() {}
 
@@ -162,74 +162,74 @@ func _Pipelines_ManualBuild_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Pipelines_CreateBuildkit_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CreateBuildkitRequest)
+func _Pipelines_LaunchSatellite_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(LaunchSatelliteRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(PipelinesServer).CreateBuildkit(ctx, in)
+		return srv.(PipelinesServer).LaunchSatellite(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/api.public.pipelines.Pipelines/CreateBuildkit",
+		FullMethod: "/api.public.pipelines.Pipelines/LaunchSatellite",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(PipelinesServer).CreateBuildkit(ctx, req.(*CreateBuildkitRequest))
+		return srv.(PipelinesServer).LaunchSatellite(ctx, req.(*LaunchSatelliteRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Pipelines_ListBuildkits_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListBuildkitsRequest)
+func _Pipelines_ListSatellites_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListSatellitesRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(PipelinesServer).ListBuildkits(ctx, in)
+		return srv.(PipelinesServer).ListSatellites(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/api.public.pipelines.Pipelines/ListBuildkits",
+		FullMethod: "/api.public.pipelines.Pipelines/ListSatellites",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(PipelinesServer).ListBuildkits(ctx, req.(*ListBuildkitsRequest))
+		return srv.(PipelinesServer).ListSatellites(ctx, req.(*ListSatellitesRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Pipelines_UpdateBuildkit_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UpdateBuildkitRequest)
+func _Pipelines_UpdateSatellite_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateSatelliteRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(PipelinesServer).UpdateBuildkit(ctx, in)
+		return srv.(PipelinesServer).UpdateSatellite(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/api.public.pipelines.Pipelines/UpdateBuildkit",
+		FullMethod: "/api.public.pipelines.Pipelines/UpdateSatellite",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(PipelinesServer).UpdateBuildkit(ctx, req.(*UpdateBuildkitRequest))
+		return srv.(PipelinesServer).UpdateSatellite(ctx, req.(*UpdateSatelliteRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Pipelines_DeleteBuildkit_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DeleteBuildkitRequest)
+func _Pipelines_DeleteSatellite_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteSatelliteRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(PipelinesServer).DeleteBuildkit(ctx, in)
+		return srv.(PipelinesServer).DeleteSatellite(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/api.public.pipelines.Pipelines/DeleteBuildkit",
+		FullMethod: "/api.public.pipelines.Pipelines/DeleteSatellite",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(PipelinesServer).DeleteBuildkit(ctx, req.(*DeleteBuildkitRequest))
+		return srv.(PipelinesServer).DeleteSatellite(ctx, req.(*DeleteSatelliteRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -246,20 +246,20 @@ var Pipelines_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Pipelines_ManualBuild_Handler,
 		},
 		{
-			MethodName: "CreateBuildkit",
-			Handler:    _Pipelines_CreateBuildkit_Handler,
+			MethodName: "LaunchSatellite",
+			Handler:    _Pipelines_LaunchSatellite_Handler,
 		},
 		{
-			MethodName: "ListBuildkits",
-			Handler:    _Pipelines_ListBuildkits_Handler,
+			MethodName: "ListSatellites",
+			Handler:    _Pipelines_ListSatellites_Handler,
 		},
 		{
-			MethodName: "UpdateBuildkit",
-			Handler:    _Pipelines_UpdateBuildkit_Handler,
+			MethodName: "UpdateSatellite",
+			Handler:    _Pipelines_UpdateSatellite_Handler,
 		},
 		{
-			MethodName: "DeleteBuildkit",
-			Handler:    _Pipelines_DeleteBuildkit_Handler,
+			MethodName: "DeleteSatellite",
+			Handler:    _Pipelines_DeleteSatellite_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
