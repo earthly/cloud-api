@@ -4,4 +4,4 @@ deps:
   - remote: buf.build
     owner: googleapis
     repository: googleapis
-    commit: 7529bb85c9cd4c489dba05e04769c547
+    commit: 2aa0ce062bf84656ad01d979d5c64038
