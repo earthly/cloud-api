@@ -962,6 +962,328 @@ func (x *ProjectMember) GetModifiedAt() *timestamppb.Timestamp {
 	return nil
 }
 
+type ProjectCreateRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Project *Project `protobuf:"bytes,1,opt,name=project,proto3" json:"project,omitempty"`
+}
+
+func (x *ProjectCreateRequest) Reset() {
+	*x = ProjectCreateRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_secrets_proto_msgTypes[15]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ProjectCreateRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ProjectCreateRequest) ProtoMessage() {}
+
+func (x *ProjectCreateRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_secrets_proto_msgTypes[15]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ProjectCreateRequest.ProtoReflect.Descriptor instead.
+func (*ProjectCreateRequest) Descriptor() ([]byte, []int) {
+	return file_secrets_proto_rawDescGZIP(), []int{15}
+}
+
+func (x *ProjectCreateRequest) GetProject() *Project {
+	if x != nil {
+		return x.Project
+	}
+	return nil
+}
+
+type ProjectCreateResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Message string   `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
+	Project *Project `protobuf:"bytes,2,opt,name=project,proto3" json:"project,omitempty"`
+}
+
+func (x *ProjectCreateResponse) Reset() {
+	*x = ProjectCreateResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_secrets_proto_msgTypes[16]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ProjectCreateResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ProjectCreateResponse) ProtoMessage() {}
+
+func (x *ProjectCreateResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_secrets_proto_msgTypes[16]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ProjectCreateResponse.ProtoReflect.Descriptor instead.
+func (*ProjectCreateResponse) Descriptor() ([]byte, []int) {
+	return file_secrets_proto_rawDescGZIP(), []int{16}
+}
+
+func (x *ProjectCreateResponse) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+func (x *ProjectCreateResponse) GetProject() *Project {
+	if x != nil {
+		return x.Project
+	}
+	return nil
+}
+
+type ProjectGetResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Message string   `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
+	Project *Project `protobuf:"bytes,2,opt,name=project,proto3" json:"project,omitempty"`
+}
+
+func (x *ProjectGetResponse) Reset() {
+	*x = ProjectGetResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_secrets_proto_msgTypes[17]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ProjectGetResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ProjectGetResponse) ProtoMessage() {}
+
+func (x *ProjectGetResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_secrets_proto_msgTypes[17]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ProjectGetResponse.ProtoReflect.Descriptor instead.
+func (*ProjectGetResponse) Descriptor() ([]byte, []int) {
+	return file_secrets_proto_rawDescGZIP(), []int{17}
+}
+
+func (x *ProjectGetResponse) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+func (x *ProjectGetResponse) GetProject() *Project {
+	if x != nil {
+		return x.Project
+	}
+	return nil
+}
+
+type ProjectListResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Message  string     `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
+	Projects []*Project `protobuf:"bytes,2,rep,name=projects,proto3" json:"projects,omitempty"`
+}
+
+func (x *ProjectListResponse) Reset() {
+	*x = ProjectListResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_secrets_proto_msgTypes[18]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ProjectListResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ProjectListResponse) ProtoMessage() {}
+
+func (x *ProjectListResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_secrets_proto_msgTypes[18]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ProjectListResponse.ProtoReflect.Descriptor instead.
+func (*ProjectListResponse) Descriptor() ([]byte, []int) {
+	return file_secrets_proto_rawDescGZIP(), []int{18}
+}
+
+func (x *ProjectListResponse) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+func (x *ProjectListResponse) GetProjects() []*Project {
+	if x != nil {
+		return x.Projects
+	}
+	return nil
+}
+
+type ProjectAddMemberRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	UserId     string `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	Permission string `protobuf:"bytes,2,opt,name=permission,proto3" json:"permission,omitempty"`
+}
+
+func (x *ProjectAddMemberRequest) Reset() {
+	*x = ProjectAddMemberRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_secrets_proto_msgTypes[19]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ProjectAddMemberRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ProjectAddMemberRequest) ProtoMessage() {}
+
+func (x *ProjectAddMemberRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_secrets_proto_msgTypes[19]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ProjectAddMemberRequest.ProtoReflect.Descriptor instead.
+func (*ProjectAddMemberRequest) Descriptor() ([]byte, []int) {
+	return file_secrets_proto_rawDescGZIP(), []int{19}
+}
+
+func (x *ProjectAddMemberRequest) GetUserId() string {
+	if x != nil {
+		return x.UserId
+	}
+	return ""
+}
+
+func (x *ProjectAddMemberRequest) GetPermission() string {
+	if x != nil {
+		return x.Permission
+	}
+	return ""
+}
+
+type ProjectListMembersResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Message string           `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
+	Members []*ProjectMember `protobuf:"bytes,2,rep,name=members,proto3" json:"members,omitempty"`
+}
+
+func (x *ProjectListMembersResponse) Reset() {
+	*x = ProjectListMembersResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_secrets_proto_msgTypes[20]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ProjectListMembersResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ProjectListMembersResponse) ProtoMessage() {}
+
+func (x *ProjectListMembersResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_secrets_proto_msgTypes[20]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ProjectListMembersResponse.ProtoReflect.Descriptor instead.
+func (*ProjectListMembersResponse) Descriptor() ([]byte, []int) {
+	return file_secrets_proto_rawDescGZIP(), []int{20}
+}
+
+func (x *ProjectListMembersResponse) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+func (x *ProjectListMembersResponse) GetMembers() []*ProjectMember {
+	if x != nil {
+		return x.Members
+	}
+	return nil
+}
+
 var File_secrets_proto protoreflect.FileDescriptor
 
 var file_secrets_proto_rawDesc = []byte{
@@ -1081,8 +1403,45 @@ var file_secrets_proto_rawDesc = []byte{
 	0x66, 0x69, 0x65, 0x64, 0x5f, 0x61, 0x74, 0x18, 0x05, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1a, 0x2e,
 	0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e,
 	0x54, 0x69, 0x6d, 0x65, 0x73, 0x74, 0x61, 0x6d, 0x70, 0x52, 0x0a, 0x6d, 0x6f, 0x64, 0x69, 0x66,
-	0x69, 0x65, 0x64, 0x41, 0x74, 0x42, 0x0b, 0x5a, 0x09, 0x2e, 0x2f, 0x73, 0x65, 0x63, 0x72, 0x65,
-	0x74, 0x73, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x69, 0x65, 0x64, 0x41, 0x74, 0x22, 0x4d, 0x0a, 0x14, 0x50, 0x72, 0x6f, 0x6a, 0x65, 0x63, 0x74,
+	0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x35, 0x0a,
+	0x07, 0x70, 0x72, 0x6f, 0x6a, 0x65, 0x63, 0x74, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1b,
+	0x2e, 0x61, 0x70, 0x69, 0x2e, 0x70, 0x75, 0x62, 0x6c, 0x69, 0x63, 0x2e, 0x73, 0x65, 0x63, 0x72,
+	0x65, 0x74, 0x73, 0x2e, 0x50, 0x72, 0x6f, 0x6a, 0x65, 0x63, 0x74, 0x52, 0x07, 0x70, 0x72, 0x6f,
+	0x6a, 0x65, 0x63, 0x74, 0x22, 0x68, 0x0a, 0x15, 0x50, 0x72, 0x6f, 0x6a, 0x65, 0x63, 0x74, 0x43,
+	0x72, 0x65, 0x61, 0x74, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x18, 0x0a,
+	0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07,
+	0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x12, 0x35, 0x0a, 0x07, 0x70, 0x72, 0x6f, 0x6a, 0x65,
+	0x63, 0x74, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1b, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x70,
+	0x75, 0x62, 0x6c, 0x69, 0x63, 0x2e, 0x73, 0x65, 0x63, 0x72, 0x65, 0x74, 0x73, 0x2e, 0x50, 0x72,
+	0x6f, 0x6a, 0x65, 0x63, 0x74, 0x52, 0x07, 0x70, 0x72, 0x6f, 0x6a, 0x65, 0x63, 0x74, 0x22, 0x65,
+	0x0a, 0x12, 0x50, 0x72, 0x6f, 0x6a, 0x65, 0x63, 0x74, 0x47, 0x65, 0x74, 0x52, 0x65, 0x73, 0x70,
+	0x6f, 0x6e, 0x73, 0x65, 0x12, 0x18, 0x0a, 0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x18,
+	0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x12, 0x35,
+	0x0a, 0x07, 0x70, 0x72, 0x6f, 0x6a, 0x65, 0x63, 0x74, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32,
+	0x1b, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x70, 0x75, 0x62, 0x6c, 0x69, 0x63, 0x2e, 0x73, 0x65, 0x63,
+	0x72, 0x65, 0x74, 0x73, 0x2e, 0x50, 0x72, 0x6f, 0x6a, 0x65, 0x63, 0x74, 0x52, 0x07, 0x70, 0x72,
+	0x6f, 0x6a, 0x65, 0x63, 0x74, 0x22, 0x68, 0x0a, 0x13, 0x50, 0x72, 0x6f, 0x6a, 0x65, 0x63, 0x74,
+	0x4c, 0x69, 0x73, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x18, 0x0a, 0x07,
+	0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x6d,
+	0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x12, 0x37, 0x0a, 0x08, 0x70, 0x72, 0x6f, 0x6a, 0x65, 0x63,
+	0x74, 0x73, 0x18, 0x02, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x1b, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x70,
+	0x75, 0x62, 0x6c, 0x69, 0x63, 0x2e, 0x73, 0x65, 0x63, 0x72, 0x65, 0x74, 0x73, 0x2e, 0x50, 0x72,
+	0x6f, 0x6a, 0x65, 0x63, 0x74, 0x52, 0x08, 0x70, 0x72, 0x6f, 0x6a, 0x65, 0x63, 0x74, 0x73, 0x22,
+	0x52, 0x0a, 0x17, 0x50, 0x72, 0x6f, 0x6a, 0x65, 0x63, 0x74, 0x41, 0x64, 0x64, 0x4d, 0x65, 0x6d,
+	0x62, 0x65, 0x72, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x17, 0x0a, 0x07, 0x75, 0x73,
+	0x65, 0x72, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x75, 0x73, 0x65,
+	0x72, 0x49, 0x64, 0x12, 0x1e, 0x0a, 0x0a, 0x70, 0x65, 0x72, 0x6d, 0x69, 0x73, 0x73, 0x69, 0x6f,
+	0x6e, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0a, 0x70, 0x65, 0x72, 0x6d, 0x69, 0x73, 0x73,
+	0x69, 0x6f, 0x6e, 0x22, 0x73, 0x0a, 0x1a, 0x50, 0x72, 0x6f, 0x6a, 0x65, 0x63, 0x74, 0x4c, 0x69,
+	0x73, 0x74, 0x4d, 0x65, 0x6d, 0x62, 0x65, 0x72, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73,
+	0x65, 0x12, 0x18, 0x0a, 0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x18, 0x01, 0x20, 0x01,
+	0x28, 0x09, 0x52, 0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x12, 0x3b, 0x0a, 0x07, 0x6d,
+	0x65, 0x6d, 0x62, 0x65, 0x72, 0x73, 0x18, 0x02, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x21, 0x2e, 0x61,
+	0x70, 0x69, 0x2e, 0x70, 0x75, 0x62, 0x6c, 0x69, 0x63, 0x2e, 0x73, 0x65, 0x63, 0x72, 0x65, 0x74,
+	0x73, 0x2e, 0x50, 0x72, 0x6f, 0x6a, 0x65, 0x63, 0x74, 0x4d, 0x65, 0x6d, 0x62, 0x65, 0x72, 0x52,
+	0x07, 0x6d, 0x65, 0x6d, 0x62, 0x65, 0x72, 0x73, 0x42, 0x0b, 0x5a, 0x09, 0x2e, 0x2f, 0x73, 0x65,
+	0x63, 0x72, 0x65, 0x74, 0x73, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -1097,7 +1456,7 @@ func file_secrets_proto_rawDescGZIP() []byte {
 	return file_secrets_proto_rawDescData
 }
 
-var file_secrets_proto_msgTypes = make([]protoimpl.MessageInfo, 15)
+var file_secrets_proto_msgTypes = make([]protoimpl.MessageInfo, 21)
 var file_secrets_proto_goTypes = []interface{}{
 	(*CreateAccountRequest)(nil),       // 0: api.public.secrets.CreateAccountRequest
 	(*CreateAccountResponse)(nil),      // 1: api.public.secrets.CreateAccountResponse
@@ -1114,24 +1473,35 @@ var file_secrets_proto_goTypes = []interface{}{
 	(*LoginResponse)(nil),              // 12: api.public.secrets.LoginResponse
 	(*Project)(nil),                    // 13: api.public.secrets.Project
 	(*ProjectMember)(nil),              // 14: api.public.secrets.ProjectMember
-	(*timestamppb.Timestamp)(nil),      // 15: google.protobuf.Timestamp
+	(*ProjectCreateRequest)(nil),       // 15: api.public.secrets.ProjectCreateRequest
+	(*ProjectCreateResponse)(nil),      // 16: api.public.secrets.ProjectCreateResponse
+	(*ProjectGetResponse)(nil),         // 17: api.public.secrets.ProjectGetResponse
+	(*ProjectListResponse)(nil),        // 18: api.public.secrets.ProjectListResponse
+	(*ProjectAddMemberRequest)(nil),    // 19: api.public.secrets.ProjectAddMemberRequest
+	(*ProjectListMembersResponse)(nil), // 20: api.public.secrets.ProjectListMembersResponse
+	(*timestamppb.Timestamp)(nil),      // 21: google.protobuf.Timestamp
 }
 var file_secrets_proto_depIdxs = []int32{
 	4,  // 0: api.public.secrets.ListOrgPermissionsResponse.permissions:type_name -> api.public.secrets.OrgPermissions
 	6,  // 1: api.public.secrets.ListOrgsResponse.details:type_name -> api.public.secrets.OrgDetail
-	15, // 2: api.public.secrets.AuthToken.expiry:type_name -> google.protobuf.Timestamp
+	21, // 2: api.public.secrets.AuthToken.expiry:type_name -> google.protobuf.Timestamp
 	8,  // 3: api.public.secrets.ListAuthTokensResponse.tokens:type_name -> api.public.secrets.AuthToken
-	15, // 4: api.public.secrets.OAuthConnectResponse.expiry:type_name -> google.protobuf.Timestamp
-	15, // 5: api.public.secrets.LoginResponse.expiry:type_name -> google.protobuf.Timestamp
-	15, // 6: api.public.secrets.Project.created_at:type_name -> google.protobuf.Timestamp
-	15, // 7: api.public.secrets.Project.modified_at:type_name -> google.protobuf.Timestamp
-	15, // 8: api.public.secrets.ProjectMember.created_at:type_name -> google.protobuf.Timestamp
-	15, // 9: api.public.secrets.ProjectMember.modified_at:type_name -> google.protobuf.Timestamp
-	10, // [10:10] is the sub-list for method output_type
-	10, // [10:10] is the sub-list for method input_type
-	10, // [10:10] is the sub-list for extension type_name
-	10, // [10:10] is the sub-list for extension extendee
-	0,  // [0:10] is the sub-list for field type_name
+	21, // 4: api.public.secrets.OAuthConnectResponse.expiry:type_name -> google.protobuf.Timestamp
+	21, // 5: api.public.secrets.LoginResponse.expiry:type_name -> google.protobuf.Timestamp
+	21, // 6: api.public.secrets.Project.created_at:type_name -> google.protobuf.Timestamp
+	21, // 7: api.public.secrets.Project.modified_at:type_name -> google.protobuf.Timestamp
+	21, // 8: api.public.secrets.ProjectMember.created_at:type_name -> google.protobuf.Timestamp
+	21, // 9: api.public.secrets.ProjectMember.modified_at:type_name -> google.protobuf.Timestamp
+	13, // 10: api.public.secrets.ProjectCreateRequest.project:type_name -> api.public.secrets.Project
+	13, // 11: api.public.secrets.ProjectCreateResponse.project:type_name -> api.public.secrets.Project
+	13, // 12: api.public.secrets.ProjectGetResponse.project:type_name -> api.public.secrets.Project
+	13, // 13: api.public.secrets.ProjectListResponse.projects:type_name -> api.public.secrets.Project
+	14, // 14: api.public.secrets.ProjectListMembersResponse.members:type_name -> api.public.secrets.ProjectMember
+	15, // [15:15] is the sub-list for method output_type
+	15, // [15:15] is the sub-list for method input_type
+	15, // [15:15] is the sub-list for extension type_name
+	15, // [15:15] is the sub-list for extension extendee
+	0,  // [0:15] is the sub-list for field type_name
 }
 
 func init() { file_secrets_proto_init() }
@@ -1320,6 +1690,78 @@ func file_secrets_proto_init() {
 				return nil
 			}
 		}
+		file_secrets_proto_msgTypes[15].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*ProjectCreateRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_secrets_proto_msgTypes[16].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*ProjectCreateResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_secrets_proto_msgTypes[17].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*ProjectGetResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_secrets_proto_msgTypes[18].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*ProjectListResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_secrets_proto_msgTypes[19].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*ProjectAddMemberRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_secrets_proto_msgTypes[20].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*ProjectListMembersResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -1327,7 +1769,7 @@ func file_secrets_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_secrets_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   15,
+			NumMessages:   21,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
