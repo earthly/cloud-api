@@ -42,6 +42,13 @@ service Pipelines {
       delete: "/api/v0/satellites/{name}"
     };
   }
+  // GetSatellite retrieves the details of a particular Satellite instance.
+  // Mainly intended for use by Buildkit Proxy when establishing a new connection to an instance.
+  rpc GetSatellite(GetSatelliteRequest) returns (GetSatelliteResponse) {
+    option (google.api.http) = {
+      get: "/api/v0/satellites/{name}"
+    };
+  }
 }
 
 message ManualBuildRequest {
@@ -83,12 +90,12 @@ enum SatelliteStatus {
   SATELLITE_STATUS_OPERATIONAL = 2;
   SATELLITE_STATUS_OFFLINE = 3;
   SATELLITE_STATUS_DESTROYING = 4;
+  SATELLITE_STATUS_FAILED = 5;
 }
 
 message LaunchSatelliteResponse {
-  string public_ip = 1;
-  SatelliteStatus status = 2;
-  string version = 3;
+  SatelliteStatus status = 1;
+  string version = 2;
 }
 
 message ListSatellitesRequest {
@@ -101,8 +108,7 @@ message ListSatellitesResponse {
     string name = 2;
     string platform = 3;
     SatelliteStatus status = 4;
-    string public_ip = 5;
-    string version = 6;
+    string version = 5;
   }
   repeated SatelliteInstance instances = 1;
 }
@@ -120,3 +126,18 @@ message DeleteSatelliteRequest {
 }
 
 message DeleteSatelliteResponse{}
+
+message GetSatelliteRequest {
+  string org_id = 1;
+  string name = 2;
+}
+
+message GetSatelliteResponse {
+  string user_id = 1;
+  string platform = 2;
+  SatelliteStatus status = 3;
+  string version = 4;
+  string id = 5;
+  string private_ip = 6;
+  string private_dns = 7;
+}
