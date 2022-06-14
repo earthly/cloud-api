@@ -408,6 +408,7 @@ type OrgDetail struct {
 
 	Name  string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	Admin bool   `protobuf:"varint,2,opt,name=admin,proto3" json:"admin,omitempty"`
+	Id    string `protobuf:"bytes,3,opt,name=id,proto3" json:"id,omitempty"`
 }
 
 func (x *OrgDetail) Reset() {
@@ -454,6 +455,13 @@ func (x *OrgDetail) GetAdmin() bool {
 		return x.Admin
 	}
 	return false
+}
+
+func (x *OrgDetail) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
 }
 
 type ListOrgsResponse struct {
@@ -1363,7 +1371,7 @@ func (x *Secret) GetModifiedAt() *timestamppb.Timestamp {
 	return nil
 }
 
-type SecretCreateRequest struct {
+type CreateSecretRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
@@ -1371,8 +1379,8 @@ type SecretCreateRequest struct {
 	Secret *Secret `protobuf:"bytes,1,opt,name=secret,proto3" json:"secret,omitempty"`
 }
 
-func (x *SecretCreateRequest) Reset() {
-	*x = SecretCreateRequest{}
+func (x *CreateSecretRequest) Reset() {
+	*x = CreateSecretRequest{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_secrets_proto_msgTypes[22]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1380,13 +1388,13 @@ func (x *SecretCreateRequest) Reset() {
 	}
 }
 
-func (x *SecretCreateRequest) String() string {
+func (x *CreateSecretRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*SecretCreateRequest) ProtoMessage() {}
+func (*CreateSecretRequest) ProtoMessage() {}
 
-func (x *SecretCreateRequest) ProtoReflect() protoreflect.Message {
+func (x *CreateSecretRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_secrets_proto_msgTypes[22]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1398,19 +1406,19 @@ func (x *SecretCreateRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use SecretCreateRequest.ProtoReflect.Descriptor instead.
-func (*SecretCreateRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use CreateSecretRequest.ProtoReflect.Descriptor instead.
+func (*CreateSecretRequest) Descriptor() ([]byte, []int) {
 	return file_secrets_proto_rawDescGZIP(), []int{22}
 }
 
-func (x *SecretCreateRequest) GetSecret() *Secret {
+func (x *CreateSecretRequest) GetSecret() *Secret {
 	if x != nil {
 		return x.Secret
 	}
 	return nil
 }
 
-type SecretCreateResponse struct {
+type CreateSecretResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
@@ -1419,8 +1427,8 @@ type SecretCreateResponse struct {
 	Secret  *Secret `protobuf:"bytes,2,opt,name=secret,proto3" json:"secret,omitempty"`
 }
 
-func (x *SecretCreateResponse) Reset() {
-	*x = SecretCreateResponse{}
+func (x *CreateSecretResponse) Reset() {
+	*x = CreateSecretResponse{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_secrets_proto_msgTypes[23]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1428,13 +1436,13 @@ func (x *SecretCreateResponse) Reset() {
 	}
 }
 
-func (x *SecretCreateResponse) String() string {
+func (x *CreateSecretResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*SecretCreateResponse) ProtoMessage() {}
+func (*CreateSecretResponse) ProtoMessage() {}
 
-func (x *SecretCreateResponse) ProtoReflect() protoreflect.Message {
+func (x *CreateSecretResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_secrets_proto_msgTypes[23]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1446,21 +1454,76 @@ func (x *SecretCreateResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use SecretCreateResponse.ProtoReflect.Descriptor instead.
-func (*SecretCreateResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use CreateSecretResponse.ProtoReflect.Descriptor instead.
+func (*CreateSecretResponse) Descriptor() ([]byte, []int) {
 	return file_secrets_proto_rawDescGZIP(), []int{23}
 }
 
-func (x *SecretCreateResponse) GetMessage() string {
+func (x *CreateSecretResponse) GetMessage() string {
 	if x != nil {
 		return x.Message
 	}
 	return ""
 }
 
-func (x *SecretCreateResponse) GetSecret() *Secret {
+func (x *CreateSecretResponse) GetSecret() *Secret {
 	if x != nil {
 		return x.Secret
+	}
+	return nil
+}
+
+type ListSecretsResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Message string    `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
+	Secrets []*Secret `protobuf:"bytes,2,rep,name=secrets,proto3" json:"secrets,omitempty"`
+}
+
+func (x *ListSecretsResponse) Reset() {
+	*x = ListSecretsResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_secrets_proto_msgTypes[24]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ListSecretsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListSecretsResponse) ProtoMessage() {}
+
+func (x *ListSecretsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_secrets_proto_msgTypes[24]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListSecretsResponse.ProtoReflect.Descriptor instead.
+func (*ListSecretsResponse) Descriptor() ([]byte, []int) {
+	return file_secrets_proto_rawDescGZIP(), []int{24}
+}
+
+func (x *ListSecretsResponse) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+func (x *ListSecretsResponse) GetSecrets() []*Secret {
+	if x != nil {
+		return x.Secrets
 	}
 	return nil
 }
@@ -1517,11 +1580,12 @@ var file_secrets_proto_rawDesc = []byte{
 	0x69, 0x6f, 0x6e, 0x73, 0x18, 0x02, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x22, 0x2e, 0x61, 0x70, 0x69,
 	0x2e, 0x70, 0x75, 0x62, 0x6c, 0x69, 0x63, 0x2e, 0x73, 0x65, 0x63, 0x72, 0x65, 0x74, 0x73, 0x2e,
 	0x4f, 0x72, 0x67, 0x50, 0x65, 0x72, 0x6d, 0x69, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x73, 0x52, 0x0b,
-	0x70, 0x65, 0x72, 0x6d, 0x69, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x73, 0x22, 0x35, 0x0a, 0x09, 0x4f,
+	0x70, 0x65, 0x72, 0x6d, 0x69, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x73, 0x22, 0x45, 0x0a, 0x09, 0x4f,
 	0x72, 0x67, 0x44, 0x65, 0x74, 0x61, 0x69, 0x6c, 0x12, 0x12, 0x0a, 0x04, 0x6e, 0x61, 0x6d, 0x65,
 	0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x12, 0x14, 0x0a, 0x05,
 	0x61, 0x64, 0x6d, 0x69, 0x6e, 0x18, 0x02, 0x20, 0x01, 0x28, 0x08, 0x52, 0x05, 0x61, 0x64, 0x6d,
-	0x69, 0x6e, 0x22, 0x65, 0x0a, 0x10, 0x4c, 0x69, 0x73, 0x74, 0x4f, 0x72, 0x67, 0x73, 0x52, 0x65,
+	0x69, 0x6e, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x02,
+	0x69, 0x64, 0x22, 0x65, 0x0a, 0x10, 0x4c, 0x69, 0x73, 0x74, 0x4f, 0x72, 0x67, 0x73, 0x52, 0x65,
 	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x18, 0x0a, 0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67,
 	0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65,
 	0x12, 0x37, 0x0a, 0x07, 0x64, 0x65, 0x74, 0x61, 0x69, 0x6c, 0x73, 0x18, 0x02, 0x20, 0x03, 0x28,
@@ -1634,19 +1698,26 @@ var file_secrets_proto_rawDesc = []byte{
 	0x6d, 0x6f, 0x64, 0x69, 0x66, 0x69, 0x65, 0x64, 0x5f, 0x61, 0x74, 0x18, 0x05, 0x20, 0x01, 0x28,
 	0x0b, 0x32, 0x1a, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f,
 	0x62, 0x75, 0x66, 0x2e, 0x54, 0x69, 0x6d, 0x65, 0x73, 0x74, 0x61, 0x6d, 0x70, 0x52, 0x0a, 0x6d,
-	0x6f, 0x64, 0x69, 0x66, 0x69, 0x65, 0x64, 0x41, 0x74, 0x22, 0x49, 0x0a, 0x13, 0x53, 0x65, 0x63,
-	0x72, 0x65, 0x74, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
+	0x6f, 0x64, 0x69, 0x66, 0x69, 0x65, 0x64, 0x41, 0x74, 0x22, 0x49, 0x0a, 0x13, 0x43, 0x72, 0x65,
+	0x61, 0x74, 0x65, 0x53, 0x65, 0x63, 0x72, 0x65, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
 	0x12, 0x32, 0x0a, 0x06, 0x73, 0x65, 0x63, 0x72, 0x65, 0x74, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b,
 	0x32, 0x1a, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x70, 0x75, 0x62, 0x6c, 0x69, 0x63, 0x2e, 0x73, 0x65,
 	0x63, 0x72, 0x65, 0x74, 0x73, 0x2e, 0x53, 0x65, 0x63, 0x72, 0x65, 0x74, 0x52, 0x06, 0x73, 0x65,
-	0x63, 0x72, 0x65, 0x74, 0x22, 0x64, 0x0a, 0x14, 0x53, 0x65, 0x63, 0x72, 0x65, 0x74, 0x43, 0x72,
-	0x65, 0x61, 0x74, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x18, 0x0a, 0x07,
+	0x63, 0x72, 0x65, 0x74, 0x22, 0x64, 0x0a, 0x14, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x53, 0x65,
+	0x63, 0x72, 0x65, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x18, 0x0a, 0x07,
 	0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x6d,
 	0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x12, 0x32, 0x0a, 0x06, 0x73, 0x65, 0x63, 0x72, 0x65, 0x74,
 	0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1a, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x70, 0x75, 0x62,
 	0x6c, 0x69, 0x63, 0x2e, 0x73, 0x65, 0x63, 0x72, 0x65, 0x74, 0x73, 0x2e, 0x53, 0x65, 0x63, 0x72,
-	0x65, 0x74, 0x52, 0x06, 0x73, 0x65, 0x63, 0x72, 0x65, 0x74, 0x42, 0x0b, 0x5a, 0x09, 0x2e, 0x2f,
-	0x73, 0x65, 0x63, 0x72, 0x65, 0x74, 0x73, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x65, 0x74, 0x52, 0x06, 0x73, 0x65, 0x63, 0x72, 0x65, 0x74, 0x22, 0x65, 0x0a, 0x13, 0x4c, 0x69,
+	0x73, 0x74, 0x53, 0x65, 0x63, 0x72, 0x65, 0x74, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73,
+	0x65, 0x12, 0x18, 0x0a, 0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x18, 0x01, 0x20, 0x01,
+	0x28, 0x09, 0x52, 0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x12, 0x34, 0x0a, 0x07, 0x73,
+	0x65, 0x63, 0x72, 0x65, 0x74, 0x73, 0x18, 0x02, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x1a, 0x2e, 0x61,
+	0x70, 0x69, 0x2e, 0x70, 0x75, 0x62, 0x6c, 0x69, 0x63, 0x2e, 0x73, 0x65, 0x63, 0x72, 0x65, 0x74,
+	0x73, 0x2e, 0x53, 0x65, 0x63, 0x72, 0x65, 0x74, 0x52, 0x07, 0x73, 0x65, 0x63, 0x72, 0x65, 0x74,
+	0x73, 0x42, 0x0b, 0x5a, 0x09, 0x2e, 0x2f, 0x73, 0x65, 0x63, 0x72, 0x65, 0x74, 0x73, 0x62, 0x06,
+	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -1661,7 +1732,7 @@ func file_secrets_proto_rawDescGZIP() []byte {
 	return file_secrets_proto_rawDescData
 }
 
-var file_secrets_proto_msgTypes = make([]protoimpl.MessageInfo, 24)
+var file_secrets_proto_msgTypes = make([]protoimpl.MessageInfo, 25)
 var file_secrets_proto_goTypes = []interface{}{
 	(*CreateAccountRequest)(nil),       // 0: api.public.secrets.CreateAccountRequest
 	(*CreateAccountResponse)(nil),      // 1: api.public.secrets.CreateAccountResponse
@@ -1685,35 +1756,37 @@ var file_secrets_proto_goTypes = []interface{}{
 	(*AddProjectMemberRequest)(nil),    // 19: api.public.secrets.AddProjectMemberRequest
 	(*ListProjectMembersResponse)(nil), // 20: api.public.secrets.ListProjectMembersResponse
 	(*Secret)(nil),                     // 21: api.public.secrets.Secret
-	(*SecretCreateRequest)(nil),        // 22: api.public.secrets.SecretCreateRequest
-	(*SecretCreateResponse)(nil),       // 23: api.public.secrets.SecretCreateResponse
-	(*timestamppb.Timestamp)(nil),      // 24: google.protobuf.Timestamp
+	(*CreateSecretRequest)(nil),        // 22: api.public.secrets.CreateSecretRequest
+	(*CreateSecretResponse)(nil),       // 23: api.public.secrets.CreateSecretResponse
+	(*ListSecretsResponse)(nil),        // 24: api.public.secrets.ListSecretsResponse
+	(*timestamppb.Timestamp)(nil),      // 25: google.protobuf.Timestamp
 }
 var file_secrets_proto_depIdxs = []int32{
 	4,  // 0: api.public.secrets.ListOrgPermissionsResponse.permissions:type_name -> api.public.secrets.OrgPermissions
 	6,  // 1: api.public.secrets.ListOrgsResponse.details:type_name -> api.public.secrets.OrgDetail
-	24, // 2: api.public.secrets.AuthToken.expiry:type_name -> google.protobuf.Timestamp
+	25, // 2: api.public.secrets.AuthToken.expiry:type_name -> google.protobuf.Timestamp
 	8,  // 3: api.public.secrets.ListAuthTokensResponse.tokens:type_name -> api.public.secrets.AuthToken
-	24, // 4: api.public.secrets.OAuthConnectResponse.expiry:type_name -> google.protobuf.Timestamp
-	24, // 5: api.public.secrets.LoginResponse.expiry:type_name -> google.protobuf.Timestamp
-	24, // 6: api.public.secrets.Project.created_at:type_name -> google.protobuf.Timestamp
-	24, // 7: api.public.secrets.Project.modified_at:type_name -> google.protobuf.Timestamp
-	24, // 8: api.public.secrets.ProjectMember.created_at:type_name -> google.protobuf.Timestamp
-	24, // 9: api.public.secrets.ProjectMember.modified_at:type_name -> google.protobuf.Timestamp
+	25, // 4: api.public.secrets.OAuthConnectResponse.expiry:type_name -> google.protobuf.Timestamp
+	25, // 5: api.public.secrets.LoginResponse.expiry:type_name -> google.protobuf.Timestamp
+	25, // 6: api.public.secrets.Project.created_at:type_name -> google.protobuf.Timestamp
+	25, // 7: api.public.secrets.Project.modified_at:type_name -> google.protobuf.Timestamp
+	25, // 8: api.public.secrets.ProjectMember.created_at:type_name -> google.protobuf.Timestamp
+	25, // 9: api.public.secrets.ProjectMember.modified_at:type_name -> google.protobuf.Timestamp
 	13, // 10: api.public.secrets.CreateProjectRequest.project:type_name -> api.public.secrets.Project
 	13, // 11: api.public.secrets.CreateProjectResponse.project:type_name -> api.public.secrets.Project
 	13, // 12: api.public.secrets.GetProjectResponse.project:type_name -> api.public.secrets.Project
 	13, // 13: api.public.secrets.ListProjectsResponse.projects:type_name -> api.public.secrets.Project
 	14, // 14: api.public.secrets.ListProjectMembersResponse.members:type_name -> api.public.secrets.ProjectMember
-	24, // 15: api.public.secrets.Secret.created_at:type_name -> google.protobuf.Timestamp
-	24, // 16: api.public.secrets.Secret.modified_at:type_name -> google.protobuf.Timestamp
-	21, // 17: api.public.secrets.SecretCreateRequest.secret:type_name -> api.public.secrets.Secret
-	21, // 18: api.public.secrets.SecretCreateResponse.secret:type_name -> api.public.secrets.Secret
-	19, // [19:19] is the sub-list for method output_type
-	19, // [19:19] is the sub-list for method input_type
-	19, // [19:19] is the sub-list for extension type_name
-	19, // [19:19] is the sub-list for extension extendee
-	0,  // [0:19] is the sub-list for field type_name
+	25, // 15: api.public.secrets.Secret.created_at:type_name -> google.protobuf.Timestamp
+	25, // 16: api.public.secrets.Secret.modified_at:type_name -> google.protobuf.Timestamp
+	21, // 17: api.public.secrets.CreateSecretRequest.secret:type_name -> api.public.secrets.Secret
+	21, // 18: api.public.secrets.CreateSecretResponse.secret:type_name -> api.public.secrets.Secret
+	21, // 19: api.public.secrets.ListSecretsResponse.secrets:type_name -> api.public.secrets.Secret
+	20, // [20:20] is the sub-list for method output_type
+	20, // [20:20] is the sub-list for method input_type
+	20, // [20:20] is the sub-list for extension type_name
+	20, // [20:20] is the sub-list for extension extendee
+	0,  // [0:20] is the sub-list for field type_name
 }
 
 func init() { file_secrets_proto_init() }
@@ -1987,7 +2060,7 @@ func file_secrets_proto_init() {
 			}
 		}
 		file_secrets_proto_msgTypes[22].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*SecretCreateRequest); i {
+			switch v := v.(*CreateSecretRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1999,7 +2072,19 @@ func file_secrets_proto_init() {
 			}
 		}
 		file_secrets_proto_msgTypes[23].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*SecretCreateResponse); i {
+			switch v := v.(*CreateSecretResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_secrets_proto_msgTypes[24].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*ListSecretsResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2017,7 +2102,7 @@ func file_secrets_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_secrets_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   24,
+			NumMessages:   25,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

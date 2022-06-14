@@ -36,6 +36,9 @@ type PipelinesClient interface {
 	UpdateSatellite(ctx context.Context, in *UpdateSatelliteRequest, opts ...grpc.CallOption) (*UpdateSatelliteResponse, error)
 	// DeleteSatellite decommissions a Satellite instance.
 	DeleteSatellite(ctx context.Context, in *DeleteSatelliteRequest, opts ...grpc.CallOption) (*DeleteSatelliteResponse, error)
+	// GetSatellite retrieves the details of a particular Satellite instance.
+	// Mainly intended for use by Buildkit Proxy when establishing a new connection to an instance.
+	GetSatellite(ctx context.Context, in *GetSatelliteRequest, opts ...grpc.CallOption) (*GetSatelliteResponse, error)
 }
 
 type pipelinesClient struct {
@@ -91,6 +94,15 @@ func (c *pipelinesClient) DeleteSatellite(ctx context.Context, in *DeleteSatelli
 	return out, nil
 }
 
+func (c *pipelinesClient) GetSatellite(ctx context.Context, in *GetSatelliteRequest, opts ...grpc.CallOption) (*GetSatelliteResponse, error) {
+	out := new(GetSatelliteResponse)
+	err := c.cc.Invoke(ctx, "/api.public.pipelines.Pipelines/GetSatellite", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // PipelinesServer is the server API for Pipelines service.
 // All implementations must embed UnimplementedPipelinesServer
 // for forward compatibility
@@ -109,6 +121,9 @@ type PipelinesServer interface {
 	UpdateSatellite(context.Context, *UpdateSatelliteRequest) (*UpdateSatelliteResponse, error)
 	// DeleteSatellite decommissions a Satellite instance.
 	DeleteSatellite(context.Context, *DeleteSatelliteRequest) (*DeleteSatelliteResponse, error)
+	// GetSatellite retrieves the details of a particular Satellite instance.
+	// Mainly intended for use by Buildkit Proxy when establishing a new connection to an instance.
+	GetSatellite(context.Context, *GetSatelliteRequest) (*GetSatelliteResponse, error)
 	mustEmbedUnimplementedPipelinesServer()
 }
 
@@ -130,6 +145,9 @@ func (UnimplementedPipelinesServer) UpdateSatellite(context.Context, *UpdateSate
 }
 func (UnimplementedPipelinesServer) DeleteSatellite(context.Context, *DeleteSatelliteRequest) (*DeleteSatelliteResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteSatellite not implemented")
+}
+func (UnimplementedPipelinesServer) GetSatellite(context.Context, *GetSatelliteRequest) (*GetSatelliteResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetSatellite not implemented")
 }
 func (UnimplementedPipelinesServer) mustEmbedUnimplementedPipelinesServer() {}
 
@@ -234,6 +252,24 @@ func _Pipelines_DeleteSatellite_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Pipelines_GetSatellite_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetSatelliteRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PipelinesServer).GetSatellite(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.public.pipelines.Pipelines/GetSatellite",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PipelinesServer).GetSatellite(ctx, req.(*GetSatelliteRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Pipelines_ServiceDesc is the grpc.ServiceDesc for Pipelines service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -260,6 +296,10 @@ var Pipelines_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteSatellite",
 			Handler:    _Pipelines_DeleteSatellite_Handler,
+		},
+		{
+			MethodName: "GetSatellite",
+			Handler:    _Pipelines_GetSatellite_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
