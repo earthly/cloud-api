@@ -1418,6 +1418,195 @@ func (x *ListSecretsResponse) GetSecrets() []*Secret {
 	return nil
 }
 
+type SecretPermission struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Path       string                 `protobuf:"bytes,1,opt,name=path,proto3" json:"path,omitempty"`
+	Permission string                 `protobuf:"bytes,2,opt,name=permission,proto3" json:"permission,omitempty"`
+	UserId     string                 `protobuf:"bytes,3,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	CreatedAt  *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	ModifiedAt *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=modified_at,json=modifiedAt,proto3" json:"modified_at,omitempty"`
+}
+
+func (x *SecretPermission) Reset() {
+	*x = SecretPermission{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_secrets_proto_msgTypes[23]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *SecretPermission) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SecretPermission) ProtoMessage() {}
+
+func (x *SecretPermission) ProtoReflect() protoreflect.Message {
+	mi := &file_secrets_proto_msgTypes[23]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SecretPermission.ProtoReflect.Descriptor instead.
+func (*SecretPermission) Descriptor() ([]byte, []int) {
+	return file_secrets_proto_rawDescGZIP(), []int{23}
+}
+
+func (x *SecretPermission) GetPath() string {
+	if x != nil {
+		return x.Path
+	}
+	return ""
+}
+
+func (x *SecretPermission) GetPermission() string {
+	if x != nil {
+		return x.Permission
+	}
+	return ""
+}
+
+func (x *SecretPermission) GetUserId() string {
+	if x != nil {
+		return x.UserId
+	}
+	return ""
+}
+
+func (x *SecretPermission) GetCreatedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.CreatedAt
+	}
+	return nil
+}
+
+func (x *SecretPermission) GetModifiedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.ModifiedAt
+	}
+	return nil
+}
+
+type ListSecretPermissionsResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Message           string              `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
+	SecretPermissions []*SecretPermission `protobuf:"bytes,2,rep,name=secret_permissions,json=secretPermissions,proto3" json:"secret_permissions,omitempty"`
+}
+
+func (x *ListSecretPermissionsResponse) Reset() {
+	*x = ListSecretPermissionsResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_secrets_proto_msgTypes[24]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ListSecretPermissionsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListSecretPermissionsResponse) ProtoMessage() {}
+
+func (x *ListSecretPermissionsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_secrets_proto_msgTypes[24]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListSecretPermissionsResponse.ProtoReflect.Descriptor instead.
+func (*ListSecretPermissionsResponse) Descriptor() ([]byte, []int) {
+	return file_secrets_proto_rawDescGZIP(), []int{24}
+}
+
+func (x *ListSecretPermissionsResponse) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+func (x *ListSecretPermissionsResponse) GetSecretPermissions() []*SecretPermission {
+	if x != nil {
+		return x.SecretPermissions
+	}
+	return nil
+}
+
+type UpdateSecretPermissionRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	UserId     string `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	Permission string `protobuf:"bytes,2,opt,name=permission,proto3" json:"permission,omitempty"`
+}
+
+func (x *UpdateSecretPermissionRequest) Reset() {
+	*x = UpdateSecretPermissionRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_secrets_proto_msgTypes[25]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *UpdateSecretPermissionRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateSecretPermissionRequest) ProtoMessage() {}
+
+func (x *UpdateSecretPermissionRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_secrets_proto_msgTypes[25]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateSecretPermissionRequest.ProtoReflect.Descriptor instead.
+func (*UpdateSecretPermissionRequest) Descriptor() ([]byte, []int) {
+	return file_secrets_proto_rawDescGZIP(), []int{25}
+}
+
+func (x *UpdateSecretPermissionRequest) GetUserId() string {
+	if x != nil {
+		return x.UserId
+	}
+	return ""
+}
+
+func (x *UpdateSecretPermissionRequest) GetPermission() string {
+	if x != nil {
+		return x.Permission
+	}
+	return ""
+}
+
 var File_secrets_proto protoreflect.FileDescriptor
 
 var file_secrets_proto_rawDesc = []byte{
@@ -1593,8 +1782,36 @@ var file_secrets_proto_rawDesc = []byte{
 	0x65, 0x63, 0x72, 0x65, 0x74, 0x73, 0x18, 0x02, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x1a, 0x2e, 0x61,
 	0x70, 0x69, 0x2e, 0x70, 0x75, 0x62, 0x6c, 0x69, 0x63, 0x2e, 0x73, 0x65, 0x63, 0x72, 0x65, 0x74,
 	0x73, 0x2e, 0x53, 0x65, 0x63, 0x72, 0x65, 0x74, 0x52, 0x07, 0x73, 0x65, 0x63, 0x72, 0x65, 0x74,
-	0x73, 0x42, 0x0b, 0x5a, 0x09, 0x2e, 0x2f, 0x73, 0x65, 0x63, 0x72, 0x65, 0x74, 0x73, 0x62, 0x06,
-	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x73, 0x22, 0xd7, 0x01, 0x0a, 0x10, 0x53, 0x65, 0x63, 0x72, 0x65, 0x74, 0x50, 0x65, 0x72, 0x6d,
+	0x69, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x12, 0x12, 0x0a, 0x04, 0x70, 0x61, 0x74, 0x68, 0x18, 0x01,
+	0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x70, 0x61, 0x74, 0x68, 0x12, 0x1e, 0x0a, 0x0a, 0x70, 0x65,
+	0x72, 0x6d, 0x69, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0a,
+	0x70, 0x65, 0x72, 0x6d, 0x69, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x12, 0x17, 0x0a, 0x07, 0x75, 0x73,
+	0x65, 0x72, 0x5f, 0x69, 0x64, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x75, 0x73, 0x65,
+	0x72, 0x49, 0x64, 0x12, 0x39, 0x0a, 0x0a, 0x63, 0x72, 0x65, 0x61, 0x74, 0x65, 0x64, 0x5f, 0x61,
+	0x74, 0x18, 0x04, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1a, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65,
+	0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x54, 0x69, 0x6d, 0x65, 0x73, 0x74,
+	0x61, 0x6d, 0x70, 0x52, 0x09, 0x63, 0x72, 0x65, 0x61, 0x74, 0x65, 0x64, 0x41, 0x74, 0x12, 0x3b,
+	0x0a, 0x0b, 0x6d, 0x6f, 0x64, 0x69, 0x66, 0x69, 0x65, 0x64, 0x5f, 0x61, 0x74, 0x18, 0x05, 0x20,
+	0x01, 0x28, 0x0b, 0x32, 0x1a, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f,
+	0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x54, 0x69, 0x6d, 0x65, 0x73, 0x74, 0x61, 0x6d, 0x70, 0x52,
+	0x0a, 0x6d, 0x6f, 0x64, 0x69, 0x66, 0x69, 0x65, 0x64, 0x41, 0x74, 0x22, 0x8e, 0x01, 0x0a, 0x1d,
+	0x4c, 0x69, 0x73, 0x74, 0x53, 0x65, 0x63, 0x72, 0x65, 0x74, 0x50, 0x65, 0x72, 0x6d, 0x69, 0x73,
+	0x73, 0x69, 0x6f, 0x6e, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x18, 0x0a,
+	0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07,
+	0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x12, 0x53, 0x0a, 0x12, 0x73, 0x65, 0x63, 0x72, 0x65,
+	0x74, 0x5f, 0x70, 0x65, 0x72, 0x6d, 0x69, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x73, 0x18, 0x02, 0x20,
+	0x03, 0x28, 0x0b, 0x32, 0x24, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x70, 0x75, 0x62, 0x6c, 0x69, 0x63,
+	0x2e, 0x73, 0x65, 0x63, 0x72, 0x65, 0x74, 0x73, 0x2e, 0x53, 0x65, 0x63, 0x72, 0x65, 0x74, 0x50,
+	0x65, 0x72, 0x6d, 0x69, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x52, 0x11, 0x73, 0x65, 0x63, 0x72, 0x65,
+	0x74, 0x50, 0x65, 0x72, 0x6d, 0x69, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x73, 0x22, 0x58, 0x0a, 0x1d,
+	0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x53, 0x65, 0x63, 0x72, 0x65, 0x74, 0x50, 0x65, 0x72, 0x6d,
+	0x69, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x17, 0x0a,
+	0x07, 0x75, 0x73, 0x65, 0x72, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06,
+	0x75, 0x73, 0x65, 0x72, 0x49, 0x64, 0x12, 0x1e, 0x0a, 0x0a, 0x70, 0x65, 0x72, 0x6d, 0x69, 0x73,
+	0x73, 0x69, 0x6f, 0x6e, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0a, 0x70, 0x65, 0x72, 0x6d,
+	0x69, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x42, 0x0b, 0x5a, 0x09, 0x2e, 0x2f, 0x73, 0x65, 0x63, 0x72,
+	0x65, 0x74, 0x73, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -1609,57 +1826,63 @@ func file_secrets_proto_rawDescGZIP() []byte {
 	return file_secrets_proto_rawDescData
 }
 
-var file_secrets_proto_msgTypes = make([]protoimpl.MessageInfo, 23)
+var file_secrets_proto_msgTypes = make([]protoimpl.MessageInfo, 26)
 var file_secrets_proto_goTypes = []interface{}{
-	(*CreateAccountRequest)(nil),       // 0: api.public.secrets.CreateAccountRequest
-	(*CreateAccountResponse)(nil),      // 1: api.public.secrets.CreateAccountResponse
-	(*AuthChallengeResponse)(nil),      // 2: api.public.secrets.AuthChallengeResponse
-	(*PingResponse)(nil),               // 3: api.public.secrets.PingResponse
-	(*OrgPermissions)(nil),             // 4: api.public.secrets.OrgPermissions
-	(*ListOrgPermissionsResponse)(nil), // 5: api.public.secrets.ListOrgPermissionsResponse
-	(*OrgDetail)(nil),                  // 6: api.public.secrets.OrgDetail
-	(*ListOrgsResponse)(nil),           // 7: api.public.secrets.ListOrgsResponse
-	(*AuthToken)(nil),                  // 8: api.public.secrets.AuthToken
-	(*ListAuthTokensResponse)(nil),     // 9: api.public.secrets.ListAuthTokensResponse
-	(*OAuthConnectRequest)(nil),        // 10: api.public.secrets.OAuthConnectRequest
-	(*OAuthConnectResponse)(nil),       // 11: api.public.secrets.OAuthConnectResponse
-	(*LoginResponse)(nil),              // 12: api.public.secrets.LoginResponse
-	(*Project)(nil),                    // 13: api.public.secrets.Project
-	(*ProjectMember)(nil),              // 14: api.public.secrets.ProjectMember
-	(*CreateProjectRequest)(nil),       // 15: api.public.secrets.CreateProjectRequest
-	(*CreateProjectResponse)(nil),      // 16: api.public.secrets.CreateProjectResponse
-	(*GetProjectResponse)(nil),         // 17: api.public.secrets.GetProjectResponse
-	(*ListProjectsResponse)(nil),       // 18: api.public.secrets.ListProjectsResponse
-	(*AddProjectMemberRequest)(nil),    // 19: api.public.secrets.AddProjectMemberRequest
-	(*ListProjectMembersResponse)(nil), // 20: api.public.secrets.ListProjectMembersResponse
-	(*Secret)(nil),                     // 21: api.public.secrets.Secret
-	(*ListSecretsResponse)(nil),        // 22: api.public.secrets.ListSecretsResponse
-	(*timestamppb.Timestamp)(nil),      // 23: google.protobuf.Timestamp
+	(*CreateAccountRequest)(nil),          // 0: api.public.secrets.CreateAccountRequest
+	(*CreateAccountResponse)(nil),         // 1: api.public.secrets.CreateAccountResponse
+	(*AuthChallengeResponse)(nil),         // 2: api.public.secrets.AuthChallengeResponse
+	(*PingResponse)(nil),                  // 3: api.public.secrets.PingResponse
+	(*OrgPermissions)(nil),                // 4: api.public.secrets.OrgPermissions
+	(*ListOrgPermissionsResponse)(nil),    // 5: api.public.secrets.ListOrgPermissionsResponse
+	(*OrgDetail)(nil),                     // 6: api.public.secrets.OrgDetail
+	(*ListOrgsResponse)(nil),              // 7: api.public.secrets.ListOrgsResponse
+	(*AuthToken)(nil),                     // 8: api.public.secrets.AuthToken
+	(*ListAuthTokensResponse)(nil),        // 9: api.public.secrets.ListAuthTokensResponse
+	(*OAuthConnectRequest)(nil),           // 10: api.public.secrets.OAuthConnectRequest
+	(*OAuthConnectResponse)(nil),          // 11: api.public.secrets.OAuthConnectResponse
+	(*LoginResponse)(nil),                 // 12: api.public.secrets.LoginResponse
+	(*Project)(nil),                       // 13: api.public.secrets.Project
+	(*ProjectMember)(nil),                 // 14: api.public.secrets.ProjectMember
+	(*CreateProjectRequest)(nil),          // 15: api.public.secrets.CreateProjectRequest
+	(*CreateProjectResponse)(nil),         // 16: api.public.secrets.CreateProjectResponse
+	(*GetProjectResponse)(nil),            // 17: api.public.secrets.GetProjectResponse
+	(*ListProjectsResponse)(nil),          // 18: api.public.secrets.ListProjectsResponse
+	(*AddProjectMemberRequest)(nil),       // 19: api.public.secrets.AddProjectMemberRequest
+	(*ListProjectMembersResponse)(nil),    // 20: api.public.secrets.ListProjectMembersResponse
+	(*Secret)(nil),                        // 21: api.public.secrets.Secret
+	(*ListSecretsResponse)(nil),           // 22: api.public.secrets.ListSecretsResponse
+	(*SecretPermission)(nil),              // 23: api.public.secrets.SecretPermission
+	(*ListSecretPermissionsResponse)(nil), // 24: api.public.secrets.ListSecretPermissionsResponse
+	(*UpdateSecretPermissionRequest)(nil), // 25: api.public.secrets.UpdateSecretPermissionRequest
+	(*timestamppb.Timestamp)(nil),         // 26: google.protobuf.Timestamp
 }
 var file_secrets_proto_depIdxs = []int32{
 	4,  // 0: api.public.secrets.ListOrgPermissionsResponse.permissions:type_name -> api.public.secrets.OrgPermissions
 	6,  // 1: api.public.secrets.ListOrgsResponse.details:type_name -> api.public.secrets.OrgDetail
-	23, // 2: api.public.secrets.AuthToken.expiry:type_name -> google.protobuf.Timestamp
+	26, // 2: api.public.secrets.AuthToken.expiry:type_name -> google.protobuf.Timestamp
 	8,  // 3: api.public.secrets.ListAuthTokensResponse.tokens:type_name -> api.public.secrets.AuthToken
-	23, // 4: api.public.secrets.OAuthConnectResponse.expiry:type_name -> google.protobuf.Timestamp
-	23, // 5: api.public.secrets.LoginResponse.expiry:type_name -> google.protobuf.Timestamp
-	23, // 6: api.public.secrets.Project.created_at:type_name -> google.protobuf.Timestamp
-	23, // 7: api.public.secrets.Project.modified_at:type_name -> google.protobuf.Timestamp
-	23, // 8: api.public.secrets.ProjectMember.created_at:type_name -> google.protobuf.Timestamp
-	23, // 9: api.public.secrets.ProjectMember.modified_at:type_name -> google.protobuf.Timestamp
+	26, // 4: api.public.secrets.OAuthConnectResponse.expiry:type_name -> google.protobuf.Timestamp
+	26, // 5: api.public.secrets.LoginResponse.expiry:type_name -> google.protobuf.Timestamp
+	26, // 6: api.public.secrets.Project.created_at:type_name -> google.protobuf.Timestamp
+	26, // 7: api.public.secrets.Project.modified_at:type_name -> google.protobuf.Timestamp
+	26, // 8: api.public.secrets.ProjectMember.created_at:type_name -> google.protobuf.Timestamp
+	26, // 9: api.public.secrets.ProjectMember.modified_at:type_name -> google.protobuf.Timestamp
 	13, // 10: api.public.secrets.CreateProjectRequest.project:type_name -> api.public.secrets.Project
 	13, // 11: api.public.secrets.CreateProjectResponse.project:type_name -> api.public.secrets.Project
 	13, // 12: api.public.secrets.GetProjectResponse.project:type_name -> api.public.secrets.Project
 	13, // 13: api.public.secrets.ListProjectsResponse.projects:type_name -> api.public.secrets.Project
 	14, // 14: api.public.secrets.ListProjectMembersResponse.members:type_name -> api.public.secrets.ProjectMember
-	23, // 15: api.public.secrets.Secret.created_at:type_name -> google.protobuf.Timestamp
-	23, // 16: api.public.secrets.Secret.modified_at:type_name -> google.protobuf.Timestamp
+	26, // 15: api.public.secrets.Secret.created_at:type_name -> google.protobuf.Timestamp
+	26, // 16: api.public.secrets.Secret.modified_at:type_name -> google.protobuf.Timestamp
 	21, // 17: api.public.secrets.ListSecretsResponse.secrets:type_name -> api.public.secrets.Secret
-	18, // [18:18] is the sub-list for method output_type
-	18, // [18:18] is the sub-list for method input_type
-	18, // [18:18] is the sub-list for extension type_name
-	18, // [18:18] is the sub-list for extension extendee
-	0,  // [0:18] is the sub-list for field type_name
+	26, // 18: api.public.secrets.SecretPermission.created_at:type_name -> google.protobuf.Timestamp
+	26, // 19: api.public.secrets.SecretPermission.modified_at:type_name -> google.protobuf.Timestamp
+	23, // 20: api.public.secrets.ListSecretPermissionsResponse.secret_permissions:type_name -> api.public.secrets.SecretPermission
+	21, // [21:21] is the sub-list for method output_type
+	21, // [21:21] is the sub-list for method input_type
+	21, // [21:21] is the sub-list for extension type_name
+	21, // [21:21] is the sub-list for extension extendee
+	0,  // [0:21] is the sub-list for field type_name
 }
 
 func init() { file_secrets_proto_init() }
@@ -1944,6 +2167,42 @@ func file_secrets_proto_init() {
 				return nil
 			}
 		}
+		file_secrets_proto_msgTypes[23].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*SecretPermission); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_secrets_proto_msgTypes[24].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*ListSecretPermissionsResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_secrets_proto_msgTypes[25].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*UpdateSecretPermissionRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -1951,7 +2210,7 @@ func file_secrets_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_secrets_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   23,
+			NumMessages:   26,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
