@@ -401,7 +401,7 @@ func (x *ListOrgPermissionsResponse) GetPermissions() []*OrgPermissions {
 	return nil
 }
 
-type SendOrgInviteRequest struct {
+type CreateInvitationRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
@@ -410,10 +410,11 @@ type SendOrgInviteRequest struct {
 	Email      string `protobuf:"bytes,2,opt,name=email,proto3" json:"email,omitempty"`
 	Permission string `protobuf:"bytes,3,opt,name=permission,proto3" json:"permission,omitempty"`
 	Message    string `protobuf:"bytes,4,opt,name=message,proto3" json:"message,omitempty"`
+	OrgName    string `protobuf:"bytes,5,opt,name=org_name,json=orgName,proto3" json:"org_name,omitempty"`
 }
 
-func (x *SendOrgInviteRequest) Reset() {
-	*x = SendOrgInviteRequest{}
+func (x *CreateInvitationRequest) Reset() {
+	*x = CreateInvitationRequest{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_secrets_proto_msgTypes[6]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -421,13 +422,13 @@ func (x *SendOrgInviteRequest) Reset() {
 	}
 }
 
-func (x *SendOrgInviteRequest) String() string {
+func (x *CreateInvitationRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*SendOrgInviteRequest) ProtoMessage() {}
+func (*CreateInvitationRequest) ProtoMessage() {}
 
-func (x *SendOrgInviteRequest) ProtoReflect() protoreflect.Message {
+func (x *CreateInvitationRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_secrets_proto_msgTypes[6]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -439,35 +440,105 @@ func (x *SendOrgInviteRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use SendOrgInviteRequest.ProtoReflect.Descriptor instead.
-func (*SendOrgInviteRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use CreateInvitationRequest.ProtoReflect.Descriptor instead.
+func (*CreateInvitationRequest) Descriptor() ([]byte, []int) {
 	return file_secrets_proto_rawDescGZIP(), []int{6}
 }
 
-func (x *SendOrgInviteRequest) GetName() string {
+func (x *CreateInvitationRequest) GetName() string {
 	if x != nil {
 		return x.Name
 	}
 	return ""
 }
 
-func (x *SendOrgInviteRequest) GetEmail() string {
+func (x *CreateInvitationRequest) GetEmail() string {
 	if x != nil {
 		return x.Email
 	}
 	return ""
 }
 
-func (x *SendOrgInviteRequest) GetPermission() string {
+func (x *CreateInvitationRequest) GetPermission() string {
 	if x != nil {
 		return x.Permission
 	}
 	return ""
 }
 
-func (x *SendOrgInviteRequest) GetMessage() string {
+func (x *CreateInvitationRequest) GetMessage() string {
 	if x != nil {
 		return x.Message
+	}
+	return ""
+}
+
+func (x *CreateInvitationRequest) GetOrgName() string {
+	if x != nil {
+		return x.OrgName
+	}
+	return ""
+}
+
+type CreateInvitationResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Message      string `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
+	InvitationId string `protobuf:"bytes,2,opt,name=invitation_id,json=invitationId,proto3" json:"invitation_id,omitempty"`
+	Token        string `protobuf:"bytes,3,opt,name=token,proto3" json:"token,omitempty"`
+}
+
+func (x *CreateInvitationResponse) Reset() {
+	*x = CreateInvitationResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_secrets_proto_msgTypes[7]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *CreateInvitationResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateInvitationResponse) ProtoMessage() {}
+
+func (x *CreateInvitationResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_secrets_proto_msgTypes[7]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateInvitationResponse.ProtoReflect.Descriptor instead.
+func (*CreateInvitationResponse) Descriptor() ([]byte, []int) {
+	return file_secrets_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *CreateInvitationResponse) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+func (x *CreateInvitationResponse) GetInvitationId() string {
+	if x != nil {
+		return x.InvitationId
+	}
+	return ""
+}
+
+func (x *CreateInvitationResponse) GetToken() string {
+	if x != nil {
+		return x.Token
 	}
 	return ""
 }
@@ -485,7 +556,7 @@ type OrgDetail struct {
 func (x *OrgDetail) Reset() {
 	*x = OrgDetail{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_secrets_proto_msgTypes[7]
+		mi := &file_secrets_proto_msgTypes[8]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -498,7 +569,7 @@ func (x *OrgDetail) String() string {
 func (*OrgDetail) ProtoMessage() {}
 
 func (x *OrgDetail) ProtoReflect() protoreflect.Message {
-	mi := &file_secrets_proto_msgTypes[7]
+	mi := &file_secrets_proto_msgTypes[8]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -511,7 +582,7 @@ func (x *OrgDetail) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use OrgDetail.ProtoReflect.Descriptor instead.
 func (*OrgDetail) Descriptor() ([]byte, []int) {
-	return file_secrets_proto_rawDescGZIP(), []int{7}
+	return file_secrets_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *OrgDetail) GetName() string {
@@ -547,7 +618,7 @@ type ListOrgsResponse struct {
 func (x *ListOrgsResponse) Reset() {
 	*x = ListOrgsResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_secrets_proto_msgTypes[8]
+		mi := &file_secrets_proto_msgTypes[9]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -560,7 +631,7 @@ func (x *ListOrgsResponse) String() string {
 func (*ListOrgsResponse) ProtoMessage() {}
 
 func (x *ListOrgsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_secrets_proto_msgTypes[8]
+	mi := &file_secrets_proto_msgTypes[9]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -573,7 +644,7 @@ func (x *ListOrgsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListOrgsResponse.ProtoReflect.Descriptor instead.
 func (*ListOrgsResponse) Descriptor() ([]byte, []int) {
-	return file_secrets_proto_rawDescGZIP(), []int{8}
+	return file_secrets_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *ListOrgsResponse) GetMessage() string {
@@ -603,7 +674,7 @@ type AuthToken struct {
 func (x *AuthToken) Reset() {
 	*x = AuthToken{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_secrets_proto_msgTypes[9]
+		mi := &file_secrets_proto_msgTypes[10]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -616,7 +687,7 @@ func (x *AuthToken) String() string {
 func (*AuthToken) ProtoMessage() {}
 
 func (x *AuthToken) ProtoReflect() protoreflect.Message {
-	mi := &file_secrets_proto_msgTypes[9]
+	mi := &file_secrets_proto_msgTypes[10]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -629,7 +700,7 @@ func (x *AuthToken) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AuthToken.ProtoReflect.Descriptor instead.
 func (*AuthToken) Descriptor() ([]byte, []int) {
-	return file_secrets_proto_rawDescGZIP(), []int{9}
+	return file_secrets_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *AuthToken) GetName() string {
@@ -665,7 +736,7 @@ type ListAuthTokensResponse struct {
 func (x *ListAuthTokensResponse) Reset() {
 	*x = ListAuthTokensResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_secrets_proto_msgTypes[10]
+		mi := &file_secrets_proto_msgTypes[11]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -678,7 +749,7 @@ func (x *ListAuthTokensResponse) String() string {
 func (*ListAuthTokensResponse) ProtoMessage() {}
 
 func (x *ListAuthTokensResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_secrets_proto_msgTypes[10]
+	mi := &file_secrets_proto_msgTypes[11]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -691,7 +762,7 @@ func (x *ListAuthTokensResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListAuthTokensResponse.ProtoReflect.Descriptor instead.
 func (*ListAuthTokensResponse) Descriptor() ([]byte, []int) {
-	return file_secrets_proto_rawDescGZIP(), []int{10}
+	return file_secrets_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *ListAuthTokensResponse) GetMessage() string {
@@ -719,7 +790,7 @@ type OAuthConnectRequest struct {
 func (x *OAuthConnectRequest) Reset() {
 	*x = OAuthConnectRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_secrets_proto_msgTypes[11]
+		mi := &file_secrets_proto_msgTypes[12]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -732,7 +803,7 @@ func (x *OAuthConnectRequest) String() string {
 func (*OAuthConnectRequest) ProtoMessage() {}
 
 func (x *OAuthConnectRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_secrets_proto_msgTypes[11]
+	mi := &file_secrets_proto_msgTypes[12]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -745,7 +816,7 @@ func (x *OAuthConnectRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use OAuthConnectRequest.ProtoReflect.Descriptor instead.
 func (*OAuthConnectRequest) Descriptor() ([]byte, []int) {
-	return file_secrets_proto_rawDescGZIP(), []int{11}
+	return file_secrets_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *OAuthConnectRequest) GetToken() string {
@@ -769,7 +840,7 @@ type OAuthConnectResponse struct {
 func (x *OAuthConnectResponse) Reset() {
 	*x = OAuthConnectResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_secrets_proto_msgTypes[12]
+		mi := &file_secrets_proto_msgTypes[13]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -782,7 +853,7 @@ func (x *OAuthConnectResponse) String() string {
 func (*OAuthConnectResponse) ProtoMessage() {}
 
 func (x *OAuthConnectResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_secrets_proto_msgTypes[12]
+	mi := &file_secrets_proto_msgTypes[13]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -795,7 +866,7 @@ func (x *OAuthConnectResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use OAuthConnectResponse.ProtoReflect.Descriptor instead.
 func (*OAuthConnectResponse) Descriptor() ([]byte, []int) {
-	return file_secrets_proto_rawDescGZIP(), []int{12}
+	return file_secrets_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *OAuthConnectResponse) GetToken() string {
@@ -840,7 +911,7 @@ type LoginResponse struct {
 func (x *LoginResponse) Reset() {
 	*x = LoginResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_secrets_proto_msgTypes[13]
+		mi := &file_secrets_proto_msgTypes[14]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -853,7 +924,7 @@ func (x *LoginResponse) String() string {
 func (*LoginResponse) ProtoMessage() {}
 
 func (x *LoginResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_secrets_proto_msgTypes[13]
+	mi := &file_secrets_proto_msgTypes[14]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -866,7 +937,7 @@ func (x *LoginResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LoginResponse.ProtoReflect.Descriptor instead.
 func (*LoginResponse) Descriptor() ([]byte, []int) {
-	return file_secrets_proto_rawDescGZIP(), []int{13}
+	return file_secrets_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *LoginResponse) GetToken() string {
@@ -897,7 +968,7 @@ type Project struct {
 func (x *Project) Reset() {
 	*x = Project{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_secrets_proto_msgTypes[14]
+		mi := &file_secrets_proto_msgTypes[15]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -910,7 +981,7 @@ func (x *Project) String() string {
 func (*Project) ProtoMessage() {}
 
 func (x *Project) ProtoReflect() protoreflect.Message {
-	mi := &file_secrets_proto_msgTypes[14]
+	mi := &file_secrets_proto_msgTypes[15]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -923,7 +994,7 @@ func (x *Project) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Project.ProtoReflect.Descriptor instead.
 func (*Project) Descriptor() ([]byte, []int) {
-	return file_secrets_proto_rawDescGZIP(), []int{14}
+	return file_secrets_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *Project) GetOrgName() string {
@@ -971,7 +1042,7 @@ type ProjectMember struct {
 func (x *ProjectMember) Reset() {
 	*x = ProjectMember{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_secrets_proto_msgTypes[15]
+		mi := &file_secrets_proto_msgTypes[16]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -984,7 +1055,7 @@ func (x *ProjectMember) String() string {
 func (*ProjectMember) ProtoMessage() {}
 
 func (x *ProjectMember) ProtoReflect() protoreflect.Message {
-	mi := &file_secrets_proto_msgTypes[15]
+	mi := &file_secrets_proto_msgTypes[16]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -997,7 +1068,7 @@ func (x *ProjectMember) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ProjectMember.ProtoReflect.Descriptor instead.
 func (*ProjectMember) Descriptor() ([]byte, []int) {
-	return file_secrets_proto_rawDescGZIP(), []int{15}
+	return file_secrets_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *ProjectMember) GetProjectName() string {
@@ -1060,7 +1131,7 @@ type CreateProjectRequest struct {
 func (x *CreateProjectRequest) Reset() {
 	*x = CreateProjectRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_secrets_proto_msgTypes[16]
+		mi := &file_secrets_proto_msgTypes[17]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1073,7 +1144,7 @@ func (x *CreateProjectRequest) String() string {
 func (*CreateProjectRequest) ProtoMessage() {}
 
 func (x *CreateProjectRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_secrets_proto_msgTypes[16]
+	mi := &file_secrets_proto_msgTypes[17]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1086,7 +1157,7 @@ func (x *CreateProjectRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateProjectRequest.ProtoReflect.Descriptor instead.
 func (*CreateProjectRequest) Descriptor() ([]byte, []int) {
-	return file_secrets_proto_rawDescGZIP(), []int{16}
+	return file_secrets_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *CreateProjectRequest) GetProject() *Project {
@@ -1108,7 +1179,7 @@ type CreateProjectResponse struct {
 func (x *CreateProjectResponse) Reset() {
 	*x = CreateProjectResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_secrets_proto_msgTypes[17]
+		mi := &file_secrets_proto_msgTypes[18]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1121,7 +1192,7 @@ func (x *CreateProjectResponse) String() string {
 func (*CreateProjectResponse) ProtoMessage() {}
 
 func (x *CreateProjectResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_secrets_proto_msgTypes[17]
+	mi := &file_secrets_proto_msgTypes[18]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1134,7 +1205,7 @@ func (x *CreateProjectResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateProjectResponse.ProtoReflect.Descriptor instead.
 func (*CreateProjectResponse) Descriptor() ([]byte, []int) {
-	return file_secrets_proto_rawDescGZIP(), []int{17}
+	return file_secrets_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *CreateProjectResponse) GetMessage() string {
@@ -1163,7 +1234,7 @@ type GetProjectResponse struct {
 func (x *GetProjectResponse) Reset() {
 	*x = GetProjectResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_secrets_proto_msgTypes[18]
+		mi := &file_secrets_proto_msgTypes[19]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1176,7 +1247,7 @@ func (x *GetProjectResponse) String() string {
 func (*GetProjectResponse) ProtoMessage() {}
 
 func (x *GetProjectResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_secrets_proto_msgTypes[18]
+	mi := &file_secrets_proto_msgTypes[19]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1189,7 +1260,7 @@ func (x *GetProjectResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetProjectResponse.ProtoReflect.Descriptor instead.
 func (*GetProjectResponse) Descriptor() ([]byte, []int) {
-	return file_secrets_proto_rawDescGZIP(), []int{18}
+	return file_secrets_proto_rawDescGZIP(), []int{19}
 }
 
 func (x *GetProjectResponse) GetMessage() string {
@@ -1218,7 +1289,7 @@ type ListProjectsResponse struct {
 func (x *ListProjectsResponse) Reset() {
 	*x = ListProjectsResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_secrets_proto_msgTypes[19]
+		mi := &file_secrets_proto_msgTypes[20]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1231,7 +1302,7 @@ func (x *ListProjectsResponse) String() string {
 func (*ListProjectsResponse) ProtoMessage() {}
 
 func (x *ListProjectsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_secrets_proto_msgTypes[19]
+	mi := &file_secrets_proto_msgTypes[20]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1244,7 +1315,7 @@ func (x *ListProjectsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListProjectsResponse.ProtoReflect.Descriptor instead.
 func (*ListProjectsResponse) Descriptor() ([]byte, []int) {
-	return file_secrets_proto_rawDescGZIP(), []int{19}
+	return file_secrets_proto_rawDescGZIP(), []int{20}
 }
 
 func (x *ListProjectsResponse) GetMessage() string {
@@ -1274,7 +1345,7 @@ type AddProjectMemberRequest struct {
 func (x *AddProjectMemberRequest) Reset() {
 	*x = AddProjectMemberRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_secrets_proto_msgTypes[20]
+		mi := &file_secrets_proto_msgTypes[21]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1287,7 +1358,7 @@ func (x *AddProjectMemberRequest) String() string {
 func (*AddProjectMemberRequest) ProtoMessage() {}
 
 func (x *AddProjectMemberRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_secrets_proto_msgTypes[20]
+	mi := &file_secrets_proto_msgTypes[21]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1300,7 +1371,7 @@ func (x *AddProjectMemberRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AddProjectMemberRequest.ProtoReflect.Descriptor instead.
 func (*AddProjectMemberRequest) Descriptor() ([]byte, []int) {
-	return file_secrets_proto_rawDescGZIP(), []int{20}
+	return file_secrets_proto_rawDescGZIP(), []int{21}
 }
 
 func (x *AddProjectMemberRequest) GetUserId() string {
@@ -1336,7 +1407,7 @@ type ListProjectMembersResponse struct {
 func (x *ListProjectMembersResponse) Reset() {
 	*x = ListProjectMembersResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_secrets_proto_msgTypes[21]
+		mi := &file_secrets_proto_msgTypes[22]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1349,7 +1420,7 @@ func (x *ListProjectMembersResponse) String() string {
 func (*ListProjectMembersResponse) ProtoMessage() {}
 
 func (x *ListProjectMembersResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_secrets_proto_msgTypes[21]
+	mi := &file_secrets_proto_msgTypes[22]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1362,7 +1433,7 @@ func (x *ListProjectMembersResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListProjectMembersResponse.ProtoReflect.Descriptor instead.
 func (*ListProjectMembersResponse) Descriptor() ([]byte, []int) {
-	return file_secrets_proto_rawDescGZIP(), []int{21}
+	return file_secrets_proto_rawDescGZIP(), []int{22}
 }
 
 func (x *ListProjectMembersResponse) GetMessage() string {
@@ -1393,7 +1464,7 @@ type Secret struct {
 func (x *Secret) Reset() {
 	*x = Secret{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_secrets_proto_msgTypes[22]
+		mi := &file_secrets_proto_msgTypes[23]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1406,7 +1477,7 @@ func (x *Secret) String() string {
 func (*Secret) ProtoMessage() {}
 
 func (x *Secret) ProtoReflect() protoreflect.Message {
-	mi := &file_secrets_proto_msgTypes[22]
+	mi := &file_secrets_proto_msgTypes[23]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1419,7 +1490,7 @@ func (x *Secret) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Secret.ProtoReflect.Descriptor instead.
 func (*Secret) Descriptor() ([]byte, []int) {
-	return file_secrets_proto_rawDescGZIP(), []int{22}
+	return file_secrets_proto_rawDescGZIP(), []int{23}
 }
 
 func (x *Secret) GetPath() string {
@@ -1462,7 +1533,7 @@ type ListSecretsResponse struct {
 func (x *ListSecretsResponse) Reset() {
 	*x = ListSecretsResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_secrets_proto_msgTypes[23]
+		mi := &file_secrets_proto_msgTypes[24]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1475,7 +1546,7 @@ func (x *ListSecretsResponse) String() string {
 func (*ListSecretsResponse) ProtoMessage() {}
 
 func (x *ListSecretsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_secrets_proto_msgTypes[23]
+	mi := &file_secrets_proto_msgTypes[24]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1488,7 +1559,7 @@ func (x *ListSecretsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListSecretsResponse.ProtoReflect.Descriptor instead.
 func (*ListSecretsResponse) Descriptor() ([]byte, []int) {
-	return file_secrets_proto_rawDescGZIP(), []int{23}
+	return file_secrets_proto_rawDescGZIP(), []int{24}
 }
 
 func (x *ListSecretsResponse) GetMessage() string {
@@ -1520,7 +1591,7 @@ type SecretPermission struct {
 func (x *SecretPermission) Reset() {
 	*x = SecretPermission{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_secrets_proto_msgTypes[24]
+		mi := &file_secrets_proto_msgTypes[25]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1533,7 +1604,7 @@ func (x *SecretPermission) String() string {
 func (*SecretPermission) ProtoMessage() {}
 
 func (x *SecretPermission) ProtoReflect() protoreflect.Message {
-	mi := &file_secrets_proto_msgTypes[24]
+	mi := &file_secrets_proto_msgTypes[25]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1546,7 +1617,7 @@ func (x *SecretPermission) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SecretPermission.ProtoReflect.Descriptor instead.
 func (*SecretPermission) Descriptor() ([]byte, []int) {
-	return file_secrets_proto_rawDescGZIP(), []int{24}
+	return file_secrets_proto_rawDescGZIP(), []int{25}
 }
 
 func (x *SecretPermission) GetPath() string {
@@ -1596,7 +1667,7 @@ type ListSecretPermissionsResponse struct {
 func (x *ListSecretPermissionsResponse) Reset() {
 	*x = ListSecretPermissionsResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_secrets_proto_msgTypes[25]
+		mi := &file_secrets_proto_msgTypes[26]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1609,7 +1680,7 @@ func (x *ListSecretPermissionsResponse) String() string {
 func (*ListSecretPermissionsResponse) ProtoMessage() {}
 
 func (x *ListSecretPermissionsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_secrets_proto_msgTypes[25]
+	mi := &file_secrets_proto_msgTypes[26]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1622,7 +1693,7 @@ func (x *ListSecretPermissionsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListSecretPermissionsResponse.ProtoReflect.Descriptor instead.
 func (*ListSecretPermissionsResponse) Descriptor() ([]byte, []int) {
-	return file_secrets_proto_rawDescGZIP(), []int{25}
+	return file_secrets_proto_rawDescGZIP(), []int{26}
 }
 
 func (x *ListSecretPermissionsResponse) GetMessage() string {
@@ -1651,7 +1722,7 @@ type UpdateSecretPermissionRequest struct {
 func (x *UpdateSecretPermissionRequest) Reset() {
 	*x = UpdateSecretPermissionRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_secrets_proto_msgTypes[26]
+		mi := &file_secrets_proto_msgTypes[27]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1664,7 +1735,7 @@ func (x *UpdateSecretPermissionRequest) String() string {
 func (*UpdateSecretPermissionRequest) ProtoMessage() {}
 
 func (x *UpdateSecretPermissionRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_secrets_proto_msgTypes[26]
+	mi := &file_secrets_proto_msgTypes[27]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1677,7 +1748,7 @@ func (x *UpdateSecretPermissionRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateSecretPermissionRequest.ProtoReflect.Descriptor instead.
 func (*UpdateSecretPermissionRequest) Descriptor() ([]byte, []int) {
-	return file_secrets_proto_rawDescGZIP(), []int{26}
+	return file_secrets_proto_rawDescGZIP(), []int{27}
 }
 
 func (x *UpdateSecretPermissionRequest) GetUserId() string {
@@ -1746,15 +1817,24 @@ var file_secrets_proto_rawDesc = []byte{
 	0x69, 0x6f, 0x6e, 0x73, 0x18, 0x02, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x22, 0x2e, 0x61, 0x70, 0x69,
 	0x2e, 0x70, 0x75, 0x62, 0x6c, 0x69, 0x63, 0x2e, 0x73, 0x65, 0x63, 0x72, 0x65, 0x74, 0x73, 0x2e,
 	0x4f, 0x72, 0x67, 0x50, 0x65, 0x72, 0x6d, 0x69, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x73, 0x52, 0x0b,
-	0x70, 0x65, 0x72, 0x6d, 0x69, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x73, 0x22, 0x7a, 0x0a, 0x14, 0x53,
-	0x65, 0x6e, 0x64, 0x4f, 0x72, 0x67, 0x49, 0x6e, 0x76, 0x69, 0x74, 0x65, 0x52, 0x65, 0x71, 0x75,
-	0x65, 0x73, 0x74, 0x12, 0x12, 0x0a, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28,
-	0x09, 0x52, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x12, 0x14, 0x0a, 0x05, 0x65, 0x6d, 0x61, 0x69, 0x6c,
-	0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x65, 0x6d, 0x61, 0x69, 0x6c, 0x12, 0x1e, 0x0a,
-	0x0a, 0x70, 0x65, 0x72, 0x6d, 0x69, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x18, 0x03, 0x20, 0x01, 0x28,
-	0x09, 0x52, 0x0a, 0x70, 0x65, 0x72, 0x6d, 0x69, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x12, 0x18, 0x0a,
-	0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x18, 0x04, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07,
-	0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x22, 0x45, 0x0a, 0x09, 0x4f, 0x72, 0x67, 0x44, 0x65,
+	0x70, 0x65, 0x72, 0x6d, 0x69, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x73, 0x22, 0x98, 0x01, 0x0a, 0x17,
+	0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x49, 0x6e, 0x76, 0x69, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e,
+	0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x12, 0x0a, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x18,
+	0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x12, 0x14, 0x0a, 0x05, 0x65,
+	0x6d, 0x61, 0x69, 0x6c, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x65, 0x6d, 0x61, 0x69,
+	0x6c, 0x12, 0x1e, 0x0a, 0x0a, 0x70, 0x65, 0x72, 0x6d, 0x69, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x18,
+	0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0a, 0x70, 0x65, 0x72, 0x6d, 0x69, 0x73, 0x73, 0x69, 0x6f,
+	0x6e, 0x12, 0x18, 0x0a, 0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x18, 0x04, 0x20, 0x01,
+	0x28, 0x09, 0x52, 0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x12, 0x19, 0x0a, 0x08, 0x6f,
+	0x72, 0x67, 0x5f, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x05, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x6f,
+	0x72, 0x67, 0x4e, 0x61, 0x6d, 0x65, 0x22, 0x6f, 0x0a, 0x18, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65,
+	0x49, 0x6e, 0x76, 0x69, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e,
+	0x73, 0x65, 0x12, 0x18, 0x0a, 0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x18, 0x01, 0x20,
+	0x01, 0x28, 0x09, 0x52, 0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x12, 0x23, 0x0a, 0x0d,
+	0x69, 0x6e, 0x76, 0x69, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x69, 0x64, 0x18, 0x02, 0x20,
+	0x01, 0x28, 0x09, 0x52, 0x0c, 0x69, 0x6e, 0x76, 0x69, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x49,
+	0x64, 0x12, 0x14, 0x0a, 0x05, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09,
+	0x52, 0x05, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x22, 0x45, 0x0a, 0x09, 0x4f, 0x72, 0x67, 0x44, 0x65,
 	0x74, 0x61, 0x69, 0x6c, 0x12, 0x12, 0x0a, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x01, 0x20, 0x01,
 	0x28, 0x09, 0x52, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x12, 0x14, 0x0a, 0x05, 0x61, 0x64, 0x6d, 0x69,
 	0x6e, 0x18, 0x02, 0x20, 0x01, 0x28, 0x08, 0x52, 0x05, 0x61, 0x64, 0x6d, 0x69, 0x6e, 0x12, 0x0e,
@@ -1926,7 +2006,7 @@ func file_secrets_proto_rawDescGZIP() []byte {
 	return file_secrets_proto_rawDescData
 }
 
-var file_secrets_proto_msgTypes = make([]protoimpl.MessageInfo, 27)
+var file_secrets_proto_msgTypes = make([]protoimpl.MessageInfo, 28)
 var file_secrets_proto_goTypes = []interface{}{
 	(*CreateAccountRequest)(nil),          // 0: api.public.secrets.CreateAccountRequest
 	(*CreateAccountResponse)(nil),         // 1: api.public.secrets.CreateAccountResponse
@@ -1934,51 +2014,52 @@ var file_secrets_proto_goTypes = []interface{}{
 	(*PingResponse)(nil),                  // 3: api.public.secrets.PingResponse
 	(*OrgPermissions)(nil),                // 4: api.public.secrets.OrgPermissions
 	(*ListOrgPermissionsResponse)(nil),    // 5: api.public.secrets.ListOrgPermissionsResponse
-	(*SendOrgInviteRequest)(nil),          // 6: api.public.secrets.SendOrgInviteRequest
-	(*OrgDetail)(nil),                     // 7: api.public.secrets.OrgDetail
-	(*ListOrgsResponse)(nil),              // 8: api.public.secrets.ListOrgsResponse
-	(*AuthToken)(nil),                     // 9: api.public.secrets.AuthToken
-	(*ListAuthTokensResponse)(nil),        // 10: api.public.secrets.ListAuthTokensResponse
-	(*OAuthConnectRequest)(nil),           // 11: api.public.secrets.OAuthConnectRequest
-	(*OAuthConnectResponse)(nil),          // 12: api.public.secrets.OAuthConnectResponse
-	(*LoginResponse)(nil),                 // 13: api.public.secrets.LoginResponse
-	(*Project)(nil),                       // 14: api.public.secrets.Project
-	(*ProjectMember)(nil),                 // 15: api.public.secrets.ProjectMember
-	(*CreateProjectRequest)(nil),          // 16: api.public.secrets.CreateProjectRequest
-	(*CreateProjectResponse)(nil),         // 17: api.public.secrets.CreateProjectResponse
-	(*GetProjectResponse)(nil),            // 18: api.public.secrets.GetProjectResponse
-	(*ListProjectsResponse)(nil),          // 19: api.public.secrets.ListProjectsResponse
-	(*AddProjectMemberRequest)(nil),       // 20: api.public.secrets.AddProjectMemberRequest
-	(*ListProjectMembersResponse)(nil),    // 21: api.public.secrets.ListProjectMembersResponse
-	(*Secret)(nil),                        // 22: api.public.secrets.Secret
-	(*ListSecretsResponse)(nil),           // 23: api.public.secrets.ListSecretsResponse
-	(*SecretPermission)(nil),              // 24: api.public.secrets.SecretPermission
-	(*ListSecretPermissionsResponse)(nil), // 25: api.public.secrets.ListSecretPermissionsResponse
-	(*UpdateSecretPermissionRequest)(nil), // 26: api.public.secrets.UpdateSecretPermissionRequest
-	(*timestamppb.Timestamp)(nil),         // 27: google.protobuf.Timestamp
+	(*CreateInvitationRequest)(nil),       // 6: api.public.secrets.CreateInvitationRequest
+	(*CreateInvitationResponse)(nil),      // 7: api.public.secrets.CreateInvitationResponse
+	(*OrgDetail)(nil),                     // 8: api.public.secrets.OrgDetail
+	(*ListOrgsResponse)(nil),              // 9: api.public.secrets.ListOrgsResponse
+	(*AuthToken)(nil),                     // 10: api.public.secrets.AuthToken
+	(*ListAuthTokensResponse)(nil),        // 11: api.public.secrets.ListAuthTokensResponse
+	(*OAuthConnectRequest)(nil),           // 12: api.public.secrets.OAuthConnectRequest
+	(*OAuthConnectResponse)(nil),          // 13: api.public.secrets.OAuthConnectResponse
+	(*LoginResponse)(nil),                 // 14: api.public.secrets.LoginResponse
+	(*Project)(nil),                       // 15: api.public.secrets.Project
+	(*ProjectMember)(nil),                 // 16: api.public.secrets.ProjectMember
+	(*CreateProjectRequest)(nil),          // 17: api.public.secrets.CreateProjectRequest
+	(*CreateProjectResponse)(nil),         // 18: api.public.secrets.CreateProjectResponse
+	(*GetProjectResponse)(nil),            // 19: api.public.secrets.GetProjectResponse
+	(*ListProjectsResponse)(nil),          // 20: api.public.secrets.ListProjectsResponse
+	(*AddProjectMemberRequest)(nil),       // 21: api.public.secrets.AddProjectMemberRequest
+	(*ListProjectMembersResponse)(nil),    // 22: api.public.secrets.ListProjectMembersResponse
+	(*Secret)(nil),                        // 23: api.public.secrets.Secret
+	(*ListSecretsResponse)(nil),           // 24: api.public.secrets.ListSecretsResponse
+	(*SecretPermission)(nil),              // 25: api.public.secrets.SecretPermission
+	(*ListSecretPermissionsResponse)(nil), // 26: api.public.secrets.ListSecretPermissionsResponse
+	(*UpdateSecretPermissionRequest)(nil), // 27: api.public.secrets.UpdateSecretPermissionRequest
+	(*timestamppb.Timestamp)(nil),         // 28: google.protobuf.Timestamp
 }
 var file_secrets_proto_depIdxs = []int32{
 	4,  // 0: api.public.secrets.ListOrgPermissionsResponse.permissions:type_name -> api.public.secrets.OrgPermissions
-	7,  // 1: api.public.secrets.ListOrgsResponse.details:type_name -> api.public.secrets.OrgDetail
-	27, // 2: api.public.secrets.AuthToken.expiry:type_name -> google.protobuf.Timestamp
-	9,  // 3: api.public.secrets.ListAuthTokensResponse.tokens:type_name -> api.public.secrets.AuthToken
-	27, // 4: api.public.secrets.OAuthConnectResponse.expiry:type_name -> google.protobuf.Timestamp
-	27, // 5: api.public.secrets.LoginResponse.expiry:type_name -> google.protobuf.Timestamp
-	27, // 6: api.public.secrets.Project.created_at:type_name -> google.protobuf.Timestamp
-	27, // 7: api.public.secrets.Project.modified_at:type_name -> google.protobuf.Timestamp
-	27, // 8: api.public.secrets.ProjectMember.created_at:type_name -> google.protobuf.Timestamp
-	27, // 9: api.public.secrets.ProjectMember.modified_at:type_name -> google.protobuf.Timestamp
-	14, // 10: api.public.secrets.CreateProjectRequest.project:type_name -> api.public.secrets.Project
-	14, // 11: api.public.secrets.CreateProjectResponse.project:type_name -> api.public.secrets.Project
-	14, // 12: api.public.secrets.GetProjectResponse.project:type_name -> api.public.secrets.Project
-	14, // 13: api.public.secrets.ListProjectsResponse.projects:type_name -> api.public.secrets.Project
-	15, // 14: api.public.secrets.ListProjectMembersResponse.members:type_name -> api.public.secrets.ProjectMember
-	27, // 15: api.public.secrets.Secret.created_at:type_name -> google.protobuf.Timestamp
-	27, // 16: api.public.secrets.Secret.modified_at:type_name -> google.protobuf.Timestamp
-	22, // 17: api.public.secrets.ListSecretsResponse.secrets:type_name -> api.public.secrets.Secret
-	27, // 18: api.public.secrets.SecretPermission.created_at:type_name -> google.protobuf.Timestamp
-	27, // 19: api.public.secrets.SecretPermission.modified_at:type_name -> google.protobuf.Timestamp
-	24, // 20: api.public.secrets.ListSecretPermissionsResponse.secret_permissions:type_name -> api.public.secrets.SecretPermission
+	8,  // 1: api.public.secrets.ListOrgsResponse.details:type_name -> api.public.secrets.OrgDetail
+	28, // 2: api.public.secrets.AuthToken.expiry:type_name -> google.protobuf.Timestamp
+	10, // 3: api.public.secrets.ListAuthTokensResponse.tokens:type_name -> api.public.secrets.AuthToken
+	28, // 4: api.public.secrets.OAuthConnectResponse.expiry:type_name -> google.protobuf.Timestamp
+	28, // 5: api.public.secrets.LoginResponse.expiry:type_name -> google.protobuf.Timestamp
+	28, // 6: api.public.secrets.Project.created_at:type_name -> google.protobuf.Timestamp
+	28, // 7: api.public.secrets.Project.modified_at:type_name -> google.protobuf.Timestamp
+	28, // 8: api.public.secrets.ProjectMember.created_at:type_name -> google.protobuf.Timestamp
+	28, // 9: api.public.secrets.ProjectMember.modified_at:type_name -> google.protobuf.Timestamp
+	15, // 10: api.public.secrets.CreateProjectRequest.project:type_name -> api.public.secrets.Project
+	15, // 11: api.public.secrets.CreateProjectResponse.project:type_name -> api.public.secrets.Project
+	15, // 12: api.public.secrets.GetProjectResponse.project:type_name -> api.public.secrets.Project
+	15, // 13: api.public.secrets.ListProjectsResponse.projects:type_name -> api.public.secrets.Project
+	16, // 14: api.public.secrets.ListProjectMembersResponse.members:type_name -> api.public.secrets.ProjectMember
+	28, // 15: api.public.secrets.Secret.created_at:type_name -> google.protobuf.Timestamp
+	28, // 16: api.public.secrets.Secret.modified_at:type_name -> google.protobuf.Timestamp
+	23, // 17: api.public.secrets.ListSecretsResponse.secrets:type_name -> api.public.secrets.Secret
+	28, // 18: api.public.secrets.SecretPermission.created_at:type_name -> google.protobuf.Timestamp
+	28, // 19: api.public.secrets.SecretPermission.modified_at:type_name -> google.protobuf.Timestamp
+	25, // 20: api.public.secrets.ListSecretPermissionsResponse.secret_permissions:type_name -> api.public.secrets.SecretPermission
 	21, // [21:21] is the sub-list for method output_type
 	21, // [21:21] is the sub-list for method input_type
 	21, // [21:21] is the sub-list for extension type_name
@@ -2065,7 +2146,7 @@ func file_secrets_proto_init() {
 			}
 		}
 		file_secrets_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*SendOrgInviteRequest); i {
+			switch v := v.(*CreateInvitationRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2077,7 +2158,7 @@ func file_secrets_proto_init() {
 			}
 		}
 		file_secrets_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*OrgDetail); i {
+			switch v := v.(*CreateInvitationResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2089,7 +2170,7 @@ func file_secrets_proto_init() {
 			}
 		}
 		file_secrets_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ListOrgsResponse); i {
+			switch v := v.(*OrgDetail); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2101,7 +2182,7 @@ func file_secrets_proto_init() {
 			}
 		}
 		file_secrets_proto_msgTypes[9].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*AuthToken); i {
+			switch v := v.(*ListOrgsResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2113,7 +2194,7 @@ func file_secrets_proto_init() {
 			}
 		}
 		file_secrets_proto_msgTypes[10].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ListAuthTokensResponse); i {
+			switch v := v.(*AuthToken); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2125,7 +2206,7 @@ func file_secrets_proto_init() {
 			}
 		}
 		file_secrets_proto_msgTypes[11].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*OAuthConnectRequest); i {
+			switch v := v.(*ListAuthTokensResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2137,7 +2218,7 @@ func file_secrets_proto_init() {
 			}
 		}
 		file_secrets_proto_msgTypes[12].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*OAuthConnectResponse); i {
+			switch v := v.(*OAuthConnectRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2149,7 +2230,7 @@ func file_secrets_proto_init() {
 			}
 		}
 		file_secrets_proto_msgTypes[13].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*LoginResponse); i {
+			switch v := v.(*OAuthConnectResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2161,7 +2242,7 @@ func file_secrets_proto_init() {
 			}
 		}
 		file_secrets_proto_msgTypes[14].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Project); i {
+			switch v := v.(*LoginResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2173,7 +2254,7 @@ func file_secrets_proto_init() {
 			}
 		}
 		file_secrets_proto_msgTypes[15].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ProjectMember); i {
+			switch v := v.(*Project); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2185,7 +2266,7 @@ func file_secrets_proto_init() {
 			}
 		}
 		file_secrets_proto_msgTypes[16].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*CreateProjectRequest); i {
+			switch v := v.(*ProjectMember); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2197,7 +2278,7 @@ func file_secrets_proto_init() {
 			}
 		}
 		file_secrets_proto_msgTypes[17].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*CreateProjectResponse); i {
+			switch v := v.(*CreateProjectRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2209,7 +2290,7 @@ func file_secrets_proto_init() {
 			}
 		}
 		file_secrets_proto_msgTypes[18].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetProjectResponse); i {
+			switch v := v.(*CreateProjectResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2221,7 +2302,7 @@ func file_secrets_proto_init() {
 			}
 		}
 		file_secrets_proto_msgTypes[19].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ListProjectsResponse); i {
+			switch v := v.(*GetProjectResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2233,7 +2314,7 @@ func file_secrets_proto_init() {
 			}
 		}
 		file_secrets_proto_msgTypes[20].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*AddProjectMemberRequest); i {
+			switch v := v.(*ListProjectsResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2245,7 +2326,7 @@ func file_secrets_proto_init() {
 			}
 		}
 		file_secrets_proto_msgTypes[21].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ListProjectMembersResponse); i {
+			switch v := v.(*AddProjectMemberRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2257,7 +2338,7 @@ func file_secrets_proto_init() {
 			}
 		}
 		file_secrets_proto_msgTypes[22].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Secret); i {
+			switch v := v.(*ListProjectMembersResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2269,7 +2350,7 @@ func file_secrets_proto_init() {
 			}
 		}
 		file_secrets_proto_msgTypes[23].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ListSecretsResponse); i {
+			switch v := v.(*Secret); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2281,7 +2362,7 @@ func file_secrets_proto_init() {
 			}
 		}
 		file_secrets_proto_msgTypes[24].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*SecretPermission); i {
+			switch v := v.(*ListSecretsResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2293,7 +2374,7 @@ func file_secrets_proto_init() {
 			}
 		}
 		file_secrets_proto_msgTypes[25].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ListSecretPermissionsResponse); i {
+			switch v := v.(*SecretPermission); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2305,6 +2386,18 @@ func file_secrets_proto_init() {
 			}
 		}
 		file_secrets_proto_msgTypes[26].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*ListSecretPermissionsResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_secrets_proto_msgTypes[27].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*UpdateSecretPermissionRequest); i {
 			case 0:
 				return &v.state
@@ -2323,7 +2416,7 @@ func file_secrets_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_secrets_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   27,
+			NumMessages:   28,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
