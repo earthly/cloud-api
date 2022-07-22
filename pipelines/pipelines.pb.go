@@ -439,7 +439,7 @@ type LaunchSatelliteResponse struct {
 	unknownFields protoimpl.UnknownFields
 
 	Status  SatelliteStatus `protobuf:"varint,1,opt,name=status,proto3,enum=api.public.pipelines.SatelliteStatus" json:"status,omitempty"`
-	Version string          `protobuf:"bytes,2,opt,name=version,proto3" json:"version,omitempty"`
+	Version string          `protobuf:"bytes,2,opt,name=version,proto3" json:"version,omitempty"` // deprecated
 }
 
 func (x *LaunchSatelliteResponse) Reset() {
@@ -831,7 +831,7 @@ type GetSatelliteResponse struct {
 	UserId     string          `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 	Platform   string          `protobuf:"bytes,2,opt,name=platform,proto3" json:"platform,omitempty"`
 	Status     SatelliteStatus `protobuf:"varint,3,opt,name=status,proto3,enum=api.public.pipelines.SatelliteStatus" json:"status,omitempty"`
-	Version    string          `protobuf:"bytes,4,opt,name=version,proto3" json:"version,omitempty"`
+	Version    string          `protobuf:"bytes,4,opt,name=version,proto3" json:"version,omitempty"` // deprecated
 	Id         string          `protobuf:"bytes,5,opt,name=id,proto3" json:"id,omitempty"`
 	PrivateIp  string          `protobuf:"bytes,6,opt,name=private_ip,json=privateIp,proto3" json:"private_ip,omitempty"`
 	PrivateDns string          `protobuf:"bytes,7,opt,name=private_dns,json=privateDns,proto3" json:"private_dns,omitempty"`
@@ -927,7 +927,7 @@ type ListSatellitesResponse_SatelliteInstance struct {
 	Name     string          `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
 	Platform string          `protobuf:"bytes,3,opt,name=platform,proto3" json:"platform,omitempty"`
 	Status   SatelliteStatus `protobuf:"varint,4,opt,name=status,proto3,enum=api.public.pipelines.SatelliteStatus" json:"status,omitempty"`
-	Version  string          `protobuf:"bytes,5,opt,name=version,proto3" json:"version,omitempty"`
+	Version  string          `protobuf:"bytes,5,opt,name=version,proto3" json:"version,omitempty"` // deprecated
 }
 
 func (x *ListSatellitesResponse_SatelliteInstance) Reset() {
