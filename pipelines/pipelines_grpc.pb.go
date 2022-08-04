@@ -39,6 +39,8 @@ type PipelinesClient interface {
 	// GetSatellite retrieves the details of a particular Satellite instance.
 	// Mainly intended for use by Buildkit Proxy when establishing a new connection to an instance.
 	GetSatellite(ctx context.Context, in *GetSatelliteRequest, opts ...grpc.CallOption) (*GetSatelliteResponse, error)
+	// ListGitHubRepos uses the GitHub API to list repositories
+	ListGitHubRepos(ctx context.Context, in *ListGitHubReposRequest, opts ...grpc.CallOption) (*ListGitHubReposResponse, error)
 }
 
 type pipelinesClient struct {
@@ -103,6 +105,15 @@ func (c *pipelinesClient) GetSatellite(ctx context.Context, in *GetSatelliteRequ
 	return out, nil
 }
 
+func (c *pipelinesClient) ListGitHubRepos(ctx context.Context, in *ListGitHubReposRequest, opts ...grpc.CallOption) (*ListGitHubReposResponse, error) {
+	out := new(ListGitHubReposResponse)
+	err := c.cc.Invoke(ctx, "/api.public.pipelines.Pipelines/ListGitHubRepos", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // PipelinesServer is the server API for Pipelines service.
 // All implementations must embed UnimplementedPipelinesServer
 // for forward compatibility
@@ -124,6 +135,8 @@ type PipelinesServer interface {
 	// GetSatellite retrieves the details of a particular Satellite instance.
 	// Mainly intended for use by Buildkit Proxy when establishing a new connection to an instance.
 	GetSatellite(context.Context, *GetSatelliteRequest) (*GetSatelliteResponse, error)
+	// ListGitHubRepos uses the GitHub API to list repositories
+	ListGitHubRepos(context.Context, *ListGitHubReposRequest) (*ListGitHubReposResponse, error)
 	mustEmbedUnimplementedPipelinesServer()
 }
 
@@ -148,6 +161,9 @@ func (UnimplementedPipelinesServer) DeleteSatellite(context.Context, *DeleteSate
 }
 func (UnimplementedPipelinesServer) GetSatellite(context.Context, *GetSatelliteRequest) (*GetSatelliteResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetSatellite not implemented")
+}
+func (UnimplementedPipelinesServer) ListGitHubRepos(context.Context, *ListGitHubReposRequest) (*ListGitHubReposResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListGitHubRepos not implemented")
 }
 func (UnimplementedPipelinesServer) mustEmbedUnimplementedPipelinesServer() {}
 
@@ -270,6 +286,24 @@ func _Pipelines_GetSatellite_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Pipelines_ListGitHubRepos_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListGitHubReposRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PipelinesServer).ListGitHubRepos(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.public.pipelines.Pipelines/ListGitHubRepos",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PipelinesServer).ListGitHubRepos(ctx, req.(*ListGitHubReposRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Pipelines_ServiceDesc is the grpc.ServiceDesc for Pipelines service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -300,6 +334,10 @@ var Pipelines_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetSatellite",
 			Handler:    _Pipelines_GetSatellite_Handler,
+		},
+		{
+			MethodName: "ListGitHubRepos",
+			Handler:    _Pipelines_ListGitHubRepos_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
