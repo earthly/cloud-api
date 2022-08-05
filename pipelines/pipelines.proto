@@ -49,10 +49,10 @@ service Pipelines {
       get: "/api/v0/satellites/{name}"
     };
   }
-  // ListGitHubRepos uses the GitHub API to list repositories
-  rpc ListGitHubRepos(ListGitHubReposRequest) returns (ListGitHubReposResponse) {
+  // ListRemoteRepos uses the GitHub API to list remote repositories
+  rpc ListRemoteRepos(ListRemoteReposRequest) returns (ListRemoteReposResponse) {
     option (google.api.http) = {
-      get: "/api/v0/repos/github"
+      get: "/api/v0/repos/remote"
     };
   }
 }
@@ -148,16 +148,17 @@ message GetSatelliteResponse {
   string private_dns = 7;
 }
 
-message ListGitHubReposRequest {
+message ListRemoteReposRequest {
   string org = 1;
 }
 
-message GitHubRepo {
+message RemoteRepo {
   string name = 1;
   string org = 2;
   string url = 3;
+  string provider = 4;
 }
 
-message ListGitHubReposResponse {
-  repeated GitHubRepo repos = 1;
+message ListRemoteReposResponse {
+  repeated RemoteRepo repos = 1;
 }
