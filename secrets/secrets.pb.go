@@ -2024,148 +2024,6 @@ func (x *UpdateSecretPermissionRequest) GetPermission() string {
 	return ""
 }
 
-type OAuthDetails struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	Provider           string                 `protobuf:"bytes,1,opt,name=provider,proto3" json:"provider,omitempty"`
-	UserId             string                 `protobuf:"bytes,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
-	Scopes             string                 `protobuf:"bytes,3,opt,name=scopes,proto3" json:"scopes,omitempty"`
-	AccessToken        string                 `protobuf:"bytes,4,opt,name=access_token,json=accessToken,proto3" json:"access_token,omitempty"`
-	AccessTokenExpiry  *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=access_token_expiry,json=accessTokenExpiry,proto3" json:"access_token_expiry,omitempty"`
-	RefreshToken       string                 `protobuf:"bytes,6,opt,name=refresh_token,json=refreshToken,proto3" json:"refresh_token,omitempty"`
-	RefreshTokenExpiry *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=refresh_token_expiry,json=refreshTokenExpiry,proto3" json:"refresh_token_expiry,omitempty"`
-}
-
-func (x *OAuthDetails) Reset() {
-	*x = OAuthDetails{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_secrets_proto_msgTypes[33]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *OAuthDetails) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*OAuthDetails) ProtoMessage() {}
-
-func (x *OAuthDetails) ProtoReflect() protoreflect.Message {
-	mi := &file_secrets_proto_msgTypes[33]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use OAuthDetails.ProtoReflect.Descriptor instead.
-func (*OAuthDetails) Descriptor() ([]byte, []int) {
-	return file_secrets_proto_rawDescGZIP(), []int{33}
-}
-
-func (x *OAuthDetails) GetProvider() string {
-	if x != nil {
-		return x.Provider
-	}
-	return ""
-}
-
-func (x *OAuthDetails) GetUserId() string {
-	if x != nil {
-		return x.UserId
-	}
-	return ""
-}
-
-func (x *OAuthDetails) GetScopes() string {
-	if x != nil {
-		return x.Scopes
-	}
-	return ""
-}
-
-func (x *OAuthDetails) GetAccessToken() string {
-	if x != nil {
-		return x.AccessToken
-	}
-	return ""
-}
-
-func (x *OAuthDetails) GetAccessTokenExpiry() *timestamppb.Timestamp {
-	if x != nil {
-		return x.AccessTokenExpiry
-	}
-	return nil
-}
-
-func (x *OAuthDetails) GetRefreshToken() string {
-	if x != nil {
-		return x.RefreshToken
-	}
-	return ""
-}
-
-func (x *OAuthDetails) GetRefreshTokenExpiry() *timestamppb.Timestamp {
-	if x != nil {
-		return x.RefreshTokenExpiry
-	}
-	return nil
-}
-
-type ListOAuthDetailsResponse struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	OauthDetails []*OAuthDetails `protobuf:"bytes,1,rep,name=oauth_details,json=oauthDetails,proto3" json:"oauth_details,omitempty"`
-}
-
-func (x *ListOAuthDetailsResponse) Reset() {
-	*x = ListOAuthDetailsResponse{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_secrets_proto_msgTypes[34]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *ListOAuthDetailsResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListOAuthDetailsResponse) ProtoMessage() {}
-
-func (x *ListOAuthDetailsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_secrets_proto_msgTypes[34]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListOAuthDetailsResponse.ProtoReflect.Descriptor instead.
-func (*ListOAuthDetailsResponse) Descriptor() ([]byte, []int) {
-	return file_secrets_proto_rawDescGZIP(), []int{34}
-}
-
-func (x *ListOAuthDetailsResponse) GetOauthDetails() []*OAuthDetails {
-	if x != nil {
-		return x.OauthDetails
-	}
-	return nil
-}
-
 var File_secrets_proto protoreflect.FileDescriptor
 
 var file_secrets_proto_rawDesc = []byte{
@@ -2417,34 +2275,8 @@ var file_secrets_proto_rawDesc = []byte{
 	0x6c, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x75, 0x73, 0x65, 0x72, 0x45, 0x6d, 0x61,
 	0x69, 0x6c, 0x12, 0x1e, 0x0a, 0x0a, 0x70, 0x65, 0x72, 0x6d, 0x69, 0x73, 0x73, 0x69, 0x6f, 0x6e,
 	0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0a, 0x70, 0x65, 0x72, 0x6d, 0x69, 0x73, 0x73, 0x69,
-	0x6f, 0x6e, 0x22, 0xbd, 0x02, 0x0a, 0x0c, 0x4f, 0x41, 0x75, 0x74, 0x68, 0x44, 0x65, 0x74, 0x61,
-	0x69, 0x6c, 0x73, 0x12, 0x1a, 0x0a, 0x08, 0x70, 0x72, 0x6f, 0x76, 0x69, 0x64, 0x65, 0x72, 0x18,
-	0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x70, 0x72, 0x6f, 0x76, 0x69, 0x64, 0x65, 0x72, 0x12,
-	0x17, 0x0a, 0x07, 0x75, 0x73, 0x65, 0x72, 0x5f, 0x69, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09,
-	0x52, 0x06, 0x75, 0x73, 0x65, 0x72, 0x49, 0x64, 0x12, 0x16, 0x0a, 0x06, 0x73, 0x63, 0x6f, 0x70,
-	0x65, 0x73, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x73, 0x63, 0x6f, 0x70, 0x65, 0x73,
-	0x12, 0x21, 0x0a, 0x0c, 0x61, 0x63, 0x63, 0x65, 0x73, 0x73, 0x5f, 0x74, 0x6f, 0x6b, 0x65, 0x6e,
-	0x18, 0x04, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0b, 0x61, 0x63, 0x63, 0x65, 0x73, 0x73, 0x54, 0x6f,
-	0x6b, 0x65, 0x6e, 0x12, 0x4a, 0x0a, 0x13, 0x61, 0x63, 0x63, 0x65, 0x73, 0x73, 0x5f, 0x74, 0x6f,
-	0x6b, 0x65, 0x6e, 0x5f, 0x65, 0x78, 0x70, 0x69, 0x72, 0x79, 0x18, 0x05, 0x20, 0x01, 0x28, 0x0b,
-	0x32, 0x1a, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62,
-	0x75, 0x66, 0x2e, 0x54, 0x69, 0x6d, 0x65, 0x73, 0x74, 0x61, 0x6d, 0x70, 0x52, 0x11, 0x61, 0x63,
-	0x63, 0x65, 0x73, 0x73, 0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x45, 0x78, 0x70, 0x69, 0x72, 0x79, 0x12,
-	0x23, 0x0a, 0x0d, 0x72, 0x65, 0x66, 0x72, 0x65, 0x73, 0x68, 0x5f, 0x74, 0x6f, 0x6b, 0x65, 0x6e,
-	0x18, 0x06, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0c, 0x72, 0x65, 0x66, 0x72, 0x65, 0x73, 0x68, 0x54,
-	0x6f, 0x6b, 0x65, 0x6e, 0x12, 0x4c, 0x0a, 0x14, 0x72, 0x65, 0x66, 0x72, 0x65, 0x73, 0x68, 0x5f,
-	0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x5f, 0x65, 0x78, 0x70, 0x69, 0x72, 0x79, 0x18, 0x07, 0x20, 0x01,
-	0x28, 0x0b, 0x32, 0x1a, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74,
-	0x6f, 0x62, 0x75, 0x66, 0x2e, 0x54, 0x69, 0x6d, 0x65, 0x73, 0x74, 0x61, 0x6d, 0x70, 0x52, 0x12,
-	0x72, 0x65, 0x66, 0x72, 0x65, 0x73, 0x68, 0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x45, 0x78, 0x70, 0x69,
-	0x72, 0x79, 0x22, 0x61, 0x0a, 0x18, 0x4c, 0x69, 0x73, 0x74, 0x4f, 0x41, 0x75, 0x74, 0x68, 0x44,
-	0x65, 0x74, 0x61, 0x69, 0x6c, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x45,
-	0x0a, 0x0d, 0x6f, 0x61, 0x75, 0x74, 0x68, 0x5f, 0x64, 0x65, 0x74, 0x61, 0x69, 0x6c, 0x73, 0x18,
-	0x01, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x20, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x70, 0x75, 0x62, 0x6c,
-	0x69, 0x63, 0x2e, 0x73, 0x65, 0x63, 0x72, 0x65, 0x74, 0x73, 0x2e, 0x4f, 0x41, 0x75, 0x74, 0x68,
-	0x44, 0x65, 0x74, 0x61, 0x69, 0x6c, 0x73, 0x52, 0x0c, 0x6f, 0x61, 0x75, 0x74, 0x68, 0x44, 0x65,
-	0x74, 0x61, 0x69, 0x6c, 0x73, 0x42, 0x0b, 0x5a, 0x09, 0x2e, 0x2f, 0x73, 0x65, 0x63, 0x72, 0x65,
-	0x74, 0x73, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x6f, 0x6e, 0x42, 0x0b, 0x5a, 0x09, 0x2e, 0x2f, 0x73, 0x65, 0x63, 0x72, 0x65, 0x74, 0x73, 0x62,
+	0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -2459,7 +2291,7 @@ func file_secrets_proto_rawDescGZIP() []byte {
 	return file_secrets_proto_rawDescData
 }
 
-var file_secrets_proto_msgTypes = make([]protoimpl.MessageInfo, 35)
+var file_secrets_proto_msgTypes = make([]protoimpl.MessageInfo, 33)
 var file_secrets_proto_goTypes = []interface{}{
 	(*CreateAccountRequest)(nil),          // 0: api.public.secrets.CreateAccountRequest
 	(*CreateAccountResponse)(nil),         // 1: api.public.secrets.CreateAccountResponse
@@ -2494,42 +2326,37 @@ var file_secrets_proto_goTypes = []interface{}{
 	(*SecretPermission)(nil),              // 30: api.public.secrets.SecretPermission
 	(*ListSecretPermissionsResponse)(nil), // 31: api.public.secrets.ListSecretPermissionsResponse
 	(*UpdateSecretPermissionRequest)(nil), // 32: api.public.secrets.UpdateSecretPermissionRequest
-	(*OAuthDetails)(nil),                  // 33: api.public.secrets.OAuthDetails
-	(*ListOAuthDetailsResponse)(nil),      // 34: api.public.secrets.ListOAuthDetailsResponse
-	(*timestamppb.Timestamp)(nil),         // 35: google.protobuf.Timestamp
+	(*timestamppb.Timestamp)(nil),         // 33: google.protobuf.Timestamp
 }
 var file_secrets_proto_depIdxs = []int32{
 	6,  // 0: api.public.secrets.ListOrgPermissionsResponse.permissions:type_name -> api.public.secrets.OrgPermissions
 	8,  // 1: api.public.secrets.ListOrgMembersResponse.members:type_name -> api.public.secrets.OrgMember
 	8,  // 2: api.public.secrets.UpdateOrgMemberRequest.member:type_name -> api.public.secrets.OrgMember
 	13, // 3: api.public.secrets.ListOrgsResponse.details:type_name -> api.public.secrets.OrgDetail
-	35, // 4: api.public.secrets.AuthToken.expiry:type_name -> google.protobuf.Timestamp
+	33, // 4: api.public.secrets.AuthToken.expiry:type_name -> google.protobuf.Timestamp
 	15, // 5: api.public.secrets.ListAuthTokensResponse.tokens:type_name -> api.public.secrets.AuthToken
-	35, // 6: api.public.secrets.OAuthConnectResponse.expiry:type_name -> google.protobuf.Timestamp
-	35, // 7: api.public.secrets.LoginResponse.expiry:type_name -> google.protobuf.Timestamp
-	35, // 8: api.public.secrets.Project.created_at:type_name -> google.protobuf.Timestamp
-	35, // 9: api.public.secrets.Project.modified_at:type_name -> google.protobuf.Timestamp
-	35, // 10: api.public.secrets.ProjectMember.created_at:type_name -> google.protobuf.Timestamp
-	35, // 11: api.public.secrets.ProjectMember.modified_at:type_name -> google.protobuf.Timestamp
+	33, // 6: api.public.secrets.OAuthConnectResponse.expiry:type_name -> google.protobuf.Timestamp
+	33, // 7: api.public.secrets.LoginResponse.expiry:type_name -> google.protobuf.Timestamp
+	33, // 8: api.public.secrets.Project.created_at:type_name -> google.protobuf.Timestamp
+	33, // 9: api.public.secrets.Project.modified_at:type_name -> google.protobuf.Timestamp
+	33, // 10: api.public.secrets.ProjectMember.created_at:type_name -> google.protobuf.Timestamp
+	33, // 11: api.public.secrets.ProjectMember.modified_at:type_name -> google.protobuf.Timestamp
 	20, // 12: api.public.secrets.CreateProjectRequest.project:type_name -> api.public.secrets.Project
 	20, // 13: api.public.secrets.CreateProjectResponse.project:type_name -> api.public.secrets.Project
 	20, // 14: api.public.secrets.GetProjectResponse.project:type_name -> api.public.secrets.Project
 	20, // 15: api.public.secrets.ListProjectsResponse.projects:type_name -> api.public.secrets.Project
 	21, // 16: api.public.secrets.ListProjectMembersResponse.members:type_name -> api.public.secrets.ProjectMember
-	35, // 17: api.public.secrets.Secret.created_at:type_name -> google.protobuf.Timestamp
-	35, // 18: api.public.secrets.Secret.modified_at:type_name -> google.protobuf.Timestamp
+	33, // 17: api.public.secrets.Secret.created_at:type_name -> google.protobuf.Timestamp
+	33, // 18: api.public.secrets.Secret.modified_at:type_name -> google.protobuf.Timestamp
 	28, // 19: api.public.secrets.ListSecretsResponse.secrets:type_name -> api.public.secrets.Secret
-	35, // 20: api.public.secrets.SecretPermission.created_at:type_name -> google.protobuf.Timestamp
-	35, // 21: api.public.secrets.SecretPermission.modified_at:type_name -> google.protobuf.Timestamp
+	33, // 20: api.public.secrets.SecretPermission.created_at:type_name -> google.protobuf.Timestamp
+	33, // 21: api.public.secrets.SecretPermission.modified_at:type_name -> google.protobuf.Timestamp
 	30, // 22: api.public.secrets.ListSecretPermissionsResponse.secret_permissions:type_name -> api.public.secrets.SecretPermission
-	35, // 23: api.public.secrets.OAuthDetails.access_token_expiry:type_name -> google.protobuf.Timestamp
-	35, // 24: api.public.secrets.OAuthDetails.refresh_token_expiry:type_name -> google.protobuf.Timestamp
-	33, // 25: api.public.secrets.ListOAuthDetailsResponse.oauth_details:type_name -> api.public.secrets.OAuthDetails
-	26, // [26:26] is the sub-list for method output_type
-	26, // [26:26] is the sub-list for method input_type
-	26, // [26:26] is the sub-list for extension type_name
-	26, // [26:26] is the sub-list for extension extendee
-	0,  // [0:26] is the sub-list for field type_name
+	23, // [23:23] is the sub-list for method output_type
+	23, // [23:23] is the sub-list for method input_type
+	23, // [23:23] is the sub-list for extension type_name
+	23, // [23:23] is the sub-list for extension extendee
+	0,  // [0:23] is the sub-list for field type_name
 }
 
 func init() { file_secrets_proto_init() }
@@ -2934,30 +2761,6 @@ func file_secrets_proto_init() {
 				return nil
 			}
 		}
-		file_secrets_proto_msgTypes[33].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*OAuthDetails); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_secrets_proto_msgTypes[34].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ListOAuthDetailsResponse); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -2965,7 +2768,7 @@ func file_secrets_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_secrets_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   35,
+			NumMessages:   33,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
