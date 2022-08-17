@@ -49,12 +49,6 @@ service Pipelines {
       get: "/api/v0/satellites/{name}"
     };
   }
-  // ListRemoteRepos uses the GitHub API to list remote repositories.
-  rpc ListRemoteRepos(ListRemoteReposRequest) returns (ListRemoteReposResponse) {
-    option (google.api.http) = {
-      get: "/api/v0/repos/remote"
-    };
-  }
 }
 
 message ManualBuildRequest {
@@ -146,19 +140,4 @@ message GetSatelliteResponse {
   string id = 5;
   string private_ip = 6;
   string private_dns = 7;
-}
-
-message ListRemoteReposRequest {
-  string org = 1;
-}
-
-message RemoteRepo {
-  string name = 1;
-  string org = 2;
-  string url = 3;
-  string provider = 4;
-}
-
-message ListRemoteReposResponse {
-  repeated RemoteRepo repos = 1;
 }
