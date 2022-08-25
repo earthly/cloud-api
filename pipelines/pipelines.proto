@@ -3,6 +3,7 @@ package api.public.pipelines;
 option go_package = "./pipelines";
 
 import "google/api/annotations.proto";
+import "google/protobuf/timestamp.proto";
 
 service Pipelines {
   // ManualBuild manually triggers a Pipeline build with the
@@ -189,6 +190,7 @@ message ProjectRepo {
   string url = 4;
   string provider = 5;
   string project = 6;
+  google.protobuf.Timestamp created_at = 7;
 }
 
 message AddProjectReposRequest {
