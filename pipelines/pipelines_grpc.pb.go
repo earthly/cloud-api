@@ -42,6 +42,12 @@ type PipelinesClient interface {
 	WakeSatellite(ctx context.Context, in *WakeSatelliteRequest, opts ...grpc.CallOption) (*WakeSatelliteResponse, error)
 	// ListRemoteRepos uses the GitHub API to list remote repositories.
 	ListRemoteRepos(ctx context.Context, in *ListRemoteReposRequest, opts ...grpc.CallOption) (*ListRemoteReposResponse, error)
+	// AddProjectRepos adds one or more repositories to a project.
+	AddProjectRepos(ctx context.Context, in *AddProjectReposRequest, opts ...grpc.CallOption) (*AddProjectReposResponse, error)
+	// RemoveProjectRepo removes a repository from a project.
+	RemoveProjectRepo(ctx context.Context, in *RemoveProjectRepoRequest, opts ...grpc.CallOption) (*RemoveProjectRepoResponse, error)
+	// ListProjectRespos lists all project repositories.
+	ListProjectRepos(ctx context.Context, in *ListProjectReposRequest, opts ...grpc.CallOption) (*ListProjectReposResponse, error)
 }
 
 type pipelinesClient struct {
@@ -124,6 +130,33 @@ func (c *pipelinesClient) ListRemoteRepos(ctx context.Context, in *ListRemoteRep
 	return out, nil
 }
 
+func (c *pipelinesClient) AddProjectRepos(ctx context.Context, in *AddProjectReposRequest, opts ...grpc.CallOption) (*AddProjectReposResponse, error) {
+	out := new(AddProjectReposResponse)
+	err := c.cc.Invoke(ctx, "/api.public.pipelines.Pipelines/AddProjectRepos", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *pipelinesClient) RemoveProjectRepo(ctx context.Context, in *RemoveProjectRepoRequest, opts ...grpc.CallOption) (*RemoveProjectRepoResponse, error) {
+	out := new(RemoveProjectRepoResponse)
+	err := c.cc.Invoke(ctx, "/api.public.pipelines.Pipelines/RemoveProjectRepo", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *pipelinesClient) ListProjectRepos(ctx context.Context, in *ListProjectReposRequest, opts ...grpc.CallOption) (*ListProjectReposResponse, error) {
+	out := new(ListProjectReposResponse)
+	err := c.cc.Invoke(ctx, "/api.public.pipelines.Pipelines/ListProjectRepos", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // PipelinesServer is the server API for Pipelines service.
 // All implementations must embed UnimplementedPipelinesServer
 // for forward compatibility
@@ -148,6 +181,12 @@ type PipelinesServer interface {
 	WakeSatellite(context.Context, *WakeSatelliteRequest) (*WakeSatelliteResponse, error)
 	// ListRemoteRepos uses the GitHub API to list remote repositories.
 	ListRemoteRepos(context.Context, *ListRemoteReposRequest) (*ListRemoteReposResponse, error)
+	// AddProjectRepos adds one or more repositories to a project.
+	AddProjectRepos(context.Context, *AddProjectReposRequest) (*AddProjectReposResponse, error)
+	// RemoveProjectRepo removes a repository from a project.
+	RemoveProjectRepo(context.Context, *RemoveProjectRepoRequest) (*RemoveProjectRepoResponse, error)
+	// ListProjectRespos lists all project repositories.
+	ListProjectRepos(context.Context, *ListProjectReposRequest) (*ListProjectReposResponse, error)
 	mustEmbedUnimplementedPipelinesServer()
 }
 
@@ -178,6 +217,15 @@ func (UnimplementedPipelinesServer) WakeSatellite(context.Context, *WakeSatellit
 }
 func (UnimplementedPipelinesServer) ListRemoteRepos(context.Context, *ListRemoteReposRequest) (*ListRemoteReposResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListRemoteRepos not implemented")
+}
+func (UnimplementedPipelinesServer) AddProjectRepos(context.Context, *AddProjectReposRequest) (*AddProjectReposResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddProjectRepos not implemented")
+}
+func (UnimplementedPipelinesServer) RemoveProjectRepo(context.Context, *RemoveProjectRepoRequest) (*RemoveProjectRepoResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RemoveProjectRepo not implemented")
+}
+func (UnimplementedPipelinesServer) ListProjectRepos(context.Context, *ListProjectReposRequest) (*ListProjectReposResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListProjectRepos not implemented")
 }
 func (UnimplementedPipelinesServer) mustEmbedUnimplementedPipelinesServer() {}
 
@@ -336,6 +384,60 @@ func _Pipelines_ListRemoteRepos_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Pipelines_AddProjectRepos_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddProjectReposRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PipelinesServer).AddProjectRepos(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.public.pipelines.Pipelines/AddProjectRepos",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PipelinesServer).AddProjectRepos(ctx, req.(*AddProjectReposRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Pipelines_RemoveProjectRepo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RemoveProjectRepoRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PipelinesServer).RemoveProjectRepo(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.public.pipelines.Pipelines/RemoveProjectRepo",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PipelinesServer).RemoveProjectRepo(ctx, req.(*RemoveProjectRepoRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Pipelines_ListProjectRepos_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListProjectReposRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PipelinesServer).ListProjectRepos(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.public.pipelines.Pipelines/ListProjectRepos",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PipelinesServer).ListProjectRepos(ctx, req.(*ListProjectReposRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Pipelines_ServiceDesc is the grpc.ServiceDesc for Pipelines service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -374,6 +476,18 @@ var Pipelines_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListRemoteRepos",
 			Handler:    _Pipelines_ListRemoteRepos_Handler,
+		},
+		{
+			MethodName: "AddProjectRepos",
+			Handler:    _Pipelines_AddProjectRepos_Handler,
+		},
+		{
+			MethodName: "RemoveProjectRepo",
+			Handler:    _Pipelines_RemoveProjectRepo_Handler,
+		},
+		{
+			MethodName: "ListProjectRepos",
+			Handler:    _Pipelines_ListProjectRepos_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
