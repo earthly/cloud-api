@@ -116,6 +116,7 @@ message LaunchSatelliteRequest {
   string org_id = 1;
   string name = 2; // characters should be valid within a URL
   string platform = 3; // Supported values now are: linux/amd64, linux/arm64
+  repeated string feature_flags = 4;
 }
 
 enum SatelliteStatus {
@@ -130,7 +131,6 @@ enum SatelliteStatus {
 message LaunchSatelliteResponse {
   SatelliteStatus status = 1;
   string version = 2; // deprecated
-  repeated string feature_flags = 3;
 }
 
 message ListSatellitesRequest {
