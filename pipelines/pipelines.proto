@@ -3,6 +3,7 @@ package api.public.pipelines;
 option go_package = "./pipelines";
 
 import "google/api/annotations.proto";
+import "google/protobuf/timestamp.proto";
 
 service Pipelines {
   // ManualBuild manually triggers a Pipeline build with the
@@ -53,6 +54,25 @@ service Pipelines {
   rpc ListRemoteRepos(ListRemoteReposRequest) returns (ListRemoteReposResponse) {
     option (google.api.http) = {
       get: "/api/v0/repos/remote"
+    };
+  }
+  // AddProjectRepos adds one or more repositories to a project.
+  rpc AddProjectRepos(AddProjectReposRequest) returns (AddProjectReposResponse) {
+    option (google.api.http) = {
+      post: "/api/v0/repos"
+      body: "*",
+    };
+  }
+  // RemoveProjectRepo removes a repository from a project.
+  rpc RemoveProjectRepo(RemoveProjectRepoRequest) returns (RemoveProjectRepoResponse) {
+    option (google.api.http) = {
+      delete: "/api/v0/repos/{id}"
+    };
+  }
+  // ListProjectRespos lists all project repositories.
+  rpc ListProjectRepos(ListProjectReposRequest) returns (ListProjectReposResponse) {
+    option (google.api.http) = {
+      get: "/api/v0/repos"
     };
   }
 }
@@ -161,4 +181,34 @@ message RemoteRepo {
 
 message ListRemoteReposResponse {
   repeated RemoteRepo repos = 1;
+}
+
+message ProjectRepo {
+  string id = 1;
+  string name = 2;
+  string org = 3;
+  string url = 4;
+  string provider = 5;
+  string project = 6;
+  google.protobuf.Timestamp created_at = 7;
+}
+
+message AddProjectReposRequest {
+  repeated ProjectRepo repos = 1;
+}
+
+message AddProjectReposResponse {}
+
+message RemoveProjectRepoRequest {
+  string id = 1;
+}
+
+message RemoveProjectRepoResponse {}
+
+message ListProjectReposRequest {
+  string project = 1;
+}
+
+message ListProjectReposResponse {
+  repeated ProjectRepo repos = 1;
 }
