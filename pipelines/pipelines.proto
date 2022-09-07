@@ -126,6 +126,7 @@ enum SatelliteStatus {
   SATELLITE_STATUS_OFFLINE = 3;
   SATELLITE_STATUS_DESTROYING = 4;
   SATELLITE_STATUS_FAILED = 5;
+  SATELLITE_STATUS_SLEEP = 6;
 }
 
 message LaunchSatelliteResponse {
