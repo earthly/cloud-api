@@ -39,6 +39,7 @@ type PipelinesClient interface {
 	// GetSatellite retrieves the details of a particular Satellite instance.
 	// Mainly intended for use by Buildkit Proxy when establishing a new connection to an instance.
 	GetSatellite(ctx context.Context, in *GetSatelliteRequest, opts ...grpc.CallOption) (*GetSatelliteResponse, error)
+	WakeSatellite(ctx context.Context, in *WakeSatelliteRequest, opts ...grpc.CallOption) (*WakeSatelliteResponse, error)
 	// ListRemoteRepos uses the GitHub API to list remote repositories.
 	ListRemoteRepos(ctx context.Context, in *ListRemoteReposRequest, opts ...grpc.CallOption) (*ListRemoteReposResponse, error)
 	// AddProjectRepos adds one or more repositories to a project.
@@ -111,6 +112,15 @@ func (c *pipelinesClient) GetSatellite(ctx context.Context, in *GetSatelliteRequ
 	return out, nil
 }
 
+func (c *pipelinesClient) WakeSatellite(ctx context.Context, in *WakeSatelliteRequest, opts ...grpc.CallOption) (*WakeSatelliteResponse, error) {
+	out := new(WakeSatelliteResponse)
+	err := c.cc.Invoke(ctx, "/api.public.pipelines.Pipelines/WakeSatellite", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *pipelinesClient) ListRemoteRepos(ctx context.Context, in *ListRemoteReposRequest, opts ...grpc.CallOption) (*ListRemoteReposResponse, error) {
 	out := new(ListRemoteReposResponse)
 	err := c.cc.Invoke(ctx, "/api.public.pipelines.Pipelines/ListRemoteRepos", in, out, opts...)
@@ -168,6 +178,7 @@ type PipelinesServer interface {
 	// GetSatellite retrieves the details of a particular Satellite instance.
 	// Mainly intended for use by Buildkit Proxy when establishing a new connection to an instance.
 	GetSatellite(context.Context, *GetSatelliteRequest) (*GetSatelliteResponse, error)
+	WakeSatellite(context.Context, *WakeSatelliteRequest) (*WakeSatelliteResponse, error)
 	// ListRemoteRepos uses the GitHub API to list remote repositories.
 	ListRemoteRepos(context.Context, *ListRemoteReposRequest) (*ListRemoteReposResponse, error)
 	// AddProjectRepos adds one or more repositories to a project.
@@ -200,6 +211,9 @@ func (UnimplementedPipelinesServer) DeleteSatellite(context.Context, *DeleteSate
 }
 func (UnimplementedPipelinesServer) GetSatellite(context.Context, *GetSatelliteRequest) (*GetSatelliteResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetSatellite not implemented")
+}
+func (UnimplementedPipelinesServer) WakeSatellite(context.Context, *WakeSatelliteRequest) (*WakeSatelliteResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method WakeSatellite not implemented")
 }
 func (UnimplementedPipelinesServer) ListRemoteRepos(context.Context, *ListRemoteReposRequest) (*ListRemoteReposResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListRemoteRepos not implemented")
@@ -334,6 +348,24 @@ func _Pipelines_GetSatellite_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Pipelines_WakeSatellite_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(WakeSatelliteRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PipelinesServer).WakeSatellite(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.public.pipelines.Pipelines/WakeSatellite",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PipelinesServer).WakeSatellite(ctx, req.(*WakeSatelliteRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Pipelines_ListRemoteRepos_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ListRemoteReposRequest)
 	if err := dec(in); err != nil {
@@ -436,6 +468,10 @@ var Pipelines_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetSatellite",
 			Handler:    _Pipelines_GetSatellite_Handler,
+		},
+		{
+			MethodName: "WakeSatellite",
+			Handler:    _Pipelines_WakeSatellite_Handler,
 		},
 		{
 			MethodName: "ListRemoteRepos",

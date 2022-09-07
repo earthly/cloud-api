@@ -50,6 +50,14 @@ service Pipelines {
       get: "/api/v0/satellites/{name}"
     };
   }
+
+  rpc WakeSatellite(WakeSatelliteRequest) returns (WakeSatelliteResponse) {
+    option (google.api.http) = {
+      post: "/api/v0/satellites/{name}/wake"
+      body: "*"
+    };
+  }
+
   // ListRemoteRepos uses the GitHub API to list remote repositories.
   rpc ListRemoteRepos(ListRemoteReposRequest) returns (ListRemoteReposResponse) {
     option (google.api.http) = {
@@ -108,6 +116,7 @@ message LaunchSatelliteRequest {
   string org_id = 1;
   string name = 2; // characters should be valid within a URL
   string platform = 3; // Supported values now are: linux/amd64, linux/arm64
+  repeated string feature_flags = 4;
 }
 
 enum SatelliteStatus {
@@ -117,6 +126,7 @@ enum SatelliteStatus {
   SATELLITE_STATUS_OFFLINE = 3;
   SATELLITE_STATUS_DESTROYING = 4;
   SATELLITE_STATUS_FAILED = 5;
+  SATELLITE_STATUS_SLEEP = 6;
 }
 
 message LaunchSatelliteResponse {
@@ -166,6 +176,17 @@ message GetSatelliteResponse {
   string id = 5;
   string private_ip = 6;
   string private_dns = 7;
+}
+
+message WakeSatelliteRequest {
+  string org_id = 1;
+  string name = 2;
+}
+
+message WakeSatelliteResponse {
+  // is_asleep indicates if the satellite was asleep when the request
+  // was made, and hence may take a short moment to wake back up.
+  bool is_asleep = 1;
 }
 
 message ListRemoteReposRequest {
