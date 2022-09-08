@@ -184,9 +184,9 @@ message WakeSatelliteRequest {
 }
 
 message WakeSatelliteResponse {
-  // is_asleep indicates if the satellite was asleep when the request
+  // triggered_wake_up indicates if the satellite was asleep when the request
   // was made, and hence may take a short moment to wake back up.
-  bool is_asleep = 1;
+  bool triggered_wake_up = 1;
 }
 
 message ListRemoteReposRequest {
