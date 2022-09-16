@@ -51,12 +51,16 @@ service Pipelines {
     };
   }
 
+  // WakeSatellite starts the instance from a sleep state.
   rpc WakeSatellite(WakeSatelliteRequest) returns (WakeSatelliteResponse) {
     option (google.api.http) = {
       post: "/api/v0/satellites/{name}/wake"
       body: "*"
     };
   }
+
+  // ReserveSatellite wakes a satellite when necessary and calls Buildkit's Reserve.
+  rpc ReserveSatellite(ReserveSatelliteRequest) returns (stream ReserveSatelliteResponse) {}
 
   // ListRemoteRepos uses the GitHub API to list remote repositories.
   rpc ListRemoteRepos(ListRemoteReposRequest) returns (ListRemoteReposResponse) {
@@ -120,13 +124,14 @@ message LaunchSatelliteRequest {
 }
 
 enum SatelliteStatus {
-  SATELLITE_STATUS_UNSPECIFIED = 0;
+  SATELLITE_STATUS_UNKNOWN = 0;
   SATELLITE_STATUS_CREATING = 1;
   SATELLITE_STATUS_OPERATIONAL = 2;
   SATELLITE_STATUS_OFFLINE = 3;
   SATELLITE_STATUS_DESTROYING = 4;
   SATELLITE_STATUS_FAILED = 5;
   SATELLITE_STATUS_SLEEP = 6;
+  SATELLITE_STATUS_STARTING = 7;
 }
 
 message LaunchSatelliteResponse {
@@ -187,6 +192,15 @@ message WakeSatelliteResponse {
   // triggered_wake_up indicates if the satellite was asleep when the request
   // was made, and hence may take a short moment to wake back up.
   bool triggered_wake_up = 1;
+}
+
+message ReserveSatelliteRequest {
+  string org_id = 1;
+  string name = 2;
+}
+
+message ReserveSatelliteResponse {
+  SatelliteStatus status = 1;
 }
 
 message ListRemoteReposRequest {
