@@ -83,6 +83,12 @@ service Pipelines {
       get: "/api/v0/repos"
     };
   }
+  // ListRemotePipelines uses the GitHub API to list pipeline definitions present in a remote repository.
+  rpc ListRemotePipelines(ListRemotePipelinesRequest) returns (ListRemotePipelinesResponse) {
+    option (google.api.http) = {
+      get: "/api/v0/pipelines/remote"
+    };
+  }
 }
 
 message ManualBuildRequest {
@@ -232,4 +238,46 @@ message ListProjectReposRequest {
 
 message ListProjectReposResponse {
   repeated ProjectRepo repos = 1;
+}
+
+enum TriggerType {
+  TRIGGER_TYPE_UNSPECIFIED = 0;
+  TRIGGER_TYPE_MANUAL = 1;
+  TRIGGER_TYPE_PUSH = 2;
+  TRIGGER_TYPE_PR = 3;
+}
+
+message PipelineTrigger {
+  TriggerType type = 1;
+  string modifier = 2;
+}
+
+message PipelineArg {
+  string name = 1;
+  string default_value = 2;
+}
+
+message Pipeline {
+  string repo = 1;
+  string path = 2;
+  string name = 3;
+  string org = 4;
+  repeated PipelineTrigger triggers = 5;
+  repeated PipelineArg args = 6;
+}
+
+message EarthfileParsingError {
+  string path = 1;
+  string error = 2;
+}
+
+message ListRemotePipelinesRequest {
+  string repo = 1;
+  string org = 2;
+  string provider = 3;
+}
+
+message ListRemotePipelinesResponse {
+  repeated Pipeline pipelines = 1;
+  repeated EarthfileParsingError parsing_errors = 2;
 }
