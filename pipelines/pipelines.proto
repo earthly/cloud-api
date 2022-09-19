@@ -50,6 +50,14 @@ service Pipelines {
       get: "/api/v0/satellites/{name}"
     };
   }
+
+  rpc WakeSatellite(WakeSatelliteRequest) returns (WakeSatelliteResponse) {
+    option (google.api.http) = {
+      post: "/api/v0/satellites/{name}/wake"
+      body: "*"
+    };
+  }
+
   // ListRemoteRepos uses the GitHub API to list remote repositories.
   rpc ListRemoteRepos(ListRemoteReposRequest) returns (ListRemoteReposResponse) {
     option (google.api.http) = {
@@ -73,6 +81,12 @@ service Pipelines {
   rpc ListProjectRepos(ListProjectReposRequest) returns (ListProjectReposResponse) {
     option (google.api.http) = {
       get: "/api/v0/repos"
+    };
+  }
+  // ListRemotePipelines uses the GitHub API to list pipeline definitions present in a remote repository.
+  rpc ListRemotePipelines(ListRemotePipelinesRequest) returns (ListRemotePipelinesResponse) {
+    option (google.api.http) = {
+      get: "/api/v0/pipelines/remote"
     };
   }
 }
@@ -108,6 +122,7 @@ message LaunchSatelliteRequest {
   string org_id = 1;
   string name = 2; // characters should be valid within a URL
   string platform = 3; // Supported values now are: linux/amd64, linux/arm64
+  repeated string feature_flags = 4;
 }
 
 enum SatelliteStatus {
@@ -117,6 +132,7 @@ enum SatelliteStatus {
   SATELLITE_STATUS_OFFLINE = 3;
   SATELLITE_STATUS_DESTROYING = 4;
   SATELLITE_STATUS_FAILED = 5;
+  SATELLITE_STATUS_SLEEP = 6;
 }
 
 message LaunchSatelliteResponse {
@@ -168,6 +184,17 @@ message GetSatelliteResponse {
   string private_dns = 7;
 }
 
+message WakeSatelliteRequest {
+  string org_id = 1;
+  string name = 2;
+}
+
+message WakeSatelliteResponse {
+  // triggered_wake_up indicates if the satellite was asleep when the request
+  // was made, and hence may take a short moment to wake back up.
+  bool triggered_wake_up = 1;
+}
+
 message ListRemoteReposRequest {
   string org = 1;
 }
@@ -211,4 +238,46 @@ message ListProjectReposRequest {
 
 message ListProjectReposResponse {
   repeated ProjectRepo repos = 1;
+}
+
+enum TriggerType {
+  TRIGGER_TYPE_UNSPECIFIED = 0;
+  TRIGGER_TYPE_MANUAL = 1;
+  TRIGGER_TYPE_PUSH = 2;
+  TRIGGER_TYPE_PR = 3;
+}
+
+message PipelineTrigger {
+  TriggerType type = 1;
+  string modifier = 2;
+}
+
+message PipelineArg {
+  string name = 1;
+  string default_value = 2;
+}
+
+message Pipeline {
+  string repo = 1;
+  string path = 2;
+  string name = 3;
+  string org = 4;
+  repeated PipelineTrigger triggers = 5;
+  repeated PipelineArg args = 6;
+}
+
+message EarthfileParsingError {
+  string path = 1;
+  string error = 2;
+}
+
+message ListRemotePipelinesRequest {
+  string repo = 1;
+  string org = 2;
+  string provider = 3;
+}
+
+message ListRemotePipelinesResponse {
+  repeated Pipeline pipelines = 1;
+  repeated EarthfileParsingError parsing_errors = 2;
 }
