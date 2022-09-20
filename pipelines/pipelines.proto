@@ -294,6 +294,7 @@ message RemoteOrg {
   string name = 1;
   string membership = 2;
   string provider = 3;
+  bool app_installed = 4;
 }
 
 message ListRemoteOrgsResponse {
