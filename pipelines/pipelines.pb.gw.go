@@ -501,6 +501,24 @@ func local_request_Pipelines_ListRemoteRepos_0(ctx context.Context, marshaler ru
 
 }
 
+func request_Pipelines_ListRemoteOrgs_0(ctx context.Context, marshaler runtime.Marshaler, client PipelinesClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListRemoteOrgsRequest
+	var metadata runtime.ServerMetadata
+
+	msg, err := client.ListRemoteOrgs(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_Pipelines_ListRemoteOrgs_0(ctx context.Context, marshaler runtime.Marshaler, server PipelinesServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListRemoteOrgsRequest
+	var metadata runtime.ServerMetadata
+
+	msg, err := server.ListRemoteOrgs(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
 func request_Pipelines_AddProjectRepos_0(ctx context.Context, marshaler runtime.Marshaler, client PipelinesClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq AddProjectReposRequest
 	var metadata runtime.ServerMetadata
@@ -849,6 +867,29 @@ func RegisterPipelinesHandlerServer(ctx context.Context, mux *runtime.ServeMux, 
 
 	})
 
+	mux.Handle("GET", pattern_Pipelines_ListRemoteOrgs_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/api.public.pipelines.Pipelines/ListRemoteOrgs", runtime.WithHTTPPathPattern("/api/v0/repos/orgs"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_Pipelines_ListRemoteOrgs_0(rctx, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		ctx = runtime.NewServerMetadataContext(ctx, md)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_Pipelines_ListRemoteOrgs_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
 	mux.Handle("POST", pattern_Pipelines_AddProjectRepos_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
@@ -1142,6 +1183,26 @@ func RegisterPipelinesHandlerClient(ctx context.Context, mux *runtime.ServeMux, 
 
 	})
 
+	mux.Handle("GET", pattern_Pipelines_ListRemoteOrgs_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/api.public.pipelines.Pipelines/ListRemoteOrgs", runtime.WithHTTPPathPattern("/api/v0/repos/orgs"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_Pipelines_ListRemoteOrgs_0(rctx, inboundMarshaler, client, req, pathParams)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_Pipelines_ListRemoteOrgs_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
 	mux.Handle("POST", pattern_Pipelines_AddProjectRepos_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
@@ -1242,6 +1303,8 @@ var (
 
 	pattern_Pipelines_ListRemoteRepos_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "v0", "repos", "remote"}, ""))
 
+	pattern_Pipelines_ListRemoteOrgs_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "v0", "repos", "orgs"}, ""))
+
 	pattern_Pipelines_AddProjectRepos_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v0", "repos"}, ""))
 
 	pattern_Pipelines_RemoveProjectRepo_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"api", "v0", "repos", "id"}, ""))
@@ -1267,6 +1330,8 @@ var (
 	forward_Pipelines_WakeSatellite_0 = runtime.ForwardResponseMessage
 
 	forward_Pipelines_ListRemoteRepos_0 = runtime.ForwardResponseMessage
+
+	forward_Pipelines_ListRemoteOrgs_0 = runtime.ForwardResponseMessage
 
 	forward_Pipelines_AddProjectRepos_0 = runtime.ForwardResponseMessage
 
