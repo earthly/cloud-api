@@ -45,6 +45,8 @@ type PipelinesClient interface {
 	ReserveSatellite(ctx context.Context, in *ReserveSatelliteRequest, opts ...grpc.CallOption) (Pipelines_ReserveSatelliteClient, error)
 	// ListRemoteRepos uses the GitHub API to list remote repositories.
 	ListRemoteRepos(ctx context.Context, in *ListRemoteReposRequest, opts ...grpc.CallOption) (*ListRemoteReposResponse, error)
+	// ListRemoteOrgs lists Git repository organizations from external providers like GitHub.
+	ListRemoteOrgs(ctx context.Context, in *ListRemoteOrgsRequest, opts ...grpc.CallOption) (*ListRemoteOrgsResponse, error)
 	// AddProjectRepos adds one or more repositories to a project.
 	AddProjectRepos(ctx context.Context, in *AddProjectReposRequest, opts ...grpc.CallOption) (*AddProjectReposResponse, error)
 	// RemoveProjectRepo removes a repository from a project.
@@ -167,6 +169,15 @@ func (c *pipelinesClient) ListRemoteRepos(ctx context.Context, in *ListRemoteRep
 	return out, nil
 }
 
+func (c *pipelinesClient) ListRemoteOrgs(ctx context.Context, in *ListRemoteOrgsRequest, opts ...grpc.CallOption) (*ListRemoteOrgsResponse, error) {
+	out := new(ListRemoteOrgsResponse)
+	err := c.cc.Invoke(ctx, "/api.public.pipelines.Pipelines/ListRemoteOrgs", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *pipelinesClient) AddProjectRepos(ctx context.Context, in *AddProjectReposRequest, opts ...grpc.CallOption) (*AddProjectReposResponse, error) {
 	out := new(AddProjectReposResponse)
 	err := c.cc.Invoke(ctx, "/api.public.pipelines.Pipelines/AddProjectRepos", in, out, opts...)
@@ -230,6 +241,8 @@ type PipelinesServer interface {
 	ReserveSatellite(*ReserveSatelliteRequest, Pipelines_ReserveSatelliteServer) error
 	// ListRemoteRepos uses the GitHub API to list remote repositories.
 	ListRemoteRepos(context.Context, *ListRemoteReposRequest) (*ListRemoteReposResponse, error)
+	// ListRemoteOrgs lists Git repository organizations from external providers like GitHub.
+	ListRemoteOrgs(context.Context, *ListRemoteOrgsRequest) (*ListRemoteOrgsResponse, error)
 	// AddProjectRepos adds one or more repositories to a project.
 	AddProjectRepos(context.Context, *AddProjectReposRequest) (*AddProjectReposResponse, error)
 	// RemoveProjectRepo removes a repository from a project.
@@ -271,6 +284,9 @@ func (UnimplementedPipelinesServer) ReserveSatellite(*ReserveSatelliteRequest, P
 }
 func (UnimplementedPipelinesServer) ListRemoteRepos(context.Context, *ListRemoteReposRequest) (*ListRemoteReposResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListRemoteRepos not implemented")
+}
+func (UnimplementedPipelinesServer) ListRemoteOrgs(context.Context, *ListRemoteOrgsRequest) (*ListRemoteOrgsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListRemoteOrgs not implemented")
 }
 func (UnimplementedPipelinesServer) AddProjectRepos(context.Context, *AddProjectReposRequest) (*AddProjectReposResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddProjectRepos not implemented")
@@ -462,6 +478,24 @@ func _Pipelines_ListRemoteRepos_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Pipelines_ListRemoteOrgs_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListRemoteOrgsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PipelinesServer).ListRemoteOrgs(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.public.pipelines.Pipelines/ListRemoteOrgs",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PipelinesServer).ListRemoteOrgs(ctx, req.(*ListRemoteOrgsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Pipelines_AddProjectRepos_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(AddProjectReposRequest)
 	if err := dec(in); err != nil {
@@ -572,6 +606,10 @@ var Pipelines_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListRemoteRepos",
 			Handler:    _Pipelines_ListRemoteRepos_Handler,
+		},
+		{
+			MethodName: "ListRemoteOrgs",
+			Handler:    _Pipelines_ListRemoteOrgs_Handler,
 		},
 		{
 			MethodName: "AddProjectRepos",

@@ -68,6 +68,12 @@ service Pipelines {
       get: "/api/v0/repos/remote"
     };
   }
+  // ListRemoteOrgs lists Git repository organizations from external providers like GitHub.
+  rpc ListRemoteOrgs(ListRemoteOrgsRequest) returns (ListRemoteOrgsResponse) {
+    option (google.api.http) = {
+      get: "/api/v0/repos/orgs"
+    };
+  }
   // AddProjectRepos adds one or more repositories to a project.
   rpc AddProjectRepos(AddProjectReposRequest) returns (AddProjectReposResponse) {
     option (google.api.http) = {
@@ -294,4 +300,17 @@ message ListRemotePipelinesRequest {
 message ListRemotePipelinesResponse {
   repeated Pipeline pipelines = 1;
   repeated EarthfileParsingError parsing_errors = 2;
+}
+
+message ListRemoteOrgsRequest {}
+
+message RemoteOrg {
+  string name = 1;
+  string membership = 2;
+  string provider = 3;
+  bool app_installed = 4;
+}
+
+message ListRemoteOrgsResponse {
+  repeated RemoteOrg remote_orgs = 1;
 }
