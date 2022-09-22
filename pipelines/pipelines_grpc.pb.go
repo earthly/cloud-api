@@ -39,7 +39,10 @@ type PipelinesClient interface {
 	// GetSatellite retrieves the details of a particular Satellite instance.
 	// Mainly intended for use by Buildkit Proxy when establishing a new connection to an instance.
 	GetSatellite(ctx context.Context, in *GetSatelliteRequest, opts ...grpc.CallOption) (*GetSatelliteResponse, error)
+	// WakeSatellite starts the instance from a sleep state.
 	WakeSatellite(ctx context.Context, in *WakeSatelliteRequest, opts ...grpc.CallOption) (*WakeSatelliteResponse, error)
+	// ReserveSatellite wakes a satellite when necessary and calls Buildkit's Reserve.
+	ReserveSatellite(ctx context.Context, in *ReserveSatelliteRequest, opts ...grpc.CallOption) (Pipelines_ReserveSatelliteClient, error)
 	// ListRemoteRepos uses the GitHub API to list remote repositories.
 	ListRemoteRepos(ctx context.Context, in *ListRemoteReposRequest, opts ...grpc.CallOption) (*ListRemoteReposResponse, error)
 	// ListRemoteOrgs lists Git repository organizations from external providers like GitHub.
@@ -125,6 +128,38 @@ func (c *pipelinesClient) WakeSatellite(ctx context.Context, in *WakeSatelliteRe
 	return out, nil
 }
 
+func (c *pipelinesClient) ReserveSatellite(ctx context.Context, in *ReserveSatelliteRequest, opts ...grpc.CallOption) (Pipelines_ReserveSatelliteClient, error) {
+	stream, err := c.cc.NewStream(ctx, &Pipelines_ServiceDesc.Streams[0], "/api.public.pipelines.Pipelines/ReserveSatellite", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &pipelinesReserveSatelliteClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type Pipelines_ReserveSatelliteClient interface {
+	Recv() (*ReserveSatelliteResponse, error)
+	grpc.ClientStream
+}
+
+type pipelinesReserveSatelliteClient struct {
+	grpc.ClientStream
+}
+
+func (x *pipelinesReserveSatelliteClient) Recv() (*ReserveSatelliteResponse, error) {
+	m := new(ReserveSatelliteResponse)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 func (c *pipelinesClient) ListRemoteRepos(ctx context.Context, in *ListRemoteReposRequest, opts ...grpc.CallOption) (*ListRemoteReposResponse, error) {
 	out := new(ListRemoteReposResponse)
 	err := c.cc.Invoke(ctx, "/api.public.pipelines.Pipelines/ListRemoteRepos", in, out, opts...)
@@ -200,7 +235,10 @@ type PipelinesServer interface {
 	// GetSatellite retrieves the details of a particular Satellite instance.
 	// Mainly intended for use by Buildkit Proxy when establishing a new connection to an instance.
 	GetSatellite(context.Context, *GetSatelliteRequest) (*GetSatelliteResponse, error)
+	// WakeSatellite starts the instance from a sleep state.
 	WakeSatellite(context.Context, *WakeSatelliteRequest) (*WakeSatelliteResponse, error)
+	// ReserveSatellite wakes a satellite when necessary and calls Buildkit's Reserve.
+	ReserveSatellite(*ReserveSatelliteRequest, Pipelines_ReserveSatelliteServer) error
 	// ListRemoteRepos uses the GitHub API to list remote repositories.
 	ListRemoteRepos(context.Context, *ListRemoteReposRequest) (*ListRemoteReposResponse, error)
 	// ListRemoteOrgs lists Git repository organizations from external providers like GitHub.
@@ -240,6 +278,9 @@ func (UnimplementedPipelinesServer) GetSatellite(context.Context, *GetSatelliteR
 }
 func (UnimplementedPipelinesServer) WakeSatellite(context.Context, *WakeSatelliteRequest) (*WakeSatelliteResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method WakeSatellite not implemented")
+}
+func (UnimplementedPipelinesServer) ReserveSatellite(*ReserveSatelliteRequest, Pipelines_ReserveSatelliteServer) error {
+	return status.Errorf(codes.Unimplemented, "method ReserveSatellite not implemented")
 }
 func (UnimplementedPipelinesServer) ListRemoteRepos(context.Context, *ListRemoteReposRequest) (*ListRemoteReposResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListRemoteRepos not implemented")
@@ -396,6 +437,27 @@ func _Pipelines_WakeSatellite_Handler(srv interface{}, ctx context.Context, dec 
 		return srv.(PipelinesServer).WakeSatellite(ctx, req.(*WakeSatelliteRequest))
 	}
 	return interceptor(ctx, in, info, handler)
+}
+
+func _Pipelines_ReserveSatellite_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(ReserveSatelliteRequest)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(PipelinesServer).ReserveSatellite(m, &pipelinesReserveSatelliteServer{stream})
+}
+
+type Pipelines_ReserveSatelliteServer interface {
+	Send(*ReserveSatelliteResponse) error
+	grpc.ServerStream
+}
+
+type pipelinesReserveSatelliteServer struct {
+	grpc.ServerStream
+}
+
+func (x *pipelinesReserveSatelliteServer) Send(m *ReserveSatelliteResponse) error {
+	return x.ServerStream.SendMsg(m)
 }
 
 func _Pipelines_ListRemoteRepos_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -566,6 +628,12 @@ var Pipelines_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Pipelines_ListRemotePipelines_Handler,
 		},
 	},
-	Streams:  []grpc.StreamDesc{},
+	Streams: []grpc.StreamDesc{
+		{
+			StreamName:    "ReserveSatellite",
+			Handler:       _Pipelines_ReserveSatellite_Handler,
+			ServerStreams: true,
+		},
+	},
 	Metadata: "pipelines.proto",
 }
