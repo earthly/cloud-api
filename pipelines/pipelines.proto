@@ -293,6 +293,15 @@ message PipelineArg {
   string default_value = 2;
 }
 
+message RemotePipeline {
+  string repo = 1;
+  string path = 2;
+  string name = 3;
+  string org = 4;
+  repeated PipelineTrigger triggers = 5;
+  repeated PipelineArg args = 6;
+}
+
 message Pipeline {
   string repo = 1;
   string path = 2;
@@ -319,7 +328,7 @@ message ListRemotePipelinesRequest {
 }
 
 message ListRemotePipelinesResponse {
-  repeated Pipeline pipelines = 1;
+  repeated RemotePipeline pipelines = 1;
   repeated EarthfileParsingError parsing_errors = 2;
 }
 
