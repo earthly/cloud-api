@@ -50,7 +50,6 @@ service Pipelines {
       get: "/api/v0/satellites/{name}"
     };
   }
-
   // WakeSatellite starts the instance from a sleep state.
   rpc WakeSatellite(WakeSatelliteRequest) returns (WakeSatelliteResponse) {
     option (google.api.http) = {
@@ -58,10 +57,8 @@ service Pipelines {
       body: "*"
     };
   }
-
   // ReserveSatellite wakes a satellite when necessary and calls Buildkit's Reserve.
   rpc ReserveSatellite(ReserveSatelliteRequest) returns (stream ReserveSatelliteResponse) {}
-
   // ListRemoteRepos uses the GitHub API to list remote repositories.
   rpc ListRemoteRepos(ListRemoteReposRequest) returns (ListRemoteReposResponse) {
     option (google.api.http) = {
@@ -78,7 +75,7 @@ service Pipelines {
   rpc AddProjectRepos(AddProjectReposRequest) returns (AddProjectReposResponse) {
     option (google.api.http) = {
       post: "/api/v0/repos"
-      body: "*",
+      body: "*"
     };
   }
   // RemoveProjectRepo removes a repository from a project.
@@ -97,6 +94,25 @@ service Pipelines {
   rpc ListRemotePipelines(ListRemotePipelinesRequest) returns (ListRemotePipelinesResponse) {
     option (google.api.http) = {
       get: "/api/v0/pipelines/remote"
+    };
+  }
+  // ListPipelines returns a collection of piplines that can be filtered by project.
+  rpc ListPipelines(ListPipelinesRequest) returns (ListPipelinesResponse) {
+    option (google.api.http) = {
+      get: "/api/v0/pipelines"
+    };
+  }
+  // AddPipelines will create one or more pipelines.
+  rpc AddPipelines(AddPipelinesRequest) returns (AddPipelinesResponse) {
+    option (google.api.http) = {
+      post: "/api/v0/pipelines"
+      body: "*"
+    };
+  }
+  // RemovePipeline will remove an existing pipeline.
+  rpc RemovePipeline(RemovePipelineRequest) returns (RemovePipelineResponse) {
+    option (google.api.http) = {
+      delete: "/api/v0/pipelines/{pipeline_id}"
     };
   }
 }
@@ -277,6 +293,15 @@ message PipelineArg {
   string default_value = 2;
 }
 
+message RemotePipeline {
+  string repo = 1;
+  string path = 2;
+  string name = 3;
+  string org = 4;
+  repeated PipelineTrigger triggers = 5;
+  repeated PipelineArg args = 6;
+}
+
 message Pipeline {
   string repo = 1;
   string path = 2;
@@ -284,6 +309,11 @@ message Pipeline {
   string org = 4;
   repeated PipelineTrigger triggers = 5;
   repeated PipelineArg args = 6;
+  bool enabled = 7;
+  string repo_id = 8;
+  string project = 9;
+  bool is_push = 10;
+  string id = 11;
 }
 
 message EarthfileParsingError {
@@ -298,7 +328,7 @@ message ListRemotePipelinesRequest {
 }
 
 message ListRemotePipelinesResponse {
-  repeated Pipeline pipelines = 1;
+  repeated RemotePipeline pipelines = 1;
   repeated EarthfileParsingError parsing_errors = 2;
 }
 
@@ -314,3 +344,23 @@ message RemoteOrg {
 message ListRemoteOrgsResponse {
   repeated RemoteOrg remote_orgs = 1;
 }
+
+message ListPipelinesRequest {
+  string project = 1;
+}
+
+message ListPipelinesResponse {
+  repeated Pipeline pipelines = 1;
+}
+
+message AddPipelinesRequest {
+  repeated Pipeline pipelines = 1;
+}
+
+message AddPipelinesResponse {}
+
+message RemovePipelineRequest {
+  string pipeline_id = 1;
+}
+
+message RemovePipelineResponse {}
