@@ -61,6 +61,8 @@ type PipelinesClient interface {
 	AddPipelines(ctx context.Context, in *AddPipelinesRequest, opts ...grpc.CallOption) (*AddPipelinesResponse, error)
 	// RemovePipeline will remove an existing pipeline.
 	RemovePipeline(ctx context.Context, in *RemovePipelineRequest, opts ...grpc.CallOption) (*RemovePipelineResponse, error)
+	// GitHubWebhook will receive webhook requests from GitHub.
+	GitHubWebhook(ctx context.Context, in *GitHubWebhookRequest, opts ...grpc.CallOption) (*GitHubWebhookResponse, error)
 }
 
 type pipelinesClient struct {
@@ -247,6 +249,15 @@ func (c *pipelinesClient) RemovePipeline(ctx context.Context, in *RemovePipeline
 	return out, nil
 }
 
+func (c *pipelinesClient) GitHubWebhook(ctx context.Context, in *GitHubWebhookRequest, opts ...grpc.CallOption) (*GitHubWebhookResponse, error) {
+	out := new(GitHubWebhookResponse)
+	err := c.cc.Invoke(ctx, "/api.public.pipelines.Pipelines/GitHubWebhook", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // PipelinesServer is the server API for Pipelines service.
 // All implementations must embed UnimplementedPipelinesServer
 // for forward compatibility
@@ -290,6 +301,8 @@ type PipelinesServer interface {
 	AddPipelines(context.Context, *AddPipelinesRequest) (*AddPipelinesResponse, error)
 	// RemovePipeline will remove an existing pipeline.
 	RemovePipeline(context.Context, *RemovePipelineRequest) (*RemovePipelineResponse, error)
+	// GitHubWebhook will receive webhook requests from GitHub.
+	GitHubWebhook(context.Context, *GitHubWebhookRequest) (*GitHubWebhookResponse, error)
 	mustEmbedUnimplementedPipelinesServer()
 }
 
@@ -347,6 +360,9 @@ func (UnimplementedPipelinesServer) AddPipelines(context.Context, *AddPipelinesR
 }
 func (UnimplementedPipelinesServer) RemovePipeline(context.Context, *RemovePipelineRequest) (*RemovePipelineResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RemovePipeline not implemented")
+}
+func (UnimplementedPipelinesServer) GitHubWebhook(context.Context, *GitHubWebhookRequest) (*GitHubWebhookResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GitHubWebhook not implemented")
 }
 func (UnimplementedPipelinesServer) mustEmbedUnimplementedPipelinesServer() {}
 
@@ -670,6 +686,24 @@ func _Pipelines_RemovePipeline_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Pipelines_GitHubWebhook_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GitHubWebhookRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PipelinesServer).GitHubWebhook(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.public.pipelines.Pipelines/GitHubWebhook",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PipelinesServer).GitHubWebhook(ctx, req.(*GitHubWebhookRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Pipelines_ServiceDesc is the grpc.ServiceDesc for Pipelines service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -740,6 +774,10 @@ var Pipelines_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "RemovePipeline",
 			Handler:    _Pipelines_RemovePipeline_Handler,
+		},
+		{
+			MethodName: "GitHubWebhook",
+			Handler:    _Pipelines_GitHubWebhook_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{
