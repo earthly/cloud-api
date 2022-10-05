@@ -300,6 +300,8 @@ message RemotePipeline {
   string org = 4;
   repeated PipelineTrigger triggers = 5;
   repeated PipelineArg args = 6;
+  int32 start_line = 7;
+  int32 end_line = 8;
 }
 
 message Pipeline {
