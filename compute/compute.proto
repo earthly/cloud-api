@@ -141,7 +141,6 @@ message WakeSatelliteResponse {
 message ReserveSatelliteRequest {
   string org_id = 1;
   string name = 2;
-  string user_jwt = 3;
 }
 
 message ReserveSatelliteResponse {
