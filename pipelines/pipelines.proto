@@ -115,13 +115,6 @@ service Pipelines {
       delete: "/api/v0/pipelines/{pipeline_id}"
     };
   }
-  // GitHubWebhook will receive webhook requests from GitHub.
-  rpc GitHubWebhook(GitHubWebhookRequest) returns (GitHubWebhookResponse) {
-    option (google.api.http) = {
-      post: "/api/v0/webhooks/github"
-      body: "*"
-    };
-  }
 }
 
 message ManualBuildRequest {
@@ -307,6 +300,8 @@ message RemotePipeline {
   string org = 4;
   repeated PipelineTrigger triggers = 5;
   repeated PipelineArg args = 6;
+  int32 start_line = 7;
+  int32 end_line = 8;
 }
 
 message Pipeline {
@@ -371,37 +366,3 @@ message RemovePipelineRequest {
 }
 
 message RemovePipelineResponse {}
-
-message GitHubRepository {
-  string full_name = 1;
-}
-
-message GitHubPusher {
-  string name = 1;
-  string email = 2;
-}
-
-message GitHubSender {
-  string login = 1;
-  int32 id = 2;
-}
-
-message GitHubInstallation {
-  int32 id = 1;
-}
-
-message GitHubWebhookRequest {
-  string ref = 1;
-  GitHubRepository repository = 2;
-  int32 created_at = 3;
-  string updated_at = 4; // They mix string/int date values
-  int32 pushed_at = 5;
-  GitHubPusher pusher = 6;
-  GitHubSender sender = 7;
-  GitHubInstallation installation = 8;
-  bool created = 9;
-  bool deleted = 10;
-  bool forced = 11;
-}
-
-message GitHubWebhookResponse {}
