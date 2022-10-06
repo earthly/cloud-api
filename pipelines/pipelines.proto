@@ -260,7 +260,9 @@ message AddProjectReposRequest {
   repeated ProjectRepo repos = 1;
 }
 
-message AddProjectReposResponse {}
+message AddProjectReposResponse {
+  repeated ProjectRepo repos = 1;
+}
 
 message RemoveProjectRepoRequest {
   string id = 1;
