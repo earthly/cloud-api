@@ -361,7 +361,9 @@ message AddPipelinesRequest {
   repeated Pipeline pipelines = 1;
 }
 
-message AddPipelinesResponse {}
+message AddPipelinesResponse {
+  repeated Pipeline pipelines = 1;
+}
 
 message RemovePipelineRequest {
   string pipeline_id = 1;
