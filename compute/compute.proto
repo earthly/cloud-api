@@ -1,0 +1,149 @@
+syntax = "proto3";
+package api.public.compute;
+option go_package = "./compute";
+
+import "google/api/annotations.proto";
+import "google/protobuf/timestamp.proto";
+
+service Compute {
+  // LaunchSatellite starts a new Earthly Satellite instance on the latest version.
+  // The instance can be used by users to build their local, Cloud, or 3rd-party CI builds.
+  rpc LaunchSatellite(LaunchSatelliteRequest) returns (LaunchSatelliteResponse) {
+    option (google.api.http) = {
+      post: "/api/v0/satellites"
+      body: "*"
+    };
+  }
+  // ListSatellites returns a list of Earthly Satellite instances available in the organization.
+  rpc ListSatellites(ListSatellitesRequest) returns (ListSatellitesResponse) {
+    option (google.api.http) = {
+      get: "/api/v0/satellites"
+    };
+  }
+  // UpdateSatellite updates a Satellite instance to the latest version.
+  // (I.e. the latest AMI we have in AWS).
+  // Calling this may result in some down-time on the instance while it updates.
+  rpc UpdateSatellite(UpdateSatelliteRequest) returns (UpdateSatelliteResponse) {
+    option (google.api.http) = {
+      post: "/api/v0/satellites/{name}/update"
+      body: "*"
+    };
+  }
+  // DeleteSatellite decommissions a Satellite instance.
+  rpc DeleteSatellite(DeleteSatelliteRequest) returns (DeleteSatelliteResponse) {
+    option (google.api.http) = {
+      delete: "/api/v0/satellites/{name}"
+    };
+  }
+  // GetSatellite retrieves the details of a particular Satellite instance.
+  // Mainly intended for use by Buildkit Proxy when establishing a new connection to an instance.
+  rpc GetSatellite(GetSatelliteRequest) returns (GetSatelliteResponse) {
+    option (google.api.http) = {
+      get: "/api/v0/satellites/{name}"
+    };
+  }
+
+  rpc WakeSatellite(WakeSatelliteRequest) returns (WakeSatelliteResponse) {
+    option (google.api.http) = {
+      post: "/api/v0/satellites/{name}/wake"
+      body: "*"
+    };
+  }
+
+  // ReserveSatellite both wakes the instance (if necessary) and calls reserve on buildkit.
+  // It is a streaming call which returns status updates during the wake up process,
+  // which can take a few moments.
+  // When the satellite is already awake, a single event is emitted before closing the stream:
+  //   OPERATIONAL --> EOF
+  // When the satellite is asleep, several events are emitted in the following sequence:
+  //   SLEEP -> STARTING -> ... -> STARTING -> OPERATIONAL -> EOF
+  rpc ReserveSatellite(ReserveSatelliteRequest) returns (stream ReserveSatelliteResponse) {}
+}
+
+message LaunchSatelliteRequest {
+  string org_id = 1;
+  string name = 2; // characters should be valid within a URL
+  string platform = 3; // Supported values now are: linux/amd64, linux/arm64
+  repeated string feature_flags = 4;
+}
+
+enum SatelliteStatus {
+  SATELLITE_STATUS_UNKNOWN = 0;
+  SATELLITE_STATUS_CREATING = 1;
+  SATELLITE_STATUS_OPERATIONAL = 2;
+  SATELLITE_STATUS_OFFLINE = 3;
+  SATELLITE_STATUS_DESTROYING = 4;
+  SATELLITE_STATUS_FAILED = 5;
+  SATELLITE_STATUS_SLEEP = 6;
+  SATELLITE_STATUS_STARTING = 7;
+}
+
+message LaunchSatelliteResponse {
+  SatelliteStatus status = 1;
+  string version = 2; // deprecated
+}
+
+message ListSatellitesRequest {
+  string org_id = 1;
+}
+
+message ListSatellitesResponse {
+  message SatelliteInstance {
+    string user_id = 1;
+    string name = 2;
+    string platform = 3;
+    SatelliteStatus status = 4;
+    string version = 5; // deprecated
+  }
+  repeated SatelliteInstance instances = 1;
+}
+
+message UpdateSatelliteRequest {
+  string org_id = 1;
+  string name = 2;
+}
+
+message UpdateSatelliteResponse {}
+
+message DeleteSatelliteRequest {
+  string org_id = 1;
+  string name = 2;
+}
+
+message DeleteSatelliteResponse{}
+
+message GetSatelliteRequest {
+  string org_id = 1;
+  string name = 2;
+}
+
+message GetSatelliteResponse {
+  string user_id = 1;
+  string platform = 2;
+  SatelliteStatus status = 3;
+  string version = 4; // deprecated
+  string id = 5;
+  string private_ip = 6;
+  string private_dns = 7;
+}
+
+message WakeSatelliteRequest {
+  string org_id = 1;
+  string name = 2;
+}
+
+message WakeSatelliteResponse {
+  // triggered_wake_up indicates if the satellite was asleep when the request
+  // was made, and hence may take a short moment to wake back up.
+  bool triggered_wake_up = 1;
+}
+
+message ReserveSatelliteRequest {
+  string org_id = 1;
+  string name = 2;
+}
+
+message ReserveSatelliteResponse {
+  SatelliteStatus status = 1;
+}
+
