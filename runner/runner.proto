@@ -1,0 +1,21 @@
+syntax = "proto3";
+package api.public.runner;
+option go_package = "./runner";
+
+service Runner {
+  // Build starts a build on a satellite.
+  rpc Build(BuildRequest) returns (BuildResponse) {}
+}
+
+message BuildRequest {
+  string url = 1;
+  string path = 2;
+  string tag = 3;
+  string target = 4;
+  string repo_token = 5;
+  string notify = 6;
+}
+
+message BuildResponse {
+  string build_id = 1;
+}
