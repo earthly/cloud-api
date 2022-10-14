@@ -254,7 +254,7 @@ message ProjectRepo {
   string provider = 5;
   string project = 6;
   google.protobuf.Timestamp created_at = 7;
-  string owner = 8;
+  string provider_org = 8;
 }
 
 message AddProjectReposRequest {
