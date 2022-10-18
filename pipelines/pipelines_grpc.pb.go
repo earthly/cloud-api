@@ -61,6 +61,10 @@ type PipelinesClient interface {
 	AddPipelines(ctx context.Context, in *AddPipelinesRequest, opts ...grpc.CallOption) (*AddPipelinesResponse, error)
 	// RemovePipeline will remove an existing pipeline.
 	RemovePipeline(ctx context.Context, in *RemovePipelineRequest, opts ...grpc.CallOption) (*RemovePipelineResponse, error)
+	// ListRuns returns a collection of pipelines runs that can be sorted and filtered.
+	ListRuns(ctx context.Context, in *ListRunsRequest, opts ...grpc.CallOption) (*ListRunsResponse, error)
+	// GetRun returns a single pipeline run, specified by ID.
+	GetRun(ctx context.Context, in *GetRunRequest, opts ...grpc.CallOption) (*GetRunResponse, error)
 }
 
 type pipelinesClient struct {
@@ -247,6 +251,24 @@ func (c *pipelinesClient) RemovePipeline(ctx context.Context, in *RemovePipeline
 	return out, nil
 }
 
+func (c *pipelinesClient) ListRuns(ctx context.Context, in *ListRunsRequest, opts ...grpc.CallOption) (*ListRunsResponse, error) {
+	out := new(ListRunsResponse)
+	err := c.cc.Invoke(ctx, "/api.public.pipelines.Pipelines/ListRuns", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *pipelinesClient) GetRun(ctx context.Context, in *GetRunRequest, opts ...grpc.CallOption) (*GetRunResponse, error) {
+	out := new(GetRunResponse)
+	err := c.cc.Invoke(ctx, "/api.public.pipelines.Pipelines/GetRun", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // PipelinesServer is the server API for Pipelines service.
 // All implementations must embed UnimplementedPipelinesServer
 // for forward compatibility
@@ -290,6 +312,10 @@ type PipelinesServer interface {
 	AddPipelines(context.Context, *AddPipelinesRequest) (*AddPipelinesResponse, error)
 	// RemovePipeline will remove an existing pipeline.
 	RemovePipeline(context.Context, *RemovePipelineRequest) (*RemovePipelineResponse, error)
+	// ListRuns returns a collection of pipelines runs that can be sorted and filtered.
+	ListRuns(context.Context, *ListRunsRequest) (*ListRunsResponse, error)
+	// GetRun returns a single pipeline run, specified by ID.
+	GetRun(context.Context, *GetRunRequest) (*GetRunResponse, error)
 	mustEmbedUnimplementedPipelinesServer()
 }
 
@@ -347,6 +373,12 @@ func (UnimplementedPipelinesServer) AddPipelines(context.Context, *AddPipelinesR
 }
 func (UnimplementedPipelinesServer) RemovePipeline(context.Context, *RemovePipelineRequest) (*RemovePipelineResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RemovePipeline not implemented")
+}
+func (UnimplementedPipelinesServer) ListRuns(context.Context, *ListRunsRequest) (*ListRunsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListRuns not implemented")
+}
+func (UnimplementedPipelinesServer) GetRun(context.Context, *GetRunRequest) (*GetRunResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetRun not implemented")
 }
 func (UnimplementedPipelinesServer) mustEmbedUnimplementedPipelinesServer() {}
 
@@ -670,6 +702,42 @@ func _Pipelines_RemovePipeline_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Pipelines_ListRuns_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListRunsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PipelinesServer).ListRuns(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.public.pipelines.Pipelines/ListRuns",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PipelinesServer).ListRuns(ctx, req.(*ListRunsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Pipelines_GetRun_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetRunRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PipelinesServer).GetRun(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.public.pipelines.Pipelines/GetRun",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PipelinesServer).GetRun(ctx, req.(*GetRunRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Pipelines_ServiceDesc is the grpc.ServiceDesc for Pipelines service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -740,6 +808,14 @@ var Pipelines_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "RemovePipeline",
 			Handler:    _Pipelines_RemovePipeline_Handler,
+		},
+		{
+			MethodName: "ListRuns",
+			Handler:    _Pipelines_ListRuns_Handler,
+		},
+		{
+			MethodName: "GetRun",
+			Handler:    _Pipelines_GetRun_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{

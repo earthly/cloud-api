@@ -115,6 +115,18 @@ service Pipelines {
       delete: "/api/v0/pipelines/{pipeline_id}"
     };
   }
+  // ListRuns returns a collection of pipelines runs that can be sorted and filtered.
+  rpc ListRuns(ListRunsRequest) returns (ListRunsResponse) {
+    option (google.api.http) = {
+      get: "/api/v0/runs"
+    };
+  }
+  // GetRun returns a single pipeline run, specified by ID.
+  rpc GetRun(GetRunRequest) returns (GetRunResponse) {
+    option (google.api.http) = {
+      get: "/api/v0/runs/{run_id}"
+    };
+  }
 }
 
 message ManualBuildRequest {
@@ -371,3 +383,30 @@ message RemovePipelineRequest {
 }
 
 message RemovePipelineResponse {}
+
+message PipelineRun {
+  string id = 1;
+  string pipeline_id = 2;
+  string status = 3;
+  google.protobuf.Timestamp created_at = 4;
+  google.protobuf.Timestamp started_at = 5;
+  google.protobuf.Timestamp ended_at = 6;
+}
+
+message ListRunsRequest {
+  string pipeline_id = 1;
+  string project_id = 2;
+  int32 limit = 3;
+}
+
+message ListRunsResponse {
+  repeated PipelineRun runs = 1;
+}
+
+message GetRunRequest {
+  string run_id = 1;
+}
+
+message GetRunResponse {
+  PipelineRun run = 1;
+}
