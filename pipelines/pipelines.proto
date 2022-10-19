@@ -160,6 +160,7 @@ enum SatelliteStatus {
   SATELLITE_STATUS_FAILED = 5;
   SATELLITE_STATUS_SLEEP = 6;
   SATELLITE_STATUS_STARTING = 7;
+  SATELLITE_STATUS_STOPPING = 8;
 }
 
 message LaunchSatelliteResponse {
