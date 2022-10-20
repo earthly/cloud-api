@@ -4,6 +4,7 @@ option go_package = "./compute";
 
 import "google/api/annotations.proto";
 import "google/protobuf/timestamp.proto";
+import "google/protobuf/duration.proto";
 
 service Compute {
   // LaunchSatellite starts a new Earthly Satellite instance on the latest version.
@@ -76,6 +77,7 @@ enum SatelliteStatus {
   SATELLITE_STATUS_FAILED = 5;
   SATELLITE_STATUS_SLEEP = 6;
   SATELLITE_STATUS_STARTING = 7;
+  SATELLITE_STATUS_STOPPING = 8;
 }
 
 message LaunchSatelliteResponse {
@@ -141,9 +143,11 @@ message WakeSatelliteResponse {
 message ReserveSatelliteRequest {
   string org_id = 1;
   string name = 2;
+  string commit_email = 3;
+  bool is_ci = 4;
+  google.protobuf.Duration update_interval = 5;
 }
 
 message ReserveSatelliteResponse {
   SatelliteStatus status = 1;
 }
-
