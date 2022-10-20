@@ -141,9 +141,10 @@ message WakeSatelliteResponse {
 message ReserveSatelliteRequest {
   string org_id = 1;
   string name = 2;
+  string commit_email = 3;
+  bool is_ci = 4;
 }
 
 message ReserveSatelliteResponse {
   SatelliteStatus status = 1;
 }
-
