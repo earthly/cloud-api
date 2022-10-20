@@ -13,9 +13,7 @@ message BuildRequest {
   string tag = 3;
   string target = 4;
   string repo_token = 5;
-  string notify = 6;
+  string build_id = 6;
 }
 
-message BuildResponse {
-  string build_id = 1;
-}
+message BuildResponse {}
