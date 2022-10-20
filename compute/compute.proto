@@ -143,10 +143,11 @@ message WakeSatelliteResponse {
 message ReserveSatelliteRequest {
   string org_id = 1;
   string name = 2;
-  google.protobuf.Duration update_interval = 3;
+  string commit_email = 3;
+  bool is_ci = 4;
+  google.protobuf.Duration update_interval = 5;
 }
 
 message ReserveSatelliteResponse {
   SatelliteStatus status = 1;
 }
-
