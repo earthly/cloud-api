@@ -36,7 +36,10 @@ type ComputeClient interface {
 	// GetSatellite retrieves the details of a particular Satellite instance.
 	// Mainly intended for use by Buildkit Proxy when establishing a new connection to an instance.
 	GetSatellite(ctx context.Context, in *GetSatelliteRequest, opts ...grpc.CallOption) (*GetSatelliteResponse, error)
-	WakeSatellite(ctx context.Context, in *WakeSatelliteRequest, opts ...grpc.CallOption) (*WakeSatelliteResponse, error)
+	// WakeSatellite wakes a satellite that is in a sleep state.
+	// The response returns a stream that sends updates as the satellite wakes up. E.g.:
+	//    SLEEP -> STARTING -> ... -> STARTING -> OPERATIONAL -> EOF
+	WakeSatellite(ctx context.Context, in *WakeSatelliteRequest, opts ...grpc.CallOption) (Compute_WakeSatelliteClient, error)
 	// ReserveSatellite both wakes the instance (if necessary) and calls reserve on buildkit.
 	// It is a streaming call which returns status updates during the wake up process,
 	// which can take a few moments.
@@ -44,6 +47,10 @@ type ComputeClient interface {
 	//   OPERATIONAL --> EOF
 	// When the satellite is asleep, several events are emitted in the following sequence:
 	//   SLEEP -> STARTING -> ... -> STARTING -> OPERATIONAL -> EOF
+	// When the satellite is already being woken up, or launching for the first time:
+	//   STARTING -> ... -> STARTING -> OPERATIONAL -> EOF
+	// When the satellite is actively being put to sleep and needs to finish that process first:
+	//   STOPPING -> ... -> STARTING -> ... -> OPERATIONAL -> EOF
 	ReserveSatellite(ctx context.Context, in *ReserveSatelliteRequest, opts ...grpc.CallOption) (Compute_ReserveSatelliteClient, error)
 }
 
@@ -100,17 +107,40 @@ func (c *computeClient) GetSatellite(ctx context.Context, in *GetSatelliteReques
 	return out, nil
 }
 
-func (c *computeClient) WakeSatellite(ctx context.Context, in *WakeSatelliteRequest, opts ...grpc.CallOption) (*WakeSatelliteResponse, error) {
-	out := new(WakeSatelliteResponse)
-	err := c.cc.Invoke(ctx, "/api.public.compute.Compute/WakeSatellite", in, out, opts...)
+func (c *computeClient) WakeSatellite(ctx context.Context, in *WakeSatelliteRequest, opts ...grpc.CallOption) (Compute_WakeSatelliteClient, error) {
+	stream, err := c.cc.NewStream(ctx, &Compute_ServiceDesc.Streams[0], "/api.public.compute.Compute/WakeSatellite", opts...)
 	if err != nil {
 		return nil, err
 	}
-	return out, nil
+	x := &computeWakeSatelliteClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type Compute_WakeSatelliteClient interface {
+	Recv() (*WakeSatelliteResponse, error)
+	grpc.ClientStream
+}
+
+type computeWakeSatelliteClient struct {
+	grpc.ClientStream
+}
+
+func (x *computeWakeSatelliteClient) Recv() (*WakeSatelliteResponse, error) {
+	m := new(WakeSatelliteResponse)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
 }
 
 func (c *computeClient) ReserveSatellite(ctx context.Context, in *ReserveSatelliteRequest, opts ...grpc.CallOption) (Compute_ReserveSatelliteClient, error) {
-	stream, err := c.cc.NewStream(ctx, &Compute_ServiceDesc.Streams[0], "/api.public.compute.Compute/ReserveSatellite", opts...)
+	stream, err := c.cc.NewStream(ctx, &Compute_ServiceDesc.Streams[1], "/api.public.compute.Compute/ReserveSatellite", opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -159,7 +189,10 @@ type ComputeServer interface {
 	// GetSatellite retrieves the details of a particular Satellite instance.
 	// Mainly intended for use by Buildkit Proxy when establishing a new connection to an instance.
 	GetSatellite(context.Context, *GetSatelliteRequest) (*GetSatelliteResponse, error)
-	WakeSatellite(context.Context, *WakeSatelliteRequest) (*WakeSatelliteResponse, error)
+	// WakeSatellite wakes a satellite that is in a sleep state.
+	// The response returns a stream that sends updates as the satellite wakes up. E.g.:
+	//    SLEEP -> STARTING -> ... -> STARTING -> OPERATIONAL -> EOF
+	WakeSatellite(*WakeSatelliteRequest, Compute_WakeSatelliteServer) error
 	// ReserveSatellite both wakes the instance (if necessary) and calls reserve on buildkit.
 	// It is a streaming call which returns status updates during the wake up process,
 	// which can take a few moments.
@@ -167,6 +200,10 @@ type ComputeServer interface {
 	//   OPERATIONAL --> EOF
 	// When the satellite is asleep, several events are emitted in the following sequence:
 	//   SLEEP -> STARTING -> ... -> STARTING -> OPERATIONAL -> EOF
+	// When the satellite is already being woken up, or launching for the first time:
+	//   STARTING -> ... -> STARTING -> OPERATIONAL -> EOF
+	// When the satellite is actively being put to sleep and needs to finish that process first:
+	//   STOPPING -> ... -> STARTING -> ... -> OPERATIONAL -> EOF
 	ReserveSatellite(*ReserveSatelliteRequest, Compute_ReserveSatelliteServer) error
 	mustEmbedUnimplementedComputeServer()
 }
@@ -190,8 +227,8 @@ func (UnimplementedComputeServer) DeleteSatellite(context.Context, *DeleteSatell
 func (UnimplementedComputeServer) GetSatellite(context.Context, *GetSatelliteRequest) (*GetSatelliteResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetSatellite not implemented")
 }
-func (UnimplementedComputeServer) WakeSatellite(context.Context, *WakeSatelliteRequest) (*WakeSatelliteResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method WakeSatellite not implemented")
+func (UnimplementedComputeServer) WakeSatellite(*WakeSatelliteRequest, Compute_WakeSatelliteServer) error {
+	return status.Errorf(codes.Unimplemented, "method WakeSatellite not implemented")
 }
 func (UnimplementedComputeServer) ReserveSatellite(*ReserveSatelliteRequest, Compute_ReserveSatelliteServer) error {
 	return status.Errorf(codes.Unimplemented, "method ReserveSatellite not implemented")
@@ -299,22 +336,25 @@ func _Compute_GetSatellite_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Compute_WakeSatellite_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(WakeSatelliteRequest)
-	if err := dec(in); err != nil {
-		return nil, err
+func _Compute_WakeSatellite_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(WakeSatelliteRequest)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
 	}
-	if interceptor == nil {
-		return srv.(ComputeServer).WakeSatellite(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/api.public.compute.Compute/WakeSatellite",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ComputeServer).WakeSatellite(ctx, req.(*WakeSatelliteRequest))
-	}
-	return interceptor(ctx, in, info, handler)
+	return srv.(ComputeServer).WakeSatellite(m, &computeWakeSatelliteServer{stream})
+}
+
+type Compute_WakeSatelliteServer interface {
+	Send(*WakeSatelliteResponse) error
+	grpc.ServerStream
+}
+
+type computeWakeSatelliteServer struct {
+	grpc.ServerStream
+}
+
+func (x *computeWakeSatelliteServer) Send(m *WakeSatelliteResponse) error {
+	return x.ServerStream.SendMsg(m)
 }
 
 func _Compute_ReserveSatellite_Handler(srv interface{}, stream grpc.ServerStream) error {
@@ -365,12 +405,13 @@ var Compute_ServiceDesc = grpc.ServiceDesc{
 			MethodName: "GetSatellite",
 			Handler:    _Compute_GetSatellite_Handler,
 		},
-		{
-			MethodName: "WakeSatellite",
-			Handler:    _Compute_WakeSatellite_Handler,
-		},
 	},
 	Streams: []grpc.StreamDesc{
+		{
+			StreamName:    "WakeSatellite",
+			Handler:       _Compute_WakeSatellite_Handler,
+			ServerStreams: true,
+		},
 		{
 			StreamName:    "ReserveSatellite",
 			Handler:       _Compute_ReserveSatellite_Handler,
