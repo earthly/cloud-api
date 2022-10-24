@@ -286,6 +286,7 @@ message RemoveProjectRepoResponse {}
 
 message ListProjectReposRequest {
   string project = 1;
+  string org = 2;
 }
 
 message ListProjectReposResponse {
@@ -365,6 +366,7 @@ message ListRemoteOrgsResponse {
 
 message ListPipelinesRequest {
   string project = 1;
+  string org = 2;
 }
 
 message ListPipelinesResponse {
