@@ -44,12 +44,10 @@ service Compute {
     };
   }
 
-  rpc WakeSatellite(WakeSatelliteRequest) returns (WakeSatelliteResponse) {
-    option (google.api.http) = {
-      post: "/api/v0/satellites/{name}/wake"
-      body: "*"
-    };
-  }
+  // WakeSatellite wakes a satellite that is in a sleep state.
+  // The response returns a stream that sends updates as the satellite wakes up. E.g.:
+  //    SLEEP -> STARTING -> ... -> STARTING -> OPERATIONAL -> EOF
+  rpc WakeSatellite(WakeSatelliteRequest) returns (stream WakeSatelliteResponse) {}
 
   // ReserveSatellite both wakes the instance (if necessary) and calls reserve on buildkit.
   // It is a streaming call which returns status updates during the wake up process,
@@ -58,6 +56,10 @@ service Compute {
   //   OPERATIONAL --> EOF
   // When the satellite is asleep, several events are emitted in the following sequence:
   //   SLEEP -> STARTING -> ... -> STARTING -> OPERATIONAL -> EOF
+  // When the satellite is already being woken up, or launching for the first time:
+  //   STARTING -> ... -> STARTING -> OPERATIONAL -> EOF
+  // When the satellite is actively being put to sleep and needs to finish that process first:
+  //   STOPPING -> ... -> STARTING -> ... -> OPERATIONAL -> EOF
   rpc ReserveSatellite(ReserveSatelliteRequest) returns (stream ReserveSatelliteResponse) {}
 }
 
@@ -132,12 +134,12 @@ message GetSatelliteResponse {
 message WakeSatelliteRequest {
   string org_id = 1;
   string name = 2;
+  google.protobuf.Duration update_interval = 3;
+
 }
 
 message WakeSatelliteResponse {
-  // triggered_wake_up indicates if the satellite was asleep when the request
-  // was made, and hence may take a short moment to wake back up.
-  bool triggered_wake_up = 1;
+  SatelliteStatus status = 1;
 }
 
 message ReserveSatelliteRequest {
