@@ -1,65 +1,58 @@
-
 syntax = "proto3";
 package api.public.logstream;
 option go_package = "./logstream";
-
 import "manifest.proto";
 
 message Delta {
-    int32 version = 1;
-    repeated DeltaManifest delta_manifests = 2;
-    repeated DeltaLog delta_logs = 3;
-}
-
-message DeltaManifest {
-    int64 order_id = 1;
-    oneof delta_manifest_oneof {
-        bool eof = 2;
-        BuildManifest reset_all = 3;
-        FieldsDelta fields = 4;
-    }
-
-    message FieldsDelta {
-        int64 started_at = 1;
-        int64 finished_at = 2;
-        BuildStatus status = 3;
-        string failed_target = 4;
-        string failed_summary = 5;
-        map<string, DeltaTargetManifest> targets = 6;
-    }
-}
-
-message DeltaTargetManifest {
-    string name = 1;
-    repeated string override_args = 2;
-    string platform = 3;
-    BuildStatus status = 4;
-    int64 started_at = 5;
-    int64 finished_at = 6;
-    map<int32, DeltaCommandManifest> commands = 7;
-}
-
-message DeltaCommandManifest {
-    string name = 1;
-    BuildStatus status = 2;
-    bool has_cached = 3;
-    bool is_cached = 4;
-    bool has_push = 5;
-    bool is_push = 6;
-    bool has_local = 7;
-    bool is_local = 8;
-    int64 started_at = 9;
-    int64 finished_at = 10;
-    bool has_has_progress = 11;
-    bool has_progress = 12;
-    int32 progress = 13;
+  int32 version = 1;
+  repeated DeltaManifest delta_manifests = 2;
+  repeated DeltaLog delta_logs = 3;
 }
 
 message DeltaLog {
-    int64 seek_index = 1;
-    string target_id = 2;
-    oneof delta_log_oneof {
-        bool eof = 3;
-        bytes data = 4;
-    }
+  string target_id = 1;
+  int64 client_timestamp_unix_nanos = 2;
+  bytes log = 3;
+}
+
+message DeltaManifest {
+  oneof delta_manifest_oneof {
+    BuildManifest reset_all = 1;
+    FieldsDelta fields = 2;
+  }
+
+  message FieldsDelta {
+    int64 started_at = 1;
+    int64 finished_at = 2;
+    BuildStatus status = 3;
+    string failed_target = 4;
+    string failed_summary = 5;
+    map<string, DeltaTargetManifest> targets = 6;
+  }
+}
+
+message DeltaTargetManifest {
+  string name = 1;
+  repeated string override_args = 2;
+  string platform = 3;
+  BuildStatus status = 4;
+  int64 started_at = 5;
+  int64 finished_at = 6;
+  map<int32, DeltaCommandManifest> commands = 7;
+}
+
+message DeltaCommandManifest {
+  string name = 1;
+  BuildStatus status = 2;
+  bool has_cached = 3;
+  bool is_cached = 4;
+  bool has_push = 5;
+  bool is_push = 6;
+  bool has_local = 7;
+  bool is_local = 8;
+  int64 started_at = 9;
+  int64 finished_at = 10;
+  bool has_has_progress = 11;
+  bool has_progress = 12;
+  int32 progress = 13;
 }

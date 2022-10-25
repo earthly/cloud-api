@@ -398,8 +398,9 @@ message PipelineRun {
 
 message ListRunsRequest {
   string pipeline_id = 1;
-  string project_id = 2;
-  int32 limit = 3;
+  string org = 2;
+  string project = 3;
+  int32 limit = 4;
 }
 
 message ListRunsResponse {
