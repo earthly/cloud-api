@@ -2,6 +2,8 @@ syntax = "proto3";
 package api.public.logstream;
 option go_package = "./logstream";
 
+import "google/protobuf/timestamp.proto";
+
 enum RunStatus {
   RUN_STATUS_UNKNOWN = 0;
   RUN_STATUS_NOT_STARTED = 1;
@@ -14,11 +16,9 @@ enum RunStatus {
 message RunManifest {
   string build_id = 1;
   int32 version = 2;
-  // created_at_unix_nanos is a unix timestamp when this build
-  // has been created at. All other timestamps are relative to this.
-  int64 created_at_unix_nanos = 3;
-  int64 started_at_nanos = 4;
-  int64 finished_at_nanos = 5;
+  google.protobuf.Timestamp created_at = 3;
+  google.protobuf.Timestamp started_at = 4;
+  google.protobuf.Timestamp ended_at = 5;
   RunStatus status = 6;
   map<string, TargetManifest> targets = 7;
   string main_target = 8;
@@ -26,12 +26,12 @@ message RunManifest {
   Failure failure = 9;
 
   // user_id is the UUID of the user that ran the build.
-  string user_id = 11;
+  string user_id = 10;
   // org_id is the Organization the build belongs to.
-  string org_id = 12;
+  string org_id = 11;
   // project_id is the ID of the CI Project containing the build.
   // It my be empty for builds that are not run on the CI.
-  string project_id = 13;
+  string project_id = 12;
 }
 
 enum FailureType {
@@ -52,13 +52,13 @@ message Failure {
 
 message TargetManifest {
   string name = 1; // e.g. +build
-  string canonical_name = 8; // e.g. github.com/foo/bar/buz:main+build
-  repeated string override_args = 2;
-  string platform = 3;
-  RunStatus status = 4;
-  int64 started_at_nanos = 5;
-  int64 finished_at_nanos = 6;
-  repeated CommandManifest commands = 7;
+  string canonical_name = 2; // e.g. github.com/foo/bar/buz:main+build
+  repeated string override_args = 3;
+  string platform = 4;
+  RunStatus status = 5;
+  google.protobuf.Timestamp started_at = 6;
+  google.protobuf.Timestamp finished_at = 7;
+  repeated CommandManifest commands = 8;
 }
 
 message CommandManifest {
@@ -67,8 +67,8 @@ message CommandManifest {
   bool is_cached = 3;
   bool is_push = 4;
   bool is_local = 5;
-  int64 started_at_nanos = 6;
-  int64 finished_at_nanos = 7;
+  google.protobuf.Timestamp started_at = 6;
+  google.protobuf.Timestamp finished_at = 7;
   bool has_progress = 8;
   int32 progress = 9;
   // error_message is a string representation of an error related to this command.
