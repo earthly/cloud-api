@@ -1,76 +1,90 @@
-
 syntax = "proto3";
 package api.public.logstream;
 option go_package = "./logstream";
 
-enum BuildStatus {
-    BUILD_STATUS_UNKNOWN = 0;
-    BUILD_STATUS_NOT_STARTED = 1;
-    BUILD_STATUS_IN_PROGRESS = 2;
-    BUILD_STATUS_SUCCESS = 3;
-    BUILD_STATUS_FAILURE = 4;
-    BUILD_STATUS_CANCELLED = 5;
+import "google/protobuf/timestamp.proto";
+
+enum RunStatus {
+  RUN_STATUS_UNKNOWN = 0;
+  RUN_STATUS_NOT_STARTED = 1;
+  RUN_STATUS_IN_PROGRESS = 2;
+  RUN_STATUS_SUCCESS = 3;
+  RUN_STATUS_FAILURE = 4;
+  RUN_STATUS_CANCELED = 5;
 }
 
-message BuildManifest {
-    int32 version = 1;
-    int64 created_at = 2;
-    int64 started_at = 3;
-    int64 finished_at = 4;
-    BuildStatus status = 5;
-    map<string, TargetManifest> targets = 6;
-    string main_target = 7;
-    string failed_target = 8;
-    string failed_summary = 9;
+message RunManifest {
+  string build_id = 1;
+  int32 version = 2;
+  google.protobuf.Timestamp created_at = 3;
+  google.protobuf.Timestamp started_at = 4;
+  google.protobuf.Timestamp ended_at = 5;
+  RunStatus status = 6;
+  map<string, TargetManifest> targets = 7;
+  string main_target = 8;
+  
+  Failure failure = 9;
 
-    // user_id is the UUID of the user that ran the build.
-    string user_id = 10;
-    // org_id is the Organization the build belongs to.
-    string org_id = 11;
-    // project_id is the ID of the CI Project containing the build.
-    // It my be empty for builds that are not run on the CI.
-    string project_id = 12;
+  // user_id is the UUID of the user that ran the build.
+  string user_id = 10;
+  // org_id is the Organization the build belongs to.
+  string org_id = 11;
+  // project_id is the ID of the CI Project containing the build.
+  // It my be empty for builds that are not run on the CI.
+  string project_id = 12;
+}
 
-    // The following are not updated by deltas. They are
-    // only set by the snapshotter.
+enum FailureType {
+  FAILURE_TYPE_UNKNOWN = 0;
+  FAILURE_TYPE_NONZERO_EXIT = 1;
+  FAILURE_TYPE_FILE_NOT_FOUND = 2;
+  FAILURE_TYPE_SYNTAX = 3;
+}
 
-    // snapshot_id is the identifier assigned to the snapshot.
-    string snapshot_id = 13;
-    // snapshot_order_id is the ordering ID for the manifest as stored
-    // in snapshot state.
-    int64 snapshot_order_id = 14;
-    // snapshot_eof indicates whether the manifest as stored in snapshot
-    // state is complete and there will be no more changes to it.
-    bool snapshot_eof = 15;
+message Failure {
+  FailureType type = 1;
+  string failed_target_id = 2;
+  bool has_failed_command_index = 3;
+  int32 failed_command_index = 4;
+  string failed_summary = 5;
+  bytes failed_output = 6;
 }
 
 message TargetManifest {
-    string name = 1;
-    repeated string override_args = 2;
-    string platform = 3;
-    BuildStatus status = 4;
-    int64 started_at = 5;
-    int64 finished_at = 6;
-    repeated CommandManifest commands = 7;
-
-    // The following are not updated by deltas. They are
-    // only set by the snapshotter.
-    
-    // snapshot_size is the size of the log data for this target.
-    int64 snapshot_size = 8;
-    // snapshot_eof is true if the log data in the snapshot
-    // is complete for this target.
-    bool snapshot_eof = 9;
+  string name = 1; // e.g. +build
+  string canonical_name = 2; // e.g. github.com/foo/bar/buz:main+build
+  repeated string override_args = 3;
+  string platform = 4;
+  RunStatus status = 5;
+  google.protobuf.Timestamp started_at = 6;
+  google.protobuf.Timestamp finished_at = 7;
+  repeated CommandManifest commands = 8;
 }
 
 message CommandManifest {
-    string name = 1;
-    BuildStatus status = 2;
-    bool is_cached = 3;
-    bool is_push = 4;
-    bool is_local = 5;
-    int64 started_at = 6;
-    int64 finished_at = 7;
-    bool has_progress = 8;
-    int32 progress = 9;
+  string name = 1;
+  RunStatus status = 2;
+  bool is_cached = 3;
+  bool is_push = 4;
+  bool is_local = 5;
+  google.protobuf.Timestamp started_at = 6;
+  google.protobuf.Timestamp finished_at = 7;
+  bool has_progress = 8;
+  int32 progress = 9;
+  // error_message is a string representation of an error related to this command.
+  // The presence of an error here might not mean that the command has failed,
+  // if the error is transient.
+  string error_message = 10;
+  SourceLocation source_location = 11;
+}
+
+message SourceLocation {
+  // repository_url is the URL of the repository.
+  string repository_url = 1;
+  // file is the name of the Earthfile relative to the repository.
+  string file = 2;
+  int32 start_line = 3;
+  int32 start_column = 4;
+  int32 end_line = 5;
+  int32 end_column = 6;
 }
