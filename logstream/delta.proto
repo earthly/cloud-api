@@ -1,58 +1,68 @@
 syntax = "proto3";
 package api.public.logstream;
 option go_package = "./logstream";
+
 import "manifest.proto";
+import "google/protobuf/timestamp.proto";
 
 message Delta {
   int32 version = 1;
-  repeated DeltaManifest delta_manifests = 2;
-  repeated DeltaLog delta_logs = 3;
+  oneof delta_type_oneof {
+    DeltaManifest delta_manifest = 2;
+    DeltaLog delta_log = 3;
+  }
 }
 
 message DeltaLog {
   string target_id = 1;
-  int64 client_timestamp_unix_nanos = 2;
-  bytes log = 3;
+  int32 command_index = 2;
+  int32 stream = 3; // stdout or stderr
+  google.protobuf.Timestamp timestamp = 4;
+  bytes log = 5;
 }
 
 message DeltaManifest {
   oneof delta_manifest_oneof {
-    BuildManifest reset_all = 1;
+    RunManifest reset_all = 1;
     FieldsDelta fields = 2;
   }
 
   message FieldsDelta {
-    int64 started_at = 1;
-    int64 finished_at = 2;
-    BuildStatus status = 3;
-    string failed_target = 4;
-    string failed_summary = 5;
-    map<string, DeltaTargetManifest> targets = 6;
+    google.protobuf.Timestamp started_at = 1;
+    google.protobuf.Timestamp ended_at = 2;
+    RunStatus status = 3;
+    bool has_failure = 6;
+    Failure failure = 4;
+    map<string, DeltaTargetManifest> targets = 5;
   }
 }
 
 message DeltaTargetManifest {
   string name = 1;
-  repeated string override_args = 2;
-  string platform = 3;
-  BuildStatus status = 4;
-  int64 started_at = 5;
-  int64 finished_at = 6;
-  map<int32, DeltaCommandManifest> commands = 7;
+  string canonical_name = 2;
+  repeated string override_args = 3;
+  string platform = 4;
+  RunStatus status = 5;
+  google.protobuf.Timestamp started_at = 6;
+  google.protobuf.Timestamp ended_at = 7;
+  map<int32, DeltaCommandManifest> commands = 8;
 }
 
 message DeltaCommandManifest {
   string name = 1;
-  BuildStatus status = 2;
+  RunStatus status = 2;
   bool has_cached = 3;
   bool is_cached = 4;
   bool has_push = 5;
   bool is_push = 6;
   bool has_local = 7;
   bool is_local = 8;
-  int64 started_at = 9;
-  int64 finished_at = 10;
+  google.protobuf.Timestamp started_at = 9;
+  google.protobuf.Timestamp ended_at = 10;
   bool has_has_progress = 11;
   bool has_progress = 12;
   int32 progress = 13;
+  string error_message = 14;
+  bool has_source_location = 16;
+  SourceLocation source_location = 15;
 }
