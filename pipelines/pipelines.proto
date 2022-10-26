@@ -406,6 +406,7 @@ message PipelineRun {
   string trigger_modifier = 8;
   int32 pr_num = 9;
   string commit_hash = 10;
+  int32 seq_num = 11;
 }
 
 message ListRunsRequest {
