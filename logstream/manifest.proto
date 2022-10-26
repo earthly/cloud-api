@@ -57,7 +57,7 @@ message TargetManifest {
   string platform = 4;
   RunStatus status = 5;
   google.protobuf.Timestamp started_at = 6;
-  google.protobuf.Timestamp finished_at = 7;
+  google.protobuf.Timestamp ended_at = 7;
   repeated CommandManifest commands = 8;
 }
 
@@ -68,7 +68,7 @@ message CommandManifest {
   bool is_push = 4;
   bool is_local = 5;
   google.protobuf.Timestamp started_at = 6;
-  google.protobuf.Timestamp finished_at = 7;
+  google.protobuf.Timestamp ended_at = 7;
   bool has_progress = 8;
   int32 progress = 9;
   // error_message is a string representation of an error related to this command.
