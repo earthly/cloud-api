@@ -8,8 +8,8 @@ import "google/protobuf/timestamp.proto";
 message Delta {
   int32 version = 1;
   oneof delta_type_oneof {
-    DeltaManifest delta_manifests = 2;
-    DeltaLog delta_logs = 3;
+    DeltaManifest delta_manifest = 2;
+    DeltaLog delta_log = 3;
   }
 }
 
@@ -31,6 +31,7 @@ message DeltaManifest {
     google.protobuf.Timestamp started_at = 1;
     google.protobuf.Timestamp ended_at = 2;
     RunStatus status = 3;
+    bool has_failure = 6;
     Failure failure = 4;
     map<string, DeltaTargetManifest> targets = 5;
   }
@@ -62,5 +63,6 @@ message DeltaCommandManifest {
   bool has_progress = 12;
   int32 progress = 13;
   string error_message = 14;
+  bool has_source_location = 16;
   SourceLocation source_location = 15;
 }

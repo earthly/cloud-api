@@ -43,11 +43,11 @@ enum FailureType {
 
 message Failure {
   FailureType type = 1;
-  string failed_target_id = 2;
-  bool has_failed_command_index = 3;
-  int32 failed_command_index = 4;
-  string failed_summary = 5;
-  bytes failed_output = 6;
+  string target_id = 2;
+  bool has_command_index = 3;
+  int32 command_index = 4;
+  string summary = 5;
+  bytes output = 6;
 }
 
 message TargetManifest {
