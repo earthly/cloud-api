@@ -387,13 +387,25 @@ message RemovePipelineRequest {
 
 message RemovePipelineResponse {}
 
+enum RunStatus {
+  RUN_STATUS_UNSPECIFIED = 0;
+  RUN_STATUS_PENDING = 1;
+  RUN_STATUS_STARTED = 2;
+  RUN_STATUS_SUCCESS = 3;
+  RUN_STATUS_FAILED = 4;
+}
+
 message PipelineRun {
   string id = 1;
   string pipeline_id = 2;
-  string status = 3;
+  RunStatus status = 3;
   google.protobuf.Timestamp created_at = 4;
   google.protobuf.Timestamp started_at = 5;
   google.protobuf.Timestamp ended_at = 6;
+  TriggerType trigger_type = 7;
+  string trigger_modifier = 8;
+  int32 pr_num = 9;
+  string commit_hash = 10;
 }
 
 message ListRunsRequest {
