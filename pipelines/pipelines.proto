@@ -407,6 +407,14 @@ message PipelineRun {
   int32 pr_num = 9;
   string commit_hash = 10;
   int32 seq_num = 11;
+  string commit_email = 12;
+  string commit_login = 13;
+}
+
+message CommitInfo {
+  string hash = 1;
+  string avatar = 2;
+  string commit_message = 3;
 }
 
 message ListRunsRequest {
@@ -418,6 +426,7 @@ message ListRunsRequest {
 
 message ListRunsResponse {
   repeated PipelineRun runs = 1;
+  repeated CommitInfo commit_info = 2;
 }
 
 message GetRunRequest {
@@ -426,4 +435,5 @@ message GetRunRequest {
 
 message GetRunResponse {
   PipelineRun run = 1;
+  CommitInfo commit_info = 2;
 }
