@@ -2,8 +2,6 @@ syntax = "proto3";
 package api.public.logstream;
 option go_package = "./logstream";
 
-import "google/protobuf/timestamp.proto";
-
 enum RunStatus {
   RUN_STATUS_UNKNOWN = 0;
   RUN_STATUS_NOT_STARTED = 1;
@@ -16,11 +14,12 @@ enum RunStatus {
 message RunManifest {
   string build_id = 1;
   int32 version = 2;
-  google.protobuf.Timestamp created_at = 3;
-  google.protobuf.Timestamp started_at = 4;
-  google.protobuf.Timestamp ended_at = 5;
+  uint64 created_at_unix_nanos = 3;
+  uint64 started_at_unix_nanos = 4;
+  uint64 ended_at_unix_nanos = 5;
   RunStatus status = 6;
   map<string, TargetManifest> targets = 7;
+  map<string, CommandManifest> commands = 13;
   string main_target = 8;
   
   Failure failure = 9;
@@ -39,36 +38,39 @@ enum FailureType {
   FAILURE_TYPE_NONZERO_EXIT = 1;
   FAILURE_TYPE_FILE_NOT_FOUND = 2;
   FAILURE_TYPE_SYNTAX = 3;
+  FAILURE_TYPE_OOM_KILLED = 4;
 }
 
 message Failure {
   FailureType type = 1;
   string target_id = 2;
-  bool has_command_index = 3;
-  int32 command_index = 4;
-  string summary = 5;
-  bytes output = 6;
+  string command_id = 3;
+  string error_message = 4;
+  bytes output = 5;
 }
 
 message TargetManifest {
   string name = 1; // e.g. +build
   string canonical_name = 2; // e.g. github.com/foo/bar/buz:main+build
   repeated string override_args = 3;
-  string platform = 4;
+  string initial_platform = 4;
+  string final_platform = 8;
   RunStatus status = 5;
-  google.protobuf.Timestamp started_at = 6;
-  google.protobuf.Timestamp ended_at = 7;
-  repeated CommandManifest commands = 8;
+  uint64 started_at_unix_nanos = 6;
+  uint64 ended_at_unix_nanos = 7;
 }
 
 message CommandManifest {
   string name = 1;
+  // target_id is the ID of the target this command is part of
+  // (may be empty for commands that are not part of a target)
+  string target_id = 12;
   RunStatus status = 2;
   bool is_cached = 3;
   bool is_push = 4;
   bool is_local = 5;
-  google.protobuf.Timestamp started_at = 6;
-  google.protobuf.Timestamp ended_at = 7;
+  uint64 started_at_unix_nanos = 6;
+  uint64 ended_at_unix_nanos = 7;
   bool has_progress = 8;
   int32 progress = 9;
   // error_message is a string representation of an error related to this command.

@@ -3,7 +3,6 @@ package api.public.logstream;
 option go_package = "./logstream";
 
 import "manifest.proto";
-import "google/protobuf/timestamp.proto";
 
 message Delta {
   int32 version = 1;
@@ -15,10 +14,10 @@ message Delta {
 
 message DeltaLog {
   string target_id = 1;
-  int32 command_index = 2;
+  string command_id = 2;
   int32 stream = 3; // stdout or stderr
-  google.protobuf.Timestamp timestamp = 4;
-  bytes log = 5;
+  uint64 ts_unix_nanos = 4;
+  bytes data = 5;
 }
 
 message DeltaManifest {
@@ -28,12 +27,13 @@ message DeltaManifest {
   }
 
   message FieldsDelta {
-    google.protobuf.Timestamp started_at = 1;
-    google.protobuf.Timestamp ended_at = 2;
+    uint64 started_at_unix_nanos = 1;
+    uint64 ended_at_unix_nanos = 2;
     RunStatus status = 3;
     bool has_failure = 6;
     Failure failure = 4;
     map<string, DeltaTargetManifest> targets = 5;
+    map<string, DeltaCommandManifest> commands = 7;
   }
 }
 
@@ -41,15 +41,16 @@ message DeltaTargetManifest {
   string name = 1;
   string canonical_name = 2;
   repeated string override_args = 3;
-  string platform = 4;
+  string initial_platform = 4;
+  string final_platform = 8;
   RunStatus status = 5;
-  google.protobuf.Timestamp started_at = 6;
-  google.protobuf.Timestamp ended_at = 7;
-  map<int32, DeltaCommandManifest> commands = 8;
+  uint64 started_at_unix_nanos = 6;
+  uint64 ended_at_unix_nanos = 7;
 }
 
 message DeltaCommandManifest {
   string name = 1;
+  string target_id = 17;
   RunStatus status = 2;
   bool has_cached = 3;
   bool is_cached = 4;
@@ -57,8 +58,8 @@ message DeltaCommandManifest {
   bool is_push = 6;
   bool has_local = 7;
   bool is_local = 8;
-  google.protobuf.Timestamp started_at = 9;
-  google.protobuf.Timestamp ended_at = 10;
+  uint64 started_at_unix_nanos = 9;
+  uint64 ended_at_unix_nanos = 10;
   bool has_has_progress = 11;
   bool has_progress = 12;
   int32 progress = 13;
