@@ -413,8 +413,8 @@ message PipelineRun {
 
 message CommitInfo {
   string hash = 1;
-  string avatar = 2;
-  string commit_message = 3;
+  string avatar_url = 2;
+  string message = 3;
 }
 
 message ListRunsRequest {
