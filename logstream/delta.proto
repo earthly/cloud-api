@@ -51,6 +51,7 @@ message DeltaTargetManifest {
 message DeltaCommandManifest {
   string name = 1;
   string target_id = 17;
+  string platform = 18;
   RunStatus status = 2;
   bool has_cached = 3;
   bool is_cached = 4;

@@ -65,6 +65,7 @@ message CommandManifest {
   // target_id is the ID of the target this command is part of
   // (may be empty for commands that are not part of a target)
   string target_id = 12;
+  string platform = 13;
   RunStatus status = 2;
   bool is_cached = 3;
   bool is_push = 4;
