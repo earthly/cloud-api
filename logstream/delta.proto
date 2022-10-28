@@ -16,7 +16,7 @@ message DeltaLog {
   string target_id = 1;
   string command_id = 2;
   int32 stream = 3; // stdout or stderr
-  uint64 ts_unix_nanos = 4;
+  uint64 timestamp_unix_nanos = 4;
   bytes data = 5;
 }
 
