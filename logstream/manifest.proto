@@ -81,6 +81,8 @@ message CommandManifest {
 message SourceLocation {
   // repository_url is the URL of the repository.
   string repository_url = 1;
+  // repository_hash is the Git sha hash of the repository.
+  string repository_hash = 7;
   // file is the name of the Earthfile relative to the repository.
   string file = 2;
   int32 start_line = 3;
