@@ -14,6 +14,10 @@ message BuildRequest {
   string target = 4;
   string repo_token = 5;
   string build_id = 6;
+  string pipeline_id = 7;
+  string user_id = 8;
+  string org_id = 9;
+  string project_id = 10;
 }
 
 message BuildResponse {}
