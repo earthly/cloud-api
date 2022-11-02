@@ -37,21 +37,22 @@ type ComputeClient interface {
 	// Mainly intended for use by Buildkit Proxy when establishing a new connection to an instance.
 	GetSatellite(ctx context.Context, in *GetSatelliteRequest, opts ...grpc.CallOption) (*GetSatelliteResponse, error)
 	// WakeSatellite wakes a satellite that is in a sleep state.
-	// The response returns a stream that sends updates as the satellite wakes up. E.g.:
+	// The response returns a stream that sends updates as the satellite wakes up.
+	// For example, the stream may send the following statuses:
 	//    SLEEP -> STARTING -> ... -> STARTING -> OPERATIONAL -> EOF
 	WakeSatellite(ctx context.Context, in *WakeSatelliteRequest, opts ...grpc.CallOption) (Compute_WakeSatelliteClient, error)
 	// SleepSatellite puts a satellite to sleep when it is awake.
 	// The response is a stream which looks like the inverse of a WakeSatellite response.
-	// E.g., when satellite is awake:
+	// Example when satellite is awake:
 	//   OPERATIONAL -> STOPPING -> ... -> STOPPING -> SLEEP -> EOF
-	// E.g. when satellite is already asleep:e
+	// Example when satellite is already asleep:
 	//   SLEEP -> EOF
 	SleepSatellite(ctx context.Context, in *SleepSatelliteRequest, opts ...grpc.CallOption) (Compute_SleepSatelliteClient, error)
 	// ReserveSatellite both wakes the instance (if necessary) and calls reserve on buildkit.
 	// It is a streaming call which returns status updates during the wake up process,
-	// which can take a few moments.
+	// which can take a few moments. Some examples:
 	// When the satellite is already awake, a single event is emitted before closing the stream:
-	//   OPERATIONAL --> EOF
+	//   OPERATIONAL -> EOF
 	// When the satellite is asleep, several events are emitted in the following sequence:
 	//   SLEEP -> STARTING -> ... -> STARTING -> OPERATIONAL -> EOF
 	// When the satellite is already being woken up, or launching for the first time:
@@ -229,21 +230,22 @@ type ComputeServer interface {
 	// Mainly intended for use by Buildkit Proxy when establishing a new connection to an instance.
 	GetSatellite(context.Context, *GetSatelliteRequest) (*GetSatelliteResponse, error)
 	// WakeSatellite wakes a satellite that is in a sleep state.
-	// The response returns a stream that sends updates as the satellite wakes up. E.g.:
+	// The response returns a stream that sends updates as the satellite wakes up.
+	// For example, the stream may send the following statuses:
 	//    SLEEP -> STARTING -> ... -> STARTING -> OPERATIONAL -> EOF
 	WakeSatellite(*WakeSatelliteRequest, Compute_WakeSatelliteServer) error
 	// SleepSatellite puts a satellite to sleep when it is awake.
 	// The response is a stream which looks like the inverse of a WakeSatellite response.
-	// E.g., when satellite is awake:
+	// Example when satellite is awake:
 	//   OPERATIONAL -> STOPPING -> ... -> STOPPING -> SLEEP -> EOF
-	// E.g. when satellite is already asleep:e
+	// Example when satellite is already asleep:
 	//   SLEEP -> EOF
 	SleepSatellite(*SleepSatelliteRequest, Compute_SleepSatelliteServer) error
 	// ReserveSatellite both wakes the instance (if necessary) and calls reserve on buildkit.
 	// It is a streaming call which returns status updates during the wake up process,
-	// which can take a few moments.
+	// which can take a few moments. Some examples:
 	// When the satellite is already awake, a single event is emitted before closing the stream:
-	//   OPERATIONAL --> EOF
+	//   OPERATIONAL -> EOF
 	// When the satellite is asleep, several events are emitted in the following sequence:
 	//   SLEEP -> STARTING -> ... -> STARTING -> OPERATIONAL -> EOF
 	// When the satellite is already being woken up, or launching for the first time:
