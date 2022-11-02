@@ -40,6 +40,13 @@ type ComputeClient interface {
 	// The response returns a stream that sends updates as the satellite wakes up. E.g.:
 	//    SLEEP -> STARTING -> ... -> STARTING -> OPERATIONAL -> EOF
 	WakeSatellite(ctx context.Context, in *WakeSatelliteRequest, opts ...grpc.CallOption) (Compute_WakeSatelliteClient, error)
+	// SleepSatellite puts a satellite to sleep when it is awake.
+	// The response is a stream which looks like the inverse of a WakeSatellite response.
+	// E.g., when satellite is awake:
+	//   OPERATIONAL -> STOPPING -> ... -> STOPPING -> SLEEP -> EOF
+	// E.g. when satellite is already asleep:e
+	//   SLEEP -> EOF
+	SleepSatellite(ctx context.Context, in *SleepSatelliteRequest, opts ...grpc.CallOption) (Compute_SleepSatelliteClient, error)
 	// ReserveSatellite both wakes the instance (if necessary) and calls reserve on buildkit.
 	// It is a streaming call which returns status updates during the wake up process,
 	// which can take a few moments.
@@ -139,8 +146,40 @@ func (x *computeWakeSatelliteClient) Recv() (*WakeSatelliteResponse, error) {
 	return m, nil
 }
 
+func (c *computeClient) SleepSatellite(ctx context.Context, in *SleepSatelliteRequest, opts ...grpc.CallOption) (Compute_SleepSatelliteClient, error) {
+	stream, err := c.cc.NewStream(ctx, &Compute_ServiceDesc.Streams[1], "/api.public.compute.Compute/SleepSatellite", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &computeSleepSatelliteClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type Compute_SleepSatelliteClient interface {
+	Recv() (*SleepSatelliteResponse, error)
+	grpc.ClientStream
+}
+
+type computeSleepSatelliteClient struct {
+	grpc.ClientStream
+}
+
+func (x *computeSleepSatelliteClient) Recv() (*SleepSatelliteResponse, error) {
+	m := new(SleepSatelliteResponse)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 func (c *computeClient) ReserveSatellite(ctx context.Context, in *ReserveSatelliteRequest, opts ...grpc.CallOption) (Compute_ReserveSatelliteClient, error) {
-	stream, err := c.cc.NewStream(ctx, &Compute_ServiceDesc.Streams[1], "/api.public.compute.Compute/ReserveSatellite", opts...)
+	stream, err := c.cc.NewStream(ctx, &Compute_ServiceDesc.Streams[2], "/api.public.compute.Compute/ReserveSatellite", opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -193,6 +232,13 @@ type ComputeServer interface {
 	// The response returns a stream that sends updates as the satellite wakes up. E.g.:
 	//    SLEEP -> STARTING -> ... -> STARTING -> OPERATIONAL -> EOF
 	WakeSatellite(*WakeSatelliteRequest, Compute_WakeSatelliteServer) error
+	// SleepSatellite puts a satellite to sleep when it is awake.
+	// The response is a stream which looks like the inverse of a WakeSatellite response.
+	// E.g., when satellite is awake:
+	//   OPERATIONAL -> STOPPING -> ... -> STOPPING -> SLEEP -> EOF
+	// E.g. when satellite is already asleep:e
+	//   SLEEP -> EOF
+	SleepSatellite(*SleepSatelliteRequest, Compute_SleepSatelliteServer) error
 	// ReserveSatellite both wakes the instance (if necessary) and calls reserve on buildkit.
 	// It is a streaming call which returns status updates during the wake up process,
 	// which can take a few moments.
@@ -229,6 +275,9 @@ func (UnimplementedComputeServer) GetSatellite(context.Context, *GetSatelliteReq
 }
 func (UnimplementedComputeServer) WakeSatellite(*WakeSatelliteRequest, Compute_WakeSatelliteServer) error {
 	return status.Errorf(codes.Unimplemented, "method WakeSatellite not implemented")
+}
+func (UnimplementedComputeServer) SleepSatellite(*SleepSatelliteRequest, Compute_SleepSatelliteServer) error {
+	return status.Errorf(codes.Unimplemented, "method SleepSatellite not implemented")
 }
 func (UnimplementedComputeServer) ReserveSatellite(*ReserveSatelliteRequest, Compute_ReserveSatelliteServer) error {
 	return status.Errorf(codes.Unimplemented, "method ReserveSatellite not implemented")
@@ -357,6 +406,27 @@ func (x *computeWakeSatelliteServer) Send(m *WakeSatelliteResponse) error {
 	return x.ServerStream.SendMsg(m)
 }
 
+func _Compute_SleepSatellite_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(SleepSatelliteRequest)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(ComputeServer).SleepSatellite(m, &computeSleepSatelliteServer{stream})
+}
+
+type Compute_SleepSatelliteServer interface {
+	Send(*SleepSatelliteResponse) error
+	grpc.ServerStream
+}
+
+type computeSleepSatelliteServer struct {
+	grpc.ServerStream
+}
+
+func (x *computeSleepSatelliteServer) Send(m *SleepSatelliteResponse) error {
+	return x.ServerStream.SendMsg(m)
+}
+
 func _Compute_ReserveSatellite_Handler(srv interface{}, stream grpc.ServerStream) error {
 	m := new(ReserveSatelliteRequest)
 	if err := stream.RecvMsg(m); err != nil {
@@ -410,6 +480,11 @@ var Compute_ServiceDesc = grpc.ServiceDesc{
 		{
 			StreamName:    "WakeSatellite",
 			Handler:       _Compute_WakeSatellite_Handler,
+			ServerStreams: true,
+		},
+		{
+			StreamName:    "SleepSatellite",
+			Handler:       _Compute_SleepSatellite_Handler,
 			ServerStreams: true,
 		},
 		{

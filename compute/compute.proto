@@ -49,6 +49,14 @@ service Compute {
   //    SLEEP -> STARTING -> ... -> STARTING -> OPERATIONAL -> EOF
   rpc WakeSatellite(WakeSatelliteRequest) returns (stream WakeSatelliteResponse) {}
 
+  // SleepSatellite puts a satellite to sleep when it is awake.
+  // The response is a stream which looks like the inverse of a WakeSatellite response.
+  // E.g., when satellite is awake:
+  //   OPERATIONAL -> STOPPING -> ... -> STOPPING -> SLEEP -> EOF
+  // E.g. when satellite is already asleep:e
+  //   SLEEP -> EOF
+  rpc SleepSatellite(SleepSatelliteRequest) returns (stream SleepSatelliteResponse) {}
+
   // ReserveSatellite both wakes the instance (if necessary) and calls reserve on buildkit.
   // It is a streaming call which returns status updates during the wake up process,
   // which can take a few moments.
@@ -139,6 +147,17 @@ message WakeSatelliteRequest {
 }
 
 message WakeSatelliteResponse {
+  SatelliteStatus status = 1;
+}
+
+message SleepSatelliteRequest {
+  string org_id = 1;
+  string name = 2;
+  google.protobuf.Duration update_interval = 3;
+
+}
+
+message SleepSatelliteResponse {
   SatelliteStatus status = 1;
 }
 
