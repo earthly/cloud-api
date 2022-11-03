@@ -756,6 +756,116 @@ func (x *WakeSatelliteResponse) GetStatus() SatelliteStatus {
 	return SatelliteStatus_SATELLITE_STATUS_UNKNOWN
 }
 
+type SleepSatelliteRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	OrgId          string               `protobuf:"bytes,1,opt,name=org_id,json=orgId,proto3" json:"org_id,omitempty"`
+	Name           string               `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	UpdateInterval *durationpb.Duration `protobuf:"bytes,3,opt,name=update_interval,json=updateInterval,proto3" json:"update_interval,omitempty"`
+}
+
+func (x *SleepSatelliteRequest) Reset() {
+	*x = SleepSatelliteRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_compute_proto_msgTypes[12]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *SleepSatelliteRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SleepSatelliteRequest) ProtoMessage() {}
+
+func (x *SleepSatelliteRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_compute_proto_msgTypes[12]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SleepSatelliteRequest.ProtoReflect.Descriptor instead.
+func (*SleepSatelliteRequest) Descriptor() ([]byte, []int) {
+	return file_compute_proto_rawDescGZIP(), []int{12}
+}
+
+func (x *SleepSatelliteRequest) GetOrgId() string {
+	if x != nil {
+		return x.OrgId
+	}
+	return ""
+}
+
+func (x *SleepSatelliteRequest) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *SleepSatelliteRequest) GetUpdateInterval() *durationpb.Duration {
+	if x != nil {
+		return x.UpdateInterval
+	}
+	return nil
+}
+
+type SleepSatelliteResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Status SatelliteStatus `protobuf:"varint,1,opt,name=status,proto3,enum=api.public.compute.SatelliteStatus" json:"status,omitempty"`
+}
+
+func (x *SleepSatelliteResponse) Reset() {
+	*x = SleepSatelliteResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_compute_proto_msgTypes[13]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *SleepSatelliteResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SleepSatelliteResponse) ProtoMessage() {}
+
+func (x *SleepSatelliteResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_compute_proto_msgTypes[13]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SleepSatelliteResponse.ProtoReflect.Descriptor instead.
+func (*SleepSatelliteResponse) Descriptor() ([]byte, []int) {
+	return file_compute_proto_rawDescGZIP(), []int{13}
+}
+
+func (x *SleepSatelliteResponse) GetStatus() SatelliteStatus {
+	if x != nil {
+		return x.Status
+	}
+	return SatelliteStatus_SATELLITE_STATUS_UNKNOWN
+}
+
 type ReserveSatelliteRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -772,7 +882,7 @@ type ReserveSatelliteRequest struct {
 func (x *ReserveSatelliteRequest) Reset() {
 	*x = ReserveSatelliteRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_compute_proto_msgTypes[12]
+		mi := &file_compute_proto_msgTypes[14]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -785,7 +895,7 @@ func (x *ReserveSatelliteRequest) String() string {
 func (*ReserveSatelliteRequest) ProtoMessage() {}
 
 func (x *ReserveSatelliteRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_compute_proto_msgTypes[12]
+	mi := &file_compute_proto_msgTypes[14]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -798,7 +908,7 @@ func (x *ReserveSatelliteRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ReserveSatelliteRequest.ProtoReflect.Descriptor instead.
 func (*ReserveSatelliteRequest) Descriptor() ([]byte, []int) {
-	return file_compute_proto_rawDescGZIP(), []int{12}
+	return file_compute_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *ReserveSatelliteRequest) GetOrgId() string {
@@ -854,7 +964,7 @@ type ReserveSatelliteResponse struct {
 func (x *ReserveSatelliteResponse) Reset() {
 	*x = ReserveSatelliteResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_compute_proto_msgTypes[13]
+		mi := &file_compute_proto_msgTypes[15]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -867,7 +977,7 @@ func (x *ReserveSatelliteResponse) String() string {
 func (*ReserveSatelliteResponse) ProtoMessage() {}
 
 func (x *ReserveSatelliteResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_compute_proto_msgTypes[13]
+	mi := &file_compute_proto_msgTypes[15]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -880,7 +990,7 @@ func (x *ReserveSatelliteResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ReserveSatelliteResponse.ProtoReflect.Descriptor instead.
 func (*ReserveSatelliteResponse) Descriptor() ([]byte, []int) {
-	return file_compute_proto_rawDescGZIP(), []int{13}
+	return file_compute_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *ReserveSatelliteResponse) GetStatus() SatelliteStatus {
@@ -905,7 +1015,7 @@ type ListSatellitesResponse_SatelliteInstance struct {
 func (x *ListSatellitesResponse_SatelliteInstance) Reset() {
 	*x = ListSatellitesResponse_SatelliteInstance{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_compute_proto_msgTypes[14]
+		mi := &file_compute_proto_msgTypes[16]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -918,7 +1028,7 @@ func (x *ListSatellitesResponse_SatelliteInstance) String() string {
 func (*ListSatellitesResponse_SatelliteInstance) ProtoMessage() {}
 
 func (x *ListSatellitesResponse_SatelliteInstance) ProtoReflect() protoreflect.Message {
-	mi := &file_compute_proto_msgTypes[14]
+	mi := &file_compute_proto_msgTypes[16]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1062,6 +1172,20 @@ var file_compute_proto_rawDesc = []byte{
 	0x12, 0x3b, 0x0a, 0x06, 0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0e,
 	0x32, 0x23, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x70, 0x75, 0x62, 0x6c, 0x69, 0x63, 0x2e, 0x63, 0x6f,
 	0x6d, 0x70, 0x75, 0x74, 0x65, 0x2e, 0x53, 0x61, 0x74, 0x65, 0x6c, 0x6c, 0x69, 0x74, 0x65, 0x53,
+	0x74, 0x61, 0x74, 0x75, 0x73, 0x52, 0x06, 0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x22, 0x86, 0x01,
+	0x0a, 0x15, 0x53, 0x6c, 0x65, 0x65, 0x70, 0x53, 0x61, 0x74, 0x65, 0x6c, 0x6c, 0x69, 0x74, 0x65,
+	0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x15, 0x0a, 0x06, 0x6f, 0x72, 0x67, 0x5f, 0x69,
+	0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x6f, 0x72, 0x67, 0x49, 0x64, 0x12, 0x12,
+	0x0a, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6e, 0x61,
+	0x6d, 0x65, 0x12, 0x42, 0x0a, 0x0f, 0x75, 0x70, 0x64, 0x61, 0x74, 0x65, 0x5f, 0x69, 0x6e, 0x74,
+	0x65, 0x72, 0x76, 0x61, 0x6c, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x19, 0x2e, 0x67, 0x6f,
+	0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x44, 0x75,
+	0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x0e, 0x75, 0x70, 0x64, 0x61, 0x74, 0x65, 0x49, 0x6e,
+	0x74, 0x65, 0x72, 0x76, 0x61, 0x6c, 0x22, 0x55, 0x0a, 0x16, 0x53, 0x6c, 0x65, 0x65, 0x70, 0x53,
+	0x61, 0x74, 0x65, 0x6c, 0x6c, 0x69, 0x74, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
+	0x12, 0x3b, 0x0a, 0x06, 0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0e,
+	0x32, 0x23, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x70, 0x75, 0x62, 0x6c, 0x69, 0x63, 0x2e, 0x63, 0x6f,
+	0x6d, 0x70, 0x75, 0x74, 0x65, 0x2e, 0x53, 0x61, 0x74, 0x65, 0x6c, 0x6c, 0x69, 0x74, 0x65, 0x53,
 	0x74, 0x61, 0x74, 0x75, 0x73, 0x52, 0x06, 0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x22, 0xea, 0x01,
 	0x0a, 0x17, 0x52, 0x65, 0x73, 0x65, 0x72, 0x76, 0x65, 0x53, 0x61, 0x74, 0x65, 0x6c, 0x6c, 0x69,
 	0x74, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x15, 0x0a, 0x06, 0x6f, 0x72, 0x67,
@@ -1101,7 +1225,7 @@ var file_compute_proto_rawDesc = []byte{
 	0x0a, 0x19, 0x53, 0x41, 0x54, 0x45, 0x4c, 0x4c, 0x49, 0x54, 0x45, 0x5f, 0x53, 0x54, 0x41, 0x54,
 	0x55, 0x53, 0x5f, 0x53, 0x54, 0x41, 0x52, 0x54, 0x49, 0x4e, 0x47, 0x10, 0x07, 0x12, 0x1d, 0x0a,
 	0x19, 0x53, 0x41, 0x54, 0x45, 0x4c, 0x4c, 0x49, 0x54, 0x45, 0x5f, 0x53, 0x54, 0x41, 0x54, 0x55,
-	0x53, 0x5f, 0x53, 0x54, 0x4f, 0x50, 0x50, 0x49, 0x4e, 0x47, 0x10, 0x08, 0x32, 0xa9, 0x07, 0x0a,
+	0x53, 0x5f, 0x53, 0x54, 0x4f, 0x50, 0x50, 0x49, 0x4e, 0x47, 0x10, 0x08, 0x32, 0x96, 0x08, 0x0a,
 	0x07, 0x43, 0x6f, 0x6d, 0x70, 0x75, 0x74, 0x65, 0x12, 0x89, 0x01, 0x0a, 0x0f, 0x4c, 0x61, 0x75,
 	0x6e, 0x63, 0x68, 0x53, 0x61, 0x74, 0x65, 0x6c, 0x6c, 0x69, 0x74, 0x65, 0x12, 0x2a, 0x2e, 0x61,
 	0x70, 0x69, 0x2e, 0x70, 0x75, 0x62, 0x6c, 0x69, 0x63, 0x2e, 0x63, 0x6f, 0x6d, 0x70, 0x75, 0x74,
@@ -1153,15 +1277,22 @@ var file_compute_proto_rawDesc = []byte{
 	0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x29, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x70, 0x75, 0x62,
 	0x6c, 0x69, 0x63, 0x2e, 0x63, 0x6f, 0x6d, 0x70, 0x75, 0x74, 0x65, 0x2e, 0x57, 0x61, 0x6b, 0x65,
 	0x53, 0x61, 0x74, 0x65, 0x6c, 0x6c, 0x69, 0x74, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73,
-	0x65, 0x22, 0x00, 0x30, 0x01, 0x12, 0x71, 0x0a, 0x10, 0x52, 0x65, 0x73, 0x65, 0x72, 0x76, 0x65,
-	0x53, 0x61, 0x74, 0x65, 0x6c, 0x6c, 0x69, 0x74, 0x65, 0x12, 0x2b, 0x2e, 0x61, 0x70, 0x69, 0x2e,
-	0x70, 0x75, 0x62, 0x6c, 0x69, 0x63, 0x2e, 0x63, 0x6f, 0x6d, 0x70, 0x75, 0x74, 0x65, 0x2e, 0x52,
-	0x65, 0x73, 0x65, 0x72, 0x76, 0x65, 0x53, 0x61, 0x74, 0x65, 0x6c, 0x6c, 0x69, 0x74, 0x65, 0x52,
-	0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x2c, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x70, 0x75, 0x62,
+	0x65, 0x22, 0x00, 0x30, 0x01, 0x12, 0x6b, 0x0a, 0x0e, 0x53, 0x6c, 0x65, 0x65, 0x70, 0x53, 0x61,
+	0x74, 0x65, 0x6c, 0x6c, 0x69, 0x74, 0x65, 0x12, 0x29, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x70, 0x75,
+	0x62, 0x6c, 0x69, 0x63, 0x2e, 0x63, 0x6f, 0x6d, 0x70, 0x75, 0x74, 0x65, 0x2e, 0x53, 0x6c, 0x65,
+	0x65, 0x70, 0x53, 0x61, 0x74, 0x65, 0x6c, 0x6c, 0x69, 0x74, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65,
+	0x73, 0x74, 0x1a, 0x2a, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x70, 0x75, 0x62, 0x6c, 0x69, 0x63, 0x2e,
+	0x63, 0x6f, 0x6d, 0x70, 0x75, 0x74, 0x65, 0x2e, 0x53, 0x6c, 0x65, 0x65, 0x70, 0x53, 0x61, 0x74,
+	0x65, 0x6c, 0x6c, 0x69, 0x74, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00,
+	0x30, 0x01, 0x12, 0x71, 0x0a, 0x10, 0x52, 0x65, 0x73, 0x65, 0x72, 0x76, 0x65, 0x53, 0x61, 0x74,
+	0x65, 0x6c, 0x6c, 0x69, 0x74, 0x65, 0x12, 0x2b, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x70, 0x75, 0x62,
 	0x6c, 0x69, 0x63, 0x2e, 0x63, 0x6f, 0x6d, 0x70, 0x75, 0x74, 0x65, 0x2e, 0x52, 0x65, 0x73, 0x65,
-	0x72, 0x76, 0x65, 0x53, 0x61, 0x74, 0x65, 0x6c, 0x6c, 0x69, 0x74, 0x65, 0x52, 0x65, 0x73, 0x70,
-	0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x30, 0x01, 0x42, 0x0b, 0x5a, 0x09, 0x2e, 0x2f, 0x63, 0x6f,
-	0x6d, 0x70, 0x75, 0x74, 0x65, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x72, 0x76, 0x65, 0x53, 0x61, 0x74, 0x65, 0x6c, 0x6c, 0x69, 0x74, 0x65, 0x52, 0x65, 0x71, 0x75,
+	0x65, 0x73, 0x74, 0x1a, 0x2c, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x70, 0x75, 0x62, 0x6c, 0x69, 0x63,
+	0x2e, 0x63, 0x6f, 0x6d, 0x70, 0x75, 0x74, 0x65, 0x2e, 0x52, 0x65, 0x73, 0x65, 0x72, 0x76, 0x65,
+	0x53, 0x61, 0x74, 0x65, 0x6c, 0x6c, 0x69, 0x74, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73,
+	0x65, 0x22, 0x00, 0x30, 0x01, 0x42, 0x0b, 0x5a, 0x09, 0x2e, 0x2f, 0x63, 0x6f, 0x6d, 0x70, 0x75,
+	0x74, 0x65, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -1177,7 +1308,7 @@ func file_compute_proto_rawDescGZIP() []byte {
 }
 
 var file_compute_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_compute_proto_msgTypes = make([]protoimpl.MessageInfo, 15)
+var file_compute_proto_msgTypes = make([]protoimpl.MessageInfo, 17)
 var file_compute_proto_goTypes = []interface{}{
 	(SatelliteStatus)(0),                             // 0: api.public.compute.SatelliteStatus
 	(*LaunchSatelliteRequest)(nil),                   // 1: api.public.compute.LaunchSatelliteRequest
@@ -1192,39 +1323,45 @@ var file_compute_proto_goTypes = []interface{}{
 	(*GetSatelliteResponse)(nil),                     // 10: api.public.compute.GetSatelliteResponse
 	(*WakeSatelliteRequest)(nil),                     // 11: api.public.compute.WakeSatelliteRequest
 	(*WakeSatelliteResponse)(nil),                    // 12: api.public.compute.WakeSatelliteResponse
-	(*ReserveSatelliteRequest)(nil),                  // 13: api.public.compute.ReserveSatelliteRequest
-	(*ReserveSatelliteResponse)(nil),                 // 14: api.public.compute.ReserveSatelliteResponse
-	(*ListSatellitesResponse_SatelliteInstance)(nil), // 15: api.public.compute.ListSatellitesResponse.SatelliteInstance
-	(*durationpb.Duration)(nil),                      // 16: google.protobuf.Duration
+	(*SleepSatelliteRequest)(nil),                    // 13: api.public.compute.SleepSatelliteRequest
+	(*SleepSatelliteResponse)(nil),                   // 14: api.public.compute.SleepSatelliteResponse
+	(*ReserveSatelliteRequest)(nil),                  // 15: api.public.compute.ReserveSatelliteRequest
+	(*ReserveSatelliteResponse)(nil),                 // 16: api.public.compute.ReserveSatelliteResponse
+	(*ListSatellitesResponse_SatelliteInstance)(nil), // 17: api.public.compute.ListSatellitesResponse.SatelliteInstance
+	(*durationpb.Duration)(nil),                      // 18: google.protobuf.Duration
 }
 var file_compute_proto_depIdxs = []int32{
 	0,  // 0: api.public.compute.LaunchSatelliteResponse.status:type_name -> api.public.compute.SatelliteStatus
-	15, // 1: api.public.compute.ListSatellitesResponse.instances:type_name -> api.public.compute.ListSatellitesResponse.SatelliteInstance
+	17, // 1: api.public.compute.ListSatellitesResponse.instances:type_name -> api.public.compute.ListSatellitesResponse.SatelliteInstance
 	0,  // 2: api.public.compute.GetSatelliteResponse.status:type_name -> api.public.compute.SatelliteStatus
-	16, // 3: api.public.compute.WakeSatelliteRequest.update_interval:type_name -> google.protobuf.Duration
+	18, // 3: api.public.compute.WakeSatelliteRequest.update_interval:type_name -> google.protobuf.Duration
 	0,  // 4: api.public.compute.WakeSatelliteResponse.status:type_name -> api.public.compute.SatelliteStatus
-	16, // 5: api.public.compute.ReserveSatelliteRequest.update_interval:type_name -> google.protobuf.Duration
-	0,  // 6: api.public.compute.ReserveSatelliteResponse.status:type_name -> api.public.compute.SatelliteStatus
-	0,  // 7: api.public.compute.ListSatellitesResponse.SatelliteInstance.status:type_name -> api.public.compute.SatelliteStatus
-	1,  // 8: api.public.compute.Compute.LaunchSatellite:input_type -> api.public.compute.LaunchSatelliteRequest
-	3,  // 9: api.public.compute.Compute.ListSatellites:input_type -> api.public.compute.ListSatellitesRequest
-	5,  // 10: api.public.compute.Compute.UpdateSatellite:input_type -> api.public.compute.UpdateSatelliteRequest
-	7,  // 11: api.public.compute.Compute.DeleteSatellite:input_type -> api.public.compute.DeleteSatelliteRequest
-	9,  // 12: api.public.compute.Compute.GetSatellite:input_type -> api.public.compute.GetSatelliteRequest
-	11, // 13: api.public.compute.Compute.WakeSatellite:input_type -> api.public.compute.WakeSatelliteRequest
-	13, // 14: api.public.compute.Compute.ReserveSatellite:input_type -> api.public.compute.ReserveSatelliteRequest
-	2,  // 15: api.public.compute.Compute.LaunchSatellite:output_type -> api.public.compute.LaunchSatelliteResponse
-	4,  // 16: api.public.compute.Compute.ListSatellites:output_type -> api.public.compute.ListSatellitesResponse
-	6,  // 17: api.public.compute.Compute.UpdateSatellite:output_type -> api.public.compute.UpdateSatelliteResponse
-	8,  // 18: api.public.compute.Compute.DeleteSatellite:output_type -> api.public.compute.DeleteSatelliteResponse
-	10, // 19: api.public.compute.Compute.GetSatellite:output_type -> api.public.compute.GetSatelliteResponse
-	12, // 20: api.public.compute.Compute.WakeSatellite:output_type -> api.public.compute.WakeSatelliteResponse
-	14, // 21: api.public.compute.Compute.ReserveSatellite:output_type -> api.public.compute.ReserveSatelliteResponse
-	15, // [15:22] is the sub-list for method output_type
-	8,  // [8:15] is the sub-list for method input_type
-	8,  // [8:8] is the sub-list for extension type_name
-	8,  // [8:8] is the sub-list for extension extendee
-	0,  // [0:8] is the sub-list for field type_name
+	18, // 5: api.public.compute.SleepSatelliteRequest.update_interval:type_name -> google.protobuf.Duration
+	0,  // 6: api.public.compute.SleepSatelliteResponse.status:type_name -> api.public.compute.SatelliteStatus
+	18, // 7: api.public.compute.ReserveSatelliteRequest.update_interval:type_name -> google.protobuf.Duration
+	0,  // 8: api.public.compute.ReserveSatelliteResponse.status:type_name -> api.public.compute.SatelliteStatus
+	0,  // 9: api.public.compute.ListSatellitesResponse.SatelliteInstance.status:type_name -> api.public.compute.SatelliteStatus
+	1,  // 10: api.public.compute.Compute.LaunchSatellite:input_type -> api.public.compute.LaunchSatelliteRequest
+	3,  // 11: api.public.compute.Compute.ListSatellites:input_type -> api.public.compute.ListSatellitesRequest
+	5,  // 12: api.public.compute.Compute.UpdateSatellite:input_type -> api.public.compute.UpdateSatelliteRequest
+	7,  // 13: api.public.compute.Compute.DeleteSatellite:input_type -> api.public.compute.DeleteSatelliteRequest
+	9,  // 14: api.public.compute.Compute.GetSatellite:input_type -> api.public.compute.GetSatelliteRequest
+	11, // 15: api.public.compute.Compute.WakeSatellite:input_type -> api.public.compute.WakeSatelliteRequest
+	13, // 16: api.public.compute.Compute.SleepSatellite:input_type -> api.public.compute.SleepSatelliteRequest
+	15, // 17: api.public.compute.Compute.ReserveSatellite:input_type -> api.public.compute.ReserveSatelliteRequest
+	2,  // 18: api.public.compute.Compute.LaunchSatellite:output_type -> api.public.compute.LaunchSatelliteResponse
+	4,  // 19: api.public.compute.Compute.ListSatellites:output_type -> api.public.compute.ListSatellitesResponse
+	6,  // 20: api.public.compute.Compute.UpdateSatellite:output_type -> api.public.compute.UpdateSatelliteResponse
+	8,  // 21: api.public.compute.Compute.DeleteSatellite:output_type -> api.public.compute.DeleteSatelliteResponse
+	10, // 22: api.public.compute.Compute.GetSatellite:output_type -> api.public.compute.GetSatelliteResponse
+	12, // 23: api.public.compute.Compute.WakeSatellite:output_type -> api.public.compute.WakeSatelliteResponse
+	14, // 24: api.public.compute.Compute.SleepSatellite:output_type -> api.public.compute.SleepSatelliteResponse
+	16, // 25: api.public.compute.Compute.ReserveSatellite:output_type -> api.public.compute.ReserveSatelliteResponse
+	18, // [18:26] is the sub-list for method output_type
+	10, // [10:18] is the sub-list for method input_type
+	10, // [10:10] is the sub-list for extension type_name
+	10, // [10:10] is the sub-list for extension extendee
+	0,  // [0:10] is the sub-list for field type_name
 }
 
 func init() { file_compute_proto_init() }
@@ -1378,7 +1515,7 @@ func file_compute_proto_init() {
 			}
 		}
 		file_compute_proto_msgTypes[12].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ReserveSatelliteRequest); i {
+			switch v := v.(*SleepSatelliteRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1390,7 +1527,7 @@ func file_compute_proto_init() {
 			}
 		}
 		file_compute_proto_msgTypes[13].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ReserveSatelliteResponse); i {
+			switch v := v.(*SleepSatelliteResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1402,6 +1539,30 @@ func file_compute_proto_init() {
 			}
 		}
 		file_compute_proto_msgTypes[14].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*ReserveSatelliteRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_compute_proto_msgTypes[15].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*ReserveSatelliteResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_compute_proto_msgTypes[16].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*ListSatellitesResponse_SatelliteInstance); i {
 			case 0:
 				return &v.state
@@ -1420,7 +1581,7 @@ func file_compute_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_compute_proto_rawDesc,
 			NumEnums:      1,
-			NumMessages:   15,
+			NumMessages:   17,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
