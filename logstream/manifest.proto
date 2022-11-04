@@ -24,12 +24,21 @@ message RunManifest {
   
   Failure failure = 9;
 
+  // org_name is the name of the organization that owns this run.
+  // May be empty for builds that don't have a PROJECT declaration.
+  string org_name = 14;
+  // project_name is the name of the project that owns this run.
+  // May be empty for builds that don't have a PROJECT declaration.
+  string project_name = 15;
+
+  //
+  // The following are populated by the logstream server on delta ingestion.
+
   // user_id is the UUID of the user that ran the build.
   string user_id = 10;
-  // org_id is the Organization the build belongs to.
+  // org_id is the UUID of the organization that owns this run.
   string org_id = 11;
-  // project_id is the ID of the CI Project containing the build.
-  // It my be empty for builds that are not run on the CI.
+  // project_id is the UUID of the project that owns this run.
   string project_id = 12;
 }
 
