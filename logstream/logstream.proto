@@ -7,12 +7,20 @@ import "delta.proto";
 message StreamLogRequest {
   string build_id = 1;
   repeated Delta deltas = 2;
+  bool eof = 3;
 }
 
 message StreamLogResponse {
-  string build_id = 1;
+  bool eof_ack = 1;
 }
 
 service LogStream {
+  // StreamLogs streams logs to the server. Stream protocol:
+  // 1. The client opens the channel.
+  // 2. The client sends a ResetFields delta.
+  // 3. Client continues streaming through the rest of the deltas.
+  // 4. The final stream message from the client is an eof=true message.
+  // 5. Server responds with eof_ack=true.
+  // 6. Client closes the channel.
   rpc StreamLogs(stream StreamLogRequest) returns (stream StreamLogResponse) {}
 }

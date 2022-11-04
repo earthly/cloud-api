@@ -22,6 +22,13 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type LogStreamClient interface {
+	// StreamLogs streams logs to the server. Stream protocol:
+	// 1. The client opens the channel.
+	// 2. The client sends a ResetFields delta.
+	// 3. Client continues streaming through the rest of the deltas.
+	// 4. The final stream message from the client is an eof=true message.
+	// 5. Server responds with eof_ack=true.
+	// 6. Client closes the channel.
 	StreamLogs(ctx context.Context, opts ...grpc.CallOption) (LogStream_StreamLogsClient, error)
 }
 
@@ -68,6 +75,13 @@ func (x *logStreamStreamLogsClient) Recv() (*StreamLogResponse, error) {
 // All implementations must embed UnimplementedLogStreamServer
 // for forward compatibility
 type LogStreamServer interface {
+	// StreamLogs streams logs to the server. Stream protocol:
+	// 1. The client opens the channel.
+	// 2. The client sends a ResetFields delta.
+	// 3. Client continues streaming through the rest of the deltas.
+	// 4. The final stream message from the client is an eof=true message.
+	// 5. Server responds with eof_ack=true.
+	// 6. Client closes the channel.
 	StreamLogs(LogStream_StreamLogsServer) error
 	mustEmbedUnimplementedLogStreamServer()
 }
