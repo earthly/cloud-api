@@ -124,7 +124,7 @@ service Pipelines {
   // GetRun returns a single pipeline run, specified by ID.
   rpc GetRun(GetRunRequest) returns (GetRunResponse) {
     option (google.api.http) = {
-      get: "/api/v0/runs/{run_id}"
+      get: "/api/v0/run"
     };
   }
 }
@@ -431,6 +431,8 @@ message ListRunsResponse {
 
 message GetRunRequest {
   string run_id = 1;
+  string pipeline_id = 2;
+  int32 seq_num = 3;
 }
 
 message GetRunResponse {
