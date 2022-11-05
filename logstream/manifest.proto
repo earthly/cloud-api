@@ -20,7 +20,7 @@ message RunManifest {
   RunStatus status = 6;
   map<string, TargetManifest> targets = 7;
   map<string, CommandManifest> commands = 13;
-  string main_target = 8;
+  string main_target_id = 8;
   
   Failure failure = 9;
 
