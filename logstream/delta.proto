@@ -54,6 +54,7 @@ message DeltaManifest {
   }
 
   message FieldsDelta {
+    string main_target_id = 8;
     uint64 started_at_unix_nanos = 1;
     uint64 ended_at_unix_nanos = 2;
     RunStatus status = 3;
