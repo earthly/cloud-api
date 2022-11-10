@@ -20,7 +20,7 @@ message RunManifest {
   RunStatus status = 6;
   map<string, TargetManifest> targets = 7;
   map<string, CommandManifest> commands = 13;
-  string main_target = 8;
+  string main_target_id = 8;
   
   Failure failure = 9;
 
@@ -64,6 +64,8 @@ message TargetManifest {
   repeated string override_args = 3;
   string initial_platform = 4;
   string final_platform = 8;
+  // satellite_name is the satellite that this target runs on.
+  string satellite_name = 9;
   RunStatus status = 5;
   uint64 started_at_unix_nanos = 6;
   uint64 ended_at_unix_nanos = 7;

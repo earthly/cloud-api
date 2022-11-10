@@ -1,12 +1,12 @@
 module github.com/earthly/cloud-api
 
-go 1.17
+go 1.19
 
 require (
-	github.com/grpc-ecosystem/grpc-gateway/v2 v2.10.3
-	google.golang.org/genproto v0.0.0-20220617124728-180714bec0ad
-	google.golang.org/grpc v1.47.0
-	google.golang.org/protobuf v1.28.0
+	github.com/grpc-ecosystem/grpc-gateway/v2 v2.10.0
+	google.golang.org/genproto v0.0.0-20220317150908-0efb43f6373e
+	google.golang.org/grpc v1.45.0
+	google.golang.org/protobuf v1.27.1
 )
 
 require (
