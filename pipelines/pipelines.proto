@@ -409,6 +409,7 @@ message PipelineRun {
   int32 seq_num = 11;
   string commit_email = 12;
   string commit_login = 13;
+  int32 org_seq_num = 14;
 }
 
 message CommitInfo {
