@@ -94,7 +94,7 @@ enum SatelliteStatus {
 
 message LaunchSatelliteResponse {
   SatelliteStatus status = 1;
-  string version = 2; // deprecated
+  string version = 2;
 }
 
 message ListSatellitesRequest {
@@ -107,7 +107,7 @@ message ListSatellitesResponse {
     string name = 2;
     string platform = 3;
     SatelliteStatus status = 4;
-    string version = 5; // deprecated
+    string version = 5;
     string size = 6;
   }
   repeated SatelliteInstance instances = 1;
@@ -136,11 +136,12 @@ message GetSatelliteResponse {
   string user_id = 1;
   string platform = 2;
   SatelliteStatus status = 3;
-  string version = 4; // deprecated
+  string version = 4;
   string id = 5;
   string private_ip = 6;
   string private_dns = 7;
   string size = 8;
+  repeated string feature_flags = 9;
 }
 
 message WakeSatelliteRequest {
