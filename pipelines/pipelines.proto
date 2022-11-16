@@ -368,6 +368,7 @@ message ListRemoteOrgsResponse {
 message ListPipelinesRequest {
   string project = 1;
   string org = 2;
+  string earthfile_hash = 3;
 }
 
 message ListPipelinesResponse {
@@ -435,6 +436,8 @@ message GetRunRequest {
   string run_id = 1;
   string pipeline_id = 2;
   int32 seq_num = 3;
+  string org_name = 4;
+  int32 org_seq_num = 5;
 }
 
 message GetRunResponse {
