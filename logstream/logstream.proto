@@ -14,6 +14,12 @@ message StreamLogResponse {
   bool eof_ack = 1;
 }
 
+message GetFirebaseAuthTokenRequest {}
+
+message GetFirebaseAuthTokenResponse {
+  string token = 1;
+}
+
 service LogStream {
   // StreamLogs streams logs to the server. Stream protocol:
   // 1. The client opens the channel.
@@ -23,4 +29,8 @@ service LogStream {
   // 5. Server responds with eof_ack=true.
   // 6. Client closes the channel.
   rpc StreamLogs(stream StreamLogRequest) returns (stream StreamLogResponse) {}
+
+  // GetFirebaseAuthToken returns a token suitable for use with Firebase APIs
+  // The user must already be authenticated.
+  rpc GetFirebaseAuthToken(GetFirebaseAuthTokenRequest) returns (GetFirebaseAuthTokenResponse) {}
 }
