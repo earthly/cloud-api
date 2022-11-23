@@ -30,6 +30,9 @@ type LogStreamClient interface {
 	// 5. Server responds with eof_ack=true.
 	// 6. Client closes the channel.
 	StreamLogs(ctx context.Context, opts ...grpc.CallOption) (LogStream_StreamLogsClient, error)
+	// GetFirebaseAuthToken returns a token suitable for use with Firebase APIs
+	// The user must already be authenticated.
+	GetFirebaseAuthToken(ctx context.Context, in *GetFirebaseAuthTokenRequest, opts ...grpc.CallOption) (*GetFirebaseAuthTokenResponse, error)
 }
 
 type logStreamClient struct {
@@ -71,6 +74,15 @@ func (x *logStreamStreamLogsClient) Recv() (*StreamLogResponse, error) {
 	return m, nil
 }
 
+func (c *logStreamClient) GetFirebaseAuthToken(ctx context.Context, in *GetFirebaseAuthTokenRequest, opts ...grpc.CallOption) (*GetFirebaseAuthTokenResponse, error) {
+	out := new(GetFirebaseAuthTokenResponse)
+	err := c.cc.Invoke(ctx, "/api.public.logstream.LogStream/GetFirebaseAuthToken", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // LogStreamServer is the server API for LogStream service.
 // All implementations must embed UnimplementedLogStreamServer
 // for forward compatibility
@@ -83,6 +95,9 @@ type LogStreamServer interface {
 	// 5. Server responds with eof_ack=true.
 	// 6. Client closes the channel.
 	StreamLogs(LogStream_StreamLogsServer) error
+	// GetFirebaseAuthToken returns a token suitable for use with Firebase APIs
+	// The user must already be authenticated.
+	GetFirebaseAuthToken(context.Context, *GetFirebaseAuthTokenRequest) (*GetFirebaseAuthTokenResponse, error)
 	mustEmbedUnimplementedLogStreamServer()
 }
 
@@ -92,6 +107,9 @@ type UnimplementedLogStreamServer struct {
 
 func (UnimplementedLogStreamServer) StreamLogs(LogStream_StreamLogsServer) error {
 	return status.Errorf(codes.Unimplemented, "method StreamLogs not implemented")
+}
+func (UnimplementedLogStreamServer) GetFirebaseAuthToken(context.Context, *GetFirebaseAuthTokenRequest) (*GetFirebaseAuthTokenResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetFirebaseAuthToken not implemented")
 }
 func (UnimplementedLogStreamServer) mustEmbedUnimplementedLogStreamServer() {}
 
@@ -132,13 +150,36 @@ func (x *logStreamStreamLogsServer) Recv() (*StreamLogRequest, error) {
 	return m, nil
 }
 
+func _LogStream_GetFirebaseAuthToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetFirebaseAuthTokenRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(LogStreamServer).GetFirebaseAuthToken(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.public.logstream.LogStream/GetFirebaseAuthToken",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(LogStreamServer).GetFirebaseAuthToken(ctx, req.(*GetFirebaseAuthTokenRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // LogStream_ServiceDesc is the grpc.ServiceDesc for LogStream service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var LogStream_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "api.public.logstream.LogStream",
 	HandlerType: (*LogStreamServer)(nil),
-	Methods:     []grpc.MethodDesc{},
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "GetFirebaseAuthToken",
+			Handler:    _LogStream_GetFirebaseAuthToken_Handler,
+		},
+	},
 	Streams: []grpc.StreamDesc{
 		{
 			StreamName:    "StreamLogs",
