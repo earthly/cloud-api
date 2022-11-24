@@ -69,8 +69,11 @@ message TargetManifest {
   repeated string override_args = 3;
   string initial_platform = 4;
   string final_platform = 8;
-  // satellite_name is the satellite that this target runs on.
-  string satellite_name = 9;
+  // runner is the runner identifier that this target runs on. Possible formats:
+  // * local:<hostname>
+  // * bk:<buildkit-address>
+  // * sat:<org-name>/<satellite-name>
+  string runner = 9;
   RunStatus status = 5;
   uint64 started_at_unix_nanos = 6;
   uint64 ended_at_unix_nanos = 7;
