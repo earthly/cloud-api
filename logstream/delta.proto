@@ -80,6 +80,7 @@ message DeltaTargetManifest {
 message DeltaCommandManifest {
   string name = 1;
   string target_id = 5;
+  string category = 17;
   string platform = 6;
   RunStatus status = 2;
   bool has_cached = 3;
