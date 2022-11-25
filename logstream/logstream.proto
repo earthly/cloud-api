@@ -38,7 +38,6 @@ service LogStream {
   rpc GetFirebaseAuthToken(GetFirebaseAuthTokenRequest) returns (GetFirebaseAuthTokenResponse) {
     option (google.api.http) = {
       get: "/api/v0/logstream/firebase-auth-token"
-      body: "*"
     };
   }
 }
