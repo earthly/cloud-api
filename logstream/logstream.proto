@@ -20,6 +20,31 @@ message GetFirebaseAuthTokenResponse {
   string token = 1;
 }
 
+message BuildLog {
+  RunManifest manifest = 1;
+  repeated DeltaFormattedLog logs = 2;
+}
+
+message LongTermExistsRequest {
+  string org_name = 1;
+  string project_name = 2;
+  string build_id = 3;
+}
+
+message LongTermExistsResponse {
+  bool exists = 1;
+}
+
+message GetLongTermRequest {
+  string org_name = 1;
+  string project_name = 2;
+  string build_id = 3;
+}
+
+message GetLongTermResponse {
+  BuildLog log = 1;
+}
+
 service LogStream {
   // StreamLogs streams logs to the server. Stream protocol:
   // 1. The client opens the channel.
@@ -33,4 +58,8 @@ service LogStream {
   // GetFirebaseAuthToken returns a token suitable for use with Firebase APIs
   // The user must already be authenticated.
   rpc GetFirebaseAuthToken(GetFirebaseAuthTokenRequest) returns (GetFirebaseAuthTokenResponse) {}
+
+  rpc LongTermExists(LongTermExistsRequest) returns (LongTermExistsResponse) {}
+
+  rpc GetLongTerm(GetLongTermRequest) returns (GetLongTermResponse) {}
 }
