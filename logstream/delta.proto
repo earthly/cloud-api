@@ -78,14 +78,16 @@ message DeltaTargetManifest {
 }
 
 message DeltaCommandManifest {
+  reserved 5, 6;
+  reserved "is_push", "has_push";
+
   string name = 1;
   string target_id = 17;
+  string category = 19;
   string platform = 18;
   RunStatus status = 2;
   bool has_cached = 3;
   bool is_cached = 4;
-  bool has_push = 5;
-  bool is_push = 6;
   bool has_local = 7;
   bool is_local = 8;
   uint64 started_at_unix_nanos = 9;
