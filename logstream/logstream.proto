@@ -1,6 +1,9 @@
 syntax = "proto3";
 package api.public.logstream;
 option go_package = "./logstream";
+
+import "google/api/annotations.proto";
+
 import "manifest.proto";
 import "delta.proto";
 
@@ -32,5 +35,9 @@ service LogStream {
 
   // GetFirebaseAuthToken returns a token suitable for use with Firebase APIs
   // The user must already be authenticated.
-  rpc GetFirebaseAuthToken(GetFirebaseAuthTokenRequest) returns (GetFirebaseAuthTokenResponse) {}
+  rpc GetFirebaseAuthToken(GetFirebaseAuthTokenRequest) returns (GetFirebaseAuthTokenResponse) {
+    option (google.api.http) = {
+      get: "/api/v0/logstream/firebase-auth-token"
+    };
+  }
 }
