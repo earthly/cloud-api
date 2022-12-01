@@ -90,6 +90,8 @@ message DeltaCommandManifest {
   bool is_cached = 4;
   bool has_local = 7;
   bool is_local = 8;
+  bool has_interactive = 20;
+  bool is_interactive = 21;
   uint64 started_at_unix_nanos = 9;
   uint64 ended_at_unix_nanos = 10;
   bool has_has_progress = 11;

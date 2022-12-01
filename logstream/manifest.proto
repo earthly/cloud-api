@@ -95,6 +95,7 @@ message CommandManifest {
   RunStatus status = 2;
   bool is_cached = 3;
   bool is_local = 5;
+  bool is_interactive = 15;
   uint64 started_at_unix_nanos = 6;
   uint64 ended_at_unix_nanos = 7;
   bool has_progress = 8;
