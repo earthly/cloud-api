@@ -15,6 +15,12 @@ message StreamLogRequest {
 
 message StreamLogResponse {
   bool eof_ack = 1;
+
+  message ServerExitStatus {
+    bool success = 1;
+  }
+  // server_exit_state is the final exit state of the server just before exiting.
+  ServerExitStatus server_exit_status = 2;
 }
 
 message GetFirebaseAuthTokenRequest {}
@@ -30,7 +36,7 @@ service LogStream {
   // 3. Client continues streaming through the rest of the deltas.
   // 4. The final stream message from the client is an eof=true message.
   // 5. Server responds with eof_ack=true.
-  // 6. Client closes the channel.
+  // 6. Client closes the channel. (optionally, the client can wait for server_exit_status)
   rpc StreamLogs(stream StreamLogRequest) returns (stream StreamLogResponse) {}
 
   // GetFirebaseAuthToken returns a token suitable for use with Firebase APIs
