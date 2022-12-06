@@ -15,12 +15,6 @@ message StreamLogRequest {
 
 message StreamLogResponse {
   bool eof_ack = 1;
-
-  message ServerExitStatus {
-    bool success = 1;
-  }
-  // server_exit_state is the final exit state of the server just before exiting.
-  ServerExitStatus server_exit_status = 2;
 }
 
 message GetFirebaseAuthTokenRequest {}
