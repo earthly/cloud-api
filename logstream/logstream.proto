@@ -1,6 +1,9 @@
 syntax = "proto3";
 package api.public.logstream;
 option go_package = "./logstream";
+
+import "google/api/annotations.proto";
+
 import "manifest.proto";
 import "delta.proto";
 
@@ -52,12 +55,16 @@ service LogStream {
   // 3. Client continues streaming through the rest of the deltas.
   // 4. The final stream message from the client is an eof=true message.
   // 5. Server responds with eof_ack=true.
-  // 6. Client closes the channel.
+  // 6. Client closes the channel. (optionally, the client can wait for server_exit_status)
   rpc StreamLogs(stream StreamLogRequest) returns (stream StreamLogResponse) {}
 
   // GetFirebaseAuthToken returns a token suitable for use with Firebase APIs
   // The user must already be authenticated.
-  rpc GetFirebaseAuthToken(GetFirebaseAuthTokenRequest) returns (GetFirebaseAuthTokenResponse) {}
+  rpc GetFirebaseAuthToken(GetFirebaseAuthTokenRequest) returns (GetFirebaseAuthTokenResponse) {
+    option (google.api.http) = {
+      get: "/api/v0/logstream/firebase-auth-token"
+    };
+  }
 
   rpc LongTermExists(LongTermExistsRequest) returns (LongTermExistsResponse) {}
 

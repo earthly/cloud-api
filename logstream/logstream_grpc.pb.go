@@ -28,7 +28,7 @@ type LogStreamClient interface {
 	// 3. Client continues streaming through the rest of the deltas.
 	// 4. The final stream message from the client is an eof=true message.
 	// 5. Server responds with eof_ack=true.
-	// 6. Client closes the channel.
+	// 6. Client closes the channel. (optionally, the client can wait for server_exit_status)
 	StreamLogs(ctx context.Context, opts ...grpc.CallOption) (LogStream_StreamLogsClient, error)
 	// GetFirebaseAuthToken returns a token suitable for use with Firebase APIs
 	// The user must already be authenticated.
@@ -113,7 +113,7 @@ type LogStreamServer interface {
 	// 3. Client continues streaming through the rest of the deltas.
 	// 4. The final stream message from the client is an eof=true message.
 	// 5. Server responds with eof_ack=true.
-	// 6. Client closes the channel.
+	// 6. Client closes the channel. (optionally, the client can wait for server_exit_status)
 	StreamLogs(LogStream_StreamLogsServer) error
 	// GetFirebaseAuthToken returns a token suitable for use with Firebase APIs
 	// The user must already be authenticated.

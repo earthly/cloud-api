@@ -8,3 +8,8 @@ plugins:
     out: .
     opt:
       - paths=source_relative
+  - name: grpc-gateway
+    out: .
+    opt:
+      - paths=source_relative
+      - generate_unbound_methods=true

@@ -80,15 +80,22 @@ message TargetManifest {
 }
 
 message CommandManifest {
+  reserved 4;
+  reserved "is_push";
+
   string name = 1;
   // target_id is the ID of the target this command is part of
   // (may be empty for commands that are not part of a target)
   string target_id = 12;
+  // category is a grouping separate from target. This is used for things
+  // like "context", "output", or Dockerfile stages, which would
+  // not be part of an Earthly target.
+  string category = 14;
   string platform = 13;
   RunStatus status = 2;
   bool is_cached = 3;
-  bool is_push = 4;
   bool is_local = 5;
+  bool is_interactive = 15;
   uint64 started_at_unix_nanos = 6;
   uint64 ended_at_unix_nanos = 7;
   bool has_progress = 8;
