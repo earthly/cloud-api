@@ -78,6 +78,8 @@ message LaunchSatelliteRequest {
   string platform = 3; // Supported values now are: linux/amd64, linux/arm64
   repeated string feature_flags = 4;
   string size = 5; // small, medium, large
+  string version = 6; // Which version data to use when launching satellite
+  MaintenanceWindow maintenance_window = 7; // when can we auto-update your satellite
 }
 
 enum SatelliteStatus {
@@ -113,9 +115,18 @@ message ListSatellitesResponse {
   repeated SatelliteInstance instances = 1;
 }
 
+message MaintenanceWindow{
+  string startTime = 1;
+  string endTime = 2;
+}
+
 message UpdateSatelliteRequest {
   string org_id = 1;
   string name = 2;
+  string version = 3;
+  bool dropCache = 4; // preserve cache during upgrade, or not?
+  MaintenanceWindow maintenance_window = 5;
+  repeated string feature_flags = 6;
 }
 
 message UpdateSatelliteResponse {}
@@ -142,6 +153,7 @@ message GetSatelliteResponse {
   string private_dns = 7;
   string size = 8;
   repeated string feature_flags = 9;
+  MaintenanceWindow maintenance_window = 10;
 }
 
 message WakeSatelliteRequest {
