@@ -124,7 +124,7 @@ message UpdateSatelliteRequest {
   string org_id = 1;
   string name = 2;
   string version = 3;
-  bool dropCache = 4; // preserve cache during upgrade, or not?
+  bool drop_cache = 4; // preserve cache during upgrade, or not?
   MaintenanceWindow maintenance_window = 5;
   repeated string feature_flags = 6;
 }
