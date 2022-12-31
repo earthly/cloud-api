@@ -23,15 +23,8 @@ message GetFirebaseAuthTokenResponse {
   string token = 1;
 }
 
-message BuildLog {
-  RunManifest manifest = 1;
-  repeated DeltaFormattedLog logs = 2;
-}
-
 message LongTermExistsRequest {
-  string org_name = 1;
-  string project_name = 2;
-  string build_id = 3;
+  string build_id = 1;
 }
 
 message LongTermExistsResponse {
@@ -39,13 +32,16 @@ message LongTermExistsResponse {
 }
 
 message GetLongTermRequest {
-  string org_name = 1;
-  string project_name = 2;
-  string build_id = 3;
+  string build_id = 1;
+}
+
+message FormattedLogList {
+  repeated DeltaFormattedLog logs = 1;
 }
 
 message GetLongTermResponse {
-  BuildLog log = 1;
+  RunManifest manifest = 1;
+  repeated DeltaFormattedLog formatted_logs = 2;
 }
 
 service LogStream {
