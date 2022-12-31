@@ -62,7 +62,15 @@ service LogStream {
     };
   }
 
-  rpc LongTermExists(LongTermExistsRequest) returns (LongTermExistsResponse) {}
+  rpc LongTermExists(LongTermExistsRequest) returns (LongTermExistsResponse) {
+    option (google.api.http) = {
+      get: "/api/v0/logstream/long-term/{build_id}/exists"
+    };
+  }
 
-  rpc GetLongTerm(GetLongTermRequest) returns (GetLongTermResponse) {}
+  rpc GetLongTerm(GetLongTermRequest) returns (GetLongTermResponse) {
+    option (google.api.http) = {
+      get: "/api/v0/logstream/long-term/{build_id}"
+    };
+  }
 }
