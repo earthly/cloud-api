@@ -7,6 +7,13 @@ service Runner {
   rpc Build(BuildRequest) returns (BuildResponse) {}
 }
 
+message GitInfo {
+  // https://docs.github.com/en/rest/checks/runs?apiVersion=2022-11-28
+  string owner = 1;
+  string repo = 2;
+  string hash = 3;
+}
+
 message BuildRequest {
   string url = 1;
   string path = 2;
@@ -18,6 +25,8 @@ message BuildRequest {
   string user_id = 8;
   string org_id = 9;
   string project_id = 10;
+  string pipeline_name = 11;
+  GitInfo git_info = 12;
 }
 
 message BuildResponse {}
