@@ -25,6 +25,7 @@ type GitInfo struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
+	// https://docs.github.com/en/rest/checks/runs?apiVersion=2022-11-28
 	Owner string `protobuf:"bytes,1,opt,name=owner,proto3" json:"owner,omitempty"`
 	Repo  string `protobuf:"bytes,2,opt,name=repo,proto3" json:"repo,omitempty"`
 	Hash  string `protobuf:"bytes,3,opt,name=hash,proto3" json:"hash,omitempty"`
