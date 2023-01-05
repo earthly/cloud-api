@@ -357,6 +357,7 @@ func (x *GetLongTermRequest) GetBuildId() string {
 	return ""
 }
 
+// How the logs are represented in longterm storage
 type FormattedLogList struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache

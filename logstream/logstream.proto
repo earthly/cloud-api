@@ -35,6 +35,7 @@ message GetLongTermRequest {
   string build_id = 1;
 }
 
+// How the logs are represented in longterm storage
 message FormattedLogList {
   repeated DeltaFormattedLog logs = 1;
 }
