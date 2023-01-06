@@ -23,6 +23,28 @@ message GetFirebaseAuthTokenResponse {
   string token = 1;
 }
 
+message LongTermExistsRequest {
+  string build_id = 1;
+}
+
+message LongTermExistsResponse {
+  bool exists = 1;
+}
+
+message GetLongTermRequest {
+  string build_id = 1;
+}
+
+// How the logs are represented in longterm storage
+message FormattedLogList {
+  repeated DeltaFormattedLog logs = 1;
+}
+
+message GetLongTermResponse {
+  RunManifest manifest = 1;
+  repeated DeltaFormattedLog formatted_logs = 2;
+}
+
 service LogStream {
   // StreamLogs streams logs to the server. Stream protocol:
   // 1. The client opens the channel.
@@ -38,6 +60,18 @@ service LogStream {
   rpc GetFirebaseAuthToken(GetFirebaseAuthTokenRequest) returns (GetFirebaseAuthTokenResponse) {
     option (google.api.http) = {
       get: "/api/v0/logstream/firebase-auth-token"
+    };
+  }
+
+  rpc LongTermExists(LongTermExistsRequest) returns (LongTermExistsResponse) {
+    option (google.api.http) = {
+      get: "/api/v0/logstream/long-term/{build_id}/exists"
+    };
+  }
+
+  rpc GetLongTerm(GetLongTermRequest) returns (GetLongTermResponse) {
+    option (google.api.http) = {
+      get: "/api/v0/logstream/long-term/{build_id}"
     };
   }
 }
