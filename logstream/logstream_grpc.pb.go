@@ -33,6 +33,8 @@ type LogStreamClient interface {
 	// GetFirebaseAuthToken returns a token suitable for use with Firebase APIs
 	// The user must already be authenticated.
 	GetFirebaseAuthToken(ctx context.Context, in *GetFirebaseAuthTokenRequest, opts ...grpc.CallOption) (*GetFirebaseAuthTokenResponse, error)
+	LongTermExists(ctx context.Context, in *LongTermExistsRequest, opts ...grpc.CallOption) (*LongTermExistsResponse, error)
+	GetLongTerm(ctx context.Context, in *GetLongTermRequest, opts ...grpc.CallOption) (*GetLongTermResponse, error)
 }
 
 type logStreamClient struct {
@@ -83,6 +85,24 @@ func (c *logStreamClient) GetFirebaseAuthToken(ctx context.Context, in *GetFireb
 	return out, nil
 }
 
+func (c *logStreamClient) LongTermExists(ctx context.Context, in *LongTermExistsRequest, opts ...grpc.CallOption) (*LongTermExistsResponse, error) {
+	out := new(LongTermExistsResponse)
+	err := c.cc.Invoke(ctx, "/api.public.logstream.LogStream/LongTermExists", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *logStreamClient) GetLongTerm(ctx context.Context, in *GetLongTermRequest, opts ...grpc.CallOption) (*GetLongTermResponse, error) {
+	out := new(GetLongTermResponse)
+	err := c.cc.Invoke(ctx, "/api.public.logstream.LogStream/GetLongTerm", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // LogStreamServer is the server API for LogStream service.
 // All implementations must embed UnimplementedLogStreamServer
 // for forward compatibility
@@ -98,6 +118,8 @@ type LogStreamServer interface {
 	// GetFirebaseAuthToken returns a token suitable for use with Firebase APIs
 	// The user must already be authenticated.
 	GetFirebaseAuthToken(context.Context, *GetFirebaseAuthTokenRequest) (*GetFirebaseAuthTokenResponse, error)
+	LongTermExists(context.Context, *LongTermExistsRequest) (*LongTermExistsResponse, error)
+	GetLongTerm(context.Context, *GetLongTermRequest) (*GetLongTermResponse, error)
 	mustEmbedUnimplementedLogStreamServer()
 }
 
@@ -110,6 +132,12 @@ func (UnimplementedLogStreamServer) StreamLogs(LogStream_StreamLogsServer) error
 }
 func (UnimplementedLogStreamServer) GetFirebaseAuthToken(context.Context, *GetFirebaseAuthTokenRequest) (*GetFirebaseAuthTokenResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetFirebaseAuthToken not implemented")
+}
+func (UnimplementedLogStreamServer) LongTermExists(context.Context, *LongTermExistsRequest) (*LongTermExistsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method LongTermExists not implemented")
+}
+func (UnimplementedLogStreamServer) GetLongTerm(context.Context, *GetLongTermRequest) (*GetLongTermResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetLongTerm not implemented")
 }
 func (UnimplementedLogStreamServer) mustEmbedUnimplementedLogStreamServer() {}
 
@@ -168,6 +196,42 @@ func _LogStream_GetFirebaseAuthToken_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _LogStream_LongTermExists_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(LongTermExistsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(LogStreamServer).LongTermExists(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.public.logstream.LogStream/LongTermExists",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(LogStreamServer).LongTermExists(ctx, req.(*LongTermExistsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _LogStream_GetLongTerm_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetLongTermRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(LogStreamServer).GetLongTerm(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.public.logstream.LogStream/GetLongTerm",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(LogStreamServer).GetLongTerm(ctx, req.(*GetLongTermRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // LogStream_ServiceDesc is the grpc.ServiceDesc for LogStream service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -178,6 +242,14 @@ var LogStream_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetFirebaseAuthToken",
 			Handler:    _LogStream_GetFirebaseAuthToken_Handler,
+		},
+		{
+			MethodName: "LongTermExists",
+			Handler:    _LogStream_LongTermExists_Handler,
+		},
+		{
+			MethodName: "GetLongTerm",
+			Handler:    _LogStream_GetLongTerm_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{
