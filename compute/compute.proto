@@ -92,12 +92,14 @@ enum SatelliteStatus {
   SATELLITE_STATUS_SLEEP = 6;
   SATELLITE_STATUS_STARTING = 7;
   SATELLITE_STATUS_STOPPING = 8;
-  SATELLITE_STATUS_UPGRADING = 9;
+  SATELLITE_STATUS_UPDATING = 9;
 }
 
 message LaunchSatelliteResponse {
   SatelliteStatus status = 1;
   string version = 2;
+  string maintenance_window_start = 3;
+  string maintenance_window_end = 4;
 }
 
 message ListSatellitesRequest {
