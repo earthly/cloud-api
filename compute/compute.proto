@@ -100,6 +100,7 @@ message LaunchSatelliteResponse {
   string version = 2;
   string maintenance_window_start = 3;
   string maintenance_window_end = 4;
+  int32 revision_id = 5;
 }
 
 message ListSatellitesRequest {
@@ -152,6 +153,8 @@ message GetSatelliteResponse {
   string size = 8;
   repeated string feature_flags = 9;
   string maintenance_window_start = 10;
+  string maintenance_window_end = 11;
+  int32 revision_id = 12;
 }
 
 message WakeSatelliteRequest {
