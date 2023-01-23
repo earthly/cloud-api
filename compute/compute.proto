@@ -155,6 +155,7 @@ message GetSatelliteResponse {
   string maintenance_window_start = 10;
   string maintenance_window_end = 11;
   int32 revision_id = 12;
+  bool version_pinned = 13;
 }
 
 message WakeSatelliteRequest {
