@@ -319,6 +319,7 @@ message RemotePipeline {
   repeated PipelineArg args = 6;
   int32 start_line = 7;
   int32 end_line = 8;
+  bool is_push = 9;
 }
 
 message Pipeline {
