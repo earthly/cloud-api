@@ -28,6 +28,7 @@ message BuildRequest {
   string pipeline_name = 11;
   GitInfo git_info = 12;
   bool no_cache = 13;
+  bool is_push = 14;
 }
 
 message BuildResponse {}
