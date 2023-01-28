@@ -329,12 +329,12 @@ message Pipeline {
   string org = 4;
   repeated PipelineTrigger triggers = 5;
   repeated PipelineArg args = 6;
-  bool enabled = 7;
   string repo_id = 8;
   string project = 9;
   bool is_push = 10;
   string id = 11;
   string path_hash = 12;
+  reserved 7; // old 'enabled' field
 }
 
 message EarthfileParsingError {
