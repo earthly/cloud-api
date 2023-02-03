@@ -337,9 +337,24 @@ message Pipeline {
   reserved 7; // old 'enabled' field
 }
 
+enum ParsingErrorCode {
+  // Shouldn't be used
+  PARSING_ERROR_UNKNOWN = 0;
+
+  // PARSING_ERROR_PARSE_GENERIC means there wasn't another appropriate error code to assign this to
+  PARSING_ERROR_PARSE_GENERIC = 1;
+
+  // PARSING_ERROR_INVALID means there was an error parsing the Earthfile because it is invalid
+  PARSING_ERROR_INVALID = 2;
+
+  // PARSING_ERROR_NOT_A_PIPELINE_FILE means the Earthfile was valid, but not considered a pipeline Earthfile
+  PARSING_ERROR_NOT_A_PIPELINE_FILE = 3;
+}
+
 message EarthfileParsingError {
   string path = 1;
   string error = 2;
+  ParsingErrorCode code = 3;
 }
 
 message ListRemotePipelinesRequest {
