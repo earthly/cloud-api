@@ -28,7 +28,7 @@ message SendAnalyticsRequest {
     map<string, int32> sub_system = 1;
   }
   map<string, SubSystem> counts = 16;
-  string orgName = 17;
+  string org_name = 17;
   string project = 18;
 }
 
