@@ -137,7 +137,7 @@ service Pipelines {
 }
 
 message GetOrgLimitsRequest {
-  string org_id = 1;
+  string orgName = 1;
 }
 
 message GetOrgLimitsResponse {
