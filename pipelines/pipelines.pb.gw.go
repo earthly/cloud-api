@@ -896,19 +896,25 @@ func local_request_Pipelines_GetRun_0(ctx context.Context, marshaler runtime.Mar
 
 }
 
-var (
-	filter_Pipelines_GetOrgLimits_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
-)
-
 func request_Pipelines_GetOrgLimits_0(ctx context.Context, marshaler runtime.Marshaler, client PipelinesClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq GetOrgLimitsRequest
 	var metadata runtime.ServerMetadata
 
-	if err := req.ParseForm(); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["orgName"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "orgName")
 	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_Pipelines_GetOrgLimits_0); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+
+	protoReq.OrgName, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "orgName", err)
 	}
 
 	msg, err := client.GetOrgLimits(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -920,11 +926,21 @@ func local_request_Pipelines_GetOrgLimits_0(ctx context.Context, marshaler runti
 	var protoReq GetOrgLimitsRequest
 	var metadata runtime.ServerMetadata
 
-	if err := req.ParseForm(); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["orgName"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "orgName")
 	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_Pipelines_GetOrgLimits_0); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+
+	protoReq.OrgName, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "orgName", err)
 	}
 
 	msg, err := server.GetOrgLimits(ctx, &protoReq)
@@ -1365,7 +1381,7 @@ func RegisterPipelinesHandlerServer(ctx context.Context, mux *runtime.ServeMux, 
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/api.public.pipelines.Pipelines/GetOrgLimits", runtime.WithHTTPPathPattern("/api/v0/limits/org"))
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/api.public.pipelines.Pipelines/GetOrgLimits", runtime.WithHTTPPathPattern("/api/v0/limits/org/{orgName}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1807,7 +1823,7 @@ func RegisterPipelinesHandlerClient(ctx context.Context, mux *runtime.ServeMux, 
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/api.public.pipelines.Pipelines/GetOrgLimits", runtime.WithHTTPPathPattern("/api/v0/limits/org"))
+		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/api.public.pipelines.Pipelines/GetOrgLimits", runtime.WithHTTPPathPattern("/api/v0/limits/org/{orgName}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1865,7 +1881,7 @@ var (
 
 	pattern_Pipelines_GetRun_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v0", "run"}, ""))
 
-	pattern_Pipelines_GetOrgLimits_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "v0", "limits", "org"}, ""))
+	pattern_Pipelines_GetOrgLimits_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"api", "v0", "limits", "org", "orgName"}, ""))
 )
 
 var (

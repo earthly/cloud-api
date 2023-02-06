@@ -131,7 +131,7 @@ service Pipelines {
   // GetOrgLimits will return the org limits for the CI beta testers
   rpc GetOrgLimits(GetOrgLimitsRequest) returns (GetOrgLimitsResponse) {
     option (google.api.http) = {
-      get: "/api/v0/limits/org"
+      get: "/api/v0/limits/org/{orgName}"
     };
   }
 }
@@ -141,10 +141,10 @@ message GetOrgLimitsRequest {
 }
 
 message GetOrgLimitsResponse {
-  int64 max_pipelines_per_project = 1;
-  int64 max_projects_with_pipelines = 2;
+  int32 max_pipelines_per_project = 1;
+  int32 max_projects_with_pipelines = 2;
 
-  int64 project_room = 3;
+  int32 project_room = 3;
 }
 
 message ManualBuildRequest {
