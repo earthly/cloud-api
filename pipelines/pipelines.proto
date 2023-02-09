@@ -127,6 +127,24 @@ service Pipelines {
       get: "/api/v0/run"
     };
   }
+
+  // GetOrgLimits will return the org limits for the CI beta testers
+  rpc GetOrgLimits(GetOrgLimitsRequest) returns (GetOrgLimitsResponse) {
+    option (google.api.http) = {
+      get: "/api/v0/limits/org/{orgName}"
+    };
+  }
+}
+
+message GetOrgLimitsRequest {
+  string orgName = 1;
+}
+
+message GetOrgLimitsResponse {
+  int32 max_pipelines_per_project = 1;
+  int32 max_projects_with_pipelines = 2;
+
+  int32 project_room = 3;
 }
 
 message ManualBuildRequest {
@@ -319,6 +337,7 @@ message RemotePipeline {
   repeated PipelineArg args = 6;
   int32 start_line = 7;
   int32 end_line = 8;
+  bool is_push = 9;
 }
 
 message Pipeline {
@@ -328,17 +347,34 @@ message Pipeline {
   string org = 4;
   repeated PipelineTrigger triggers = 5;
   repeated PipelineArg args = 6;
-  bool enabled = 7;
   string repo_id = 8;
   string project = 9;
   bool is_push = 10;
   string id = 11;
   string path_hash = 12;
+  // The name of the provider organization (for example, the GH org name)
+  string provider_org = 13;
+  reserved 7; // old 'enabled' field
+}
+
+enum ParsingErrorCode {
+  // Shouldn't be used
+  PARSING_ERROR_UNKNOWN = 0;
+
+  // PARSING_ERROR_PARSE_GENERIC means there wasn't another appropriate error code to assign this to
+  PARSING_ERROR_PARSE_GENERIC = 1;
+
+  // PARSING_ERROR_INVALID means there was an error parsing the Earthfile because it is invalid
+  PARSING_ERROR_INVALID = 2;
+
+  // PARSING_ERROR_NOT_A_PIPELINE_FILE means the Earthfile was valid, but not considered a pipeline Earthfile
+  PARSING_ERROR_NOT_A_PIPELINE_FILE = 3;
 }
 
 message EarthfileParsingError {
   string path = 1;
   string error = 2;
+  ParsingErrorCode code = 3;
 }
 
 message ListRemotePipelinesRequest {
