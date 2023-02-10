@@ -12,6 +12,7 @@ message GitInfo {
   string owner = 1;
   string repo = 2;
   string hash = 3;
+  bool is_user_repo = 4;
 }
 
 message BuildRequest {
