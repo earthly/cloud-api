@@ -491,9 +491,7 @@ message GetRunResponse {
 }
 
 message CreateRunRequest {
-  string pipeline_id = 1;
-  string commit_hash = 2;
-  // An optional existing run ID that can be used as a basis for the new run.
+  // An existing run ID that can be used as a basis for the new run.
   string run_id = 3;
 }
 
