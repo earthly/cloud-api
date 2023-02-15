@@ -127,7 +127,12 @@ service Pipelines {
       get: "/api/v0/run"
     };
   }
-
+  // CreateRun can trigger a new pipeline run (new or rerun).
+  rpc CreateRun(CreateRunRequest) returns (CreateRunResponse) {
+    option (google.api.http) = {
+      post: "/api/v0/run"
+    };
+  }
   // GetOrgLimits will return the org limits for the CI beta testers
   rpc GetOrgLimits(GetOrgLimitsRequest) returns (GetOrgLimitsResponse) {
     option (google.api.http) = {
@@ -481,6 +486,18 @@ message GetRunRequest {
 }
 
 message GetRunResponse {
+  PipelineRun run = 1;
+  CommitInfo commit_info = 2;
+}
+
+message CreateRunRequest {
+  string pipeline_id = 1;
+  string commit_hash = 2;
+  // An optional existing run ID that can be used as a basis for the new run.
+  string run_id = 3;
+}
+
+message CreateRunResponse {
   PipelineRun run = 1;
   CommitInfo commit_info = 2;
 }
