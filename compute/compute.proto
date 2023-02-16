@@ -80,6 +80,7 @@ message LaunchSatelliteRequest {
   string size = 5; // small, medium, large
   string version = 6; // Which version data to use when launching satellite
   string maintenance_window_start = 7; // when can we auto-update your satellite
+  bool maintenance_weekends_only = 8; // Auto-updates only run on weekends
 }
 
 enum SatelliteStatus {
