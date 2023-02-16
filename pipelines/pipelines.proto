@@ -127,10 +127,10 @@ service Pipelines {
       get: "/api/v0/run"
     };
   }
-  // CreateRun can trigger a new pipeline run (new or rerun).
-  rpc CreateRun(CreateRunRequest) returns (CreateRunResponse) {
+  // Rerun can trigger a new pipeline run using an existing run as a reference.
+  rpc Rerun(RerunRequest) returns (RerunResponse) {
     option (google.api.http) = {
-      post: "/api/v0/run"
+      post: "/api/v0/run/clone"
     };
   }
   // GetOrgLimits will return the org limits for the CI beta testers
@@ -490,12 +490,12 @@ message GetRunResponse {
   CommitInfo commit_info = 2;
 }
 
-message CreateRunRequest {
+message RerunRequest {
   // An existing run ID that can be used as a basis for the new run.
   string run_id = 3;
 }
 
-message CreateRunResponse {
+message RerunResponse {
   PipelineRun run = 1;
   CommitInfo commit_info = 2;
 }

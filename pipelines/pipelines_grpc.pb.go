@@ -65,8 +65,8 @@ type PipelinesClient interface {
 	ListRuns(ctx context.Context, in *ListRunsRequest, opts ...grpc.CallOption) (*ListRunsResponse, error)
 	// GetRun returns a single pipeline run, specified by ID.
 	GetRun(ctx context.Context, in *GetRunRequest, opts ...grpc.CallOption) (*GetRunResponse, error)
-	// CreateRun can trigger a new pipeline run (new or rerun).
-	CreateRun(ctx context.Context, in *CreateRunRequest, opts ...grpc.CallOption) (*CreateRunResponse, error)
+	// Rerun can trigger a new pipeline run using an existing run as a reference.
+	Rerun(ctx context.Context, in *RerunRequest, opts ...grpc.CallOption) (*RerunResponse, error)
 	// GetOrgLimits will return the org limits for the CI beta testers
 	GetOrgLimits(ctx context.Context, in *GetOrgLimitsRequest, opts ...grpc.CallOption) (*GetOrgLimitsResponse, error)
 }
@@ -273,9 +273,9 @@ func (c *pipelinesClient) GetRun(ctx context.Context, in *GetRunRequest, opts ..
 	return out, nil
 }
 
-func (c *pipelinesClient) CreateRun(ctx context.Context, in *CreateRunRequest, opts ...grpc.CallOption) (*CreateRunResponse, error) {
-	out := new(CreateRunResponse)
-	err := c.cc.Invoke(ctx, "/api.public.pipelines.Pipelines/CreateRun", in, out, opts...)
+func (c *pipelinesClient) Rerun(ctx context.Context, in *RerunRequest, opts ...grpc.CallOption) (*RerunResponse, error) {
+	out := new(RerunResponse)
+	err := c.cc.Invoke(ctx, "/api.public.pipelines.Pipelines/Rerun", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -338,8 +338,8 @@ type PipelinesServer interface {
 	ListRuns(context.Context, *ListRunsRequest) (*ListRunsResponse, error)
 	// GetRun returns a single pipeline run, specified by ID.
 	GetRun(context.Context, *GetRunRequest) (*GetRunResponse, error)
-	// CreateRun can trigger a new pipeline run (new or rerun).
-	CreateRun(context.Context, *CreateRunRequest) (*CreateRunResponse, error)
+	// Rerun can trigger a new pipeline run using an existing run as a reference.
+	Rerun(context.Context, *RerunRequest) (*RerunResponse, error)
 	// GetOrgLimits will return the org limits for the CI beta testers
 	GetOrgLimits(context.Context, *GetOrgLimitsRequest) (*GetOrgLimitsResponse, error)
 	mustEmbedUnimplementedPipelinesServer()
@@ -406,8 +406,8 @@ func (UnimplementedPipelinesServer) ListRuns(context.Context, *ListRunsRequest) 
 func (UnimplementedPipelinesServer) GetRun(context.Context, *GetRunRequest) (*GetRunResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetRun not implemented")
 }
-func (UnimplementedPipelinesServer) CreateRun(context.Context, *CreateRunRequest) (*CreateRunResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreateRun not implemented")
+func (UnimplementedPipelinesServer) Rerun(context.Context, *RerunRequest) (*RerunResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Rerun not implemented")
 }
 func (UnimplementedPipelinesServer) GetOrgLimits(context.Context, *GetOrgLimitsRequest) (*GetOrgLimitsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetOrgLimits not implemented")
@@ -770,20 +770,20 @@ func _Pipelines_GetRun_Handler(srv interface{}, ctx context.Context, dec func(in
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Pipelines_CreateRun_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CreateRunRequest)
+func _Pipelines_Rerun_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RerunRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(PipelinesServer).CreateRun(ctx, in)
+		return srv.(PipelinesServer).Rerun(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/api.public.pipelines.Pipelines/CreateRun",
+		FullMethod: "/api.public.pipelines.Pipelines/Rerun",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(PipelinesServer).CreateRun(ctx, req.(*CreateRunRequest))
+		return srv.(PipelinesServer).Rerun(ctx, req.(*RerunRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -886,8 +886,8 @@ var Pipelines_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Pipelines_GetRun_Handler,
 		},
 		{
-			MethodName: "CreateRun",
-			Handler:    _Pipelines_CreateRun_Handler,
+			MethodName: "Rerun",
+			Handler:    _Pipelines_Rerun_Handler,
 		},
 		{
 			MethodName: "GetOrgLimits",
