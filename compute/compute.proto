@@ -127,6 +127,7 @@ message UpdateSatelliteRequest {
   bool drop_cache = 4; // preserve cache during upgrade, or not?
   string maintenance_window_start = 5;
   repeated string feature_flags = 6;
+  bool maintenance_weekends_only = 7;
 }
 
 message UpdateSatelliteResponse {}
@@ -157,13 +158,13 @@ message GetSatelliteResponse {
   string maintenance_window_end = 11;
   int32 revision_id = 12;
   bool version_pinned = 13;
+  bool maintenance_weekends_only = 14;
 }
 
 message WakeSatelliteRequest {
   string org_id = 1;
   string name = 2;
   google.protobuf.Duration update_interval = 3;
-
 }
 
 message WakeSatelliteResponse {
@@ -174,7 +175,6 @@ message SleepSatelliteRequest {
   string org_id = 1;
   string name = 2;
   google.protobuf.Duration update_interval = 3;
-
 }
 
 message SleepSatelliteResponse {
