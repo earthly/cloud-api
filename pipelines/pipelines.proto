@@ -131,6 +131,7 @@ service Pipelines {
   rpc Rerun(RerunRequest) returns (RerunResponse) {
     option (google.api.http) = {
       post: "/api/v0/run/clone"
+      body: "*"
     };
   }
   // GetOrgLimits will return the org limits for the CI beta testers
@@ -492,7 +493,7 @@ message GetRunResponse {
 
 message RerunRequest {
   // An existing run ID that can be used as a basis for the new run.
-  string run_id = 3;
+  string run_id = 1;
 }
 
 message RerunResponse {
