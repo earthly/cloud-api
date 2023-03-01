@@ -84,6 +84,16 @@ service Pipelines {
       delete: "/api/v0/repos/{id}"
     };
   }
+
+  // ChangeProjectRepoBranch modifies the pipeline_definition_branch for a project repository
+  // This is a dedicated RPC because changing the definition_branch will cause a resync of pipelines (potentially destructive)
+  rpc ChangeProjectRepoBranch(ChangeProjectRepoBranchRequest) returns (ChangeProjectRepoBranchResponse) {
+    option (google.api.http) = {
+      post: "/api/vo/repos/{id}/pipeline-definition-branch"
+      body: "*"
+    };
+  }
+
   // ListProjectRespos lists all project repositories.
   rpc ListProjectRepos(ListProjectReposRequest) returns (ListProjectReposResponse) {
     option (google.api.http) = {
@@ -307,6 +317,16 @@ message RemoveProjectRepoRequest {
 }
 
 message RemoveProjectRepoResponse {}
+
+message ChangeProjectRepoBranchRequest {
+  string id = 1;
+
+  // pipeline_definition_branch is the branch the pipeline definitions are retrieved from
+  // Note: The pipelines themselves will still run on the branch a run is occurring on.
+  string pipeline_definition_branch = 2;
+}
+
+message ChangeProjectRepoBranchResponse {}
 
 message ListProjectReposRequest {
   string project = 1;
