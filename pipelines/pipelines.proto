@@ -324,6 +324,10 @@ message UpdateProjectRepoBranchRequest {
   // reference_branch is the branch the pipeline definitions are retrieved from
   // Note: The pipelines themselves will still run on the branch a run is occurring on.
   string reference_branch = 2;
+
+  // force_resync will force a sync even if the branch already matches.
+  // By default, no sync work is performed if we are setting the branch to the same value.
+  bool force_resync = 3;
 }
 
 message UpdateProjectRepoBranchResponse {}
