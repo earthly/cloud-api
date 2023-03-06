@@ -630,8 +630,8 @@ func local_request_Pipelines_RemoveProjectRepo_0(ctx context.Context, marshaler 
 
 }
 
-func request_Pipelines_ChangeProjectRepoBranch_0(ctx context.Context, marshaler runtime.Marshaler, client PipelinesClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq ChangeProjectRepoBranchRequest
+func request_Pipelines_UpdateProjectRepoBranch_0(ctx context.Context, marshaler runtime.Marshaler, client PipelinesClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateProjectRepoBranchRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -649,23 +649,23 @@ func request_Pipelines_ChangeProjectRepoBranch_0(ctx context.Context, marshaler 
 		_   = err
 	)
 
-	val, ok = pathParams["id"]
+	val, ok = pathParams["repo_id"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "id")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "repo_id")
 	}
 
-	protoReq.Id, err = runtime.String(val)
+	protoReq.RepoId, err = runtime.String(val)
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "id", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "repo_id", err)
 	}
 
-	msg, err := client.ChangeProjectRepoBranch(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	msg, err := client.UpdateProjectRepoBranch(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
 }
 
-func local_request_Pipelines_ChangeProjectRepoBranch_0(ctx context.Context, marshaler runtime.Marshaler, server PipelinesServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq ChangeProjectRepoBranchRequest
+func local_request_Pipelines_UpdateProjectRepoBranch_0(ctx context.Context, marshaler runtime.Marshaler, server PipelinesServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateProjectRepoBranchRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -683,17 +683,17 @@ func local_request_Pipelines_ChangeProjectRepoBranch_0(ctx context.Context, mars
 		_   = err
 	)
 
-	val, ok = pathParams["id"]
+	val, ok = pathParams["repo_id"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "id")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "repo_id")
 	}
 
-	protoReq.Id, err = runtime.String(val)
+	protoReq.RepoId, err = runtime.String(val)
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "id", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "repo_id", err)
 	}
 
-	msg, err := server.ChangeProjectRepoBranch(ctx, &protoReq)
+	msg, err := server.UpdateProjectRepoBranch(ctx, &protoReq)
 	return msg, metadata, err
 
 }
@@ -1316,18 +1316,18 @@ func RegisterPipelinesHandlerServer(ctx context.Context, mux *runtime.ServeMux, 
 
 	})
 
-	mux.Handle("POST", pattern_Pipelines_ChangeProjectRepoBranch_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_Pipelines_UpdateProjectRepoBranch_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/api.public.pipelines.Pipelines/ChangeProjectRepoBranch", runtime.WithHTTPPathPattern("/api/vo/repos/{id}/pipeline-definition-branch"))
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/api.public.pipelines.Pipelines/UpdateProjectRepoBranch", runtime.WithHTTPPathPattern("/api/vo/repos/{repo_id}/reference-branch"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_Pipelines_ChangeProjectRepoBranch_0(rctx, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_Pipelines_UpdateProjectRepoBranch_0(rctx, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
@@ -1335,7 +1335,7 @@ func RegisterPipelinesHandlerServer(ctx context.Context, mux *runtime.ServeMux, 
 			return
 		}
 
-		forward_Pipelines_ChangeProjectRepoBranch_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_Pipelines_UpdateProjectRepoBranch_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -1827,23 +1827,23 @@ func RegisterPipelinesHandlerClient(ctx context.Context, mux *runtime.ServeMux, 
 
 	})
 
-	mux.Handle("POST", pattern_Pipelines_ChangeProjectRepoBranch_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_Pipelines_UpdateProjectRepoBranch_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/api.public.pipelines.Pipelines/ChangeProjectRepoBranch", runtime.WithHTTPPathPattern("/api/vo/repos/{id}/pipeline-definition-branch"))
+		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/api.public.pipelines.Pipelines/UpdateProjectRepoBranch", runtime.WithHTTPPathPattern("/api/vo/repos/{repo_id}/reference-branch"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_Pipelines_ChangeProjectRepoBranch_0(rctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_Pipelines_UpdateProjectRepoBranch_0(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_Pipelines_ChangeProjectRepoBranch_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_Pipelines_UpdateProjectRepoBranch_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -2055,7 +2055,7 @@ var (
 
 	pattern_Pipelines_RemoveProjectRepo_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"api", "v0", "repos", "id"}, ""))
 
-	pattern_Pipelines_ChangeProjectRepoBranch_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"api", "vo", "repos", "id", "pipeline-definition-branch"}, ""))
+	pattern_Pipelines_UpdateProjectRepoBranch_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"api", "vo", "repos", "repo_id", "reference-branch"}, ""))
 
 	pattern_Pipelines_ListProjectRepos_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v0", "repos"}, ""))
 
@@ -2101,7 +2101,7 @@ var (
 
 	forward_Pipelines_RemoveProjectRepo_0 = runtime.ForwardResponseMessage
 
-	forward_Pipelines_ChangeProjectRepoBranch_0 = runtime.ForwardResponseMessage
+	forward_Pipelines_UpdateProjectRepoBranch_0 = runtime.ForwardResponseMessage
 
 	forward_Pipelines_ListProjectRepos_0 = runtime.ForwardResponseMessage
 

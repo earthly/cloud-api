@@ -51,9 +51,9 @@ type PipelinesClient interface {
 	AddProjectRepos(ctx context.Context, in *AddProjectReposRequest, opts ...grpc.CallOption) (*AddProjectReposResponse, error)
 	// RemoveProjectRepo removes a repository from a project.
 	RemoveProjectRepo(ctx context.Context, in *RemoveProjectRepoRequest, opts ...grpc.CallOption) (*RemoveProjectRepoResponse, error)
-	// ChangeProjectRepoBranch modifies the pipeline_definition_branch for a project repository
+	// UpdateProjectRepoBranch modifies the reference_branch for a project repository
 	// This is a dedicated RPC because changing the definition_branch will cause a resync of pipelines (potentially destructive)
-	ChangeProjectRepoBranch(ctx context.Context, in *ChangeProjectRepoBranchRequest, opts ...grpc.CallOption) (*ChangeProjectRepoBranchResponse, error)
+	UpdateProjectRepoBranch(ctx context.Context, in *UpdateProjectRepoBranchRequest, opts ...grpc.CallOption) (*UpdateProjectRepoBranchResponse, error)
 	// ListProjectRespos lists all project repositories.
 	ListProjectRepos(ctx context.Context, in *ListProjectReposRequest, opts ...grpc.CallOption) (*ListProjectReposResponse, error)
 	// ListRemotePipelines uses the GitHub API to list pipeline definitions present in a remote repository.
@@ -213,9 +213,9 @@ func (c *pipelinesClient) RemoveProjectRepo(ctx context.Context, in *RemoveProje
 	return out, nil
 }
 
-func (c *pipelinesClient) ChangeProjectRepoBranch(ctx context.Context, in *ChangeProjectRepoBranchRequest, opts ...grpc.CallOption) (*ChangeProjectRepoBranchResponse, error) {
-	out := new(ChangeProjectRepoBranchResponse)
-	err := c.cc.Invoke(ctx, "/api.public.pipelines.Pipelines/ChangeProjectRepoBranch", in, out, opts...)
+func (c *pipelinesClient) UpdateProjectRepoBranch(ctx context.Context, in *UpdateProjectRepoBranchRequest, opts ...grpc.CallOption) (*UpdateProjectRepoBranchResponse, error) {
+	out := new(UpdateProjectRepoBranchResponse)
+	err := c.cc.Invoke(ctx, "/api.public.pipelines.Pipelines/UpdateProjectRepoBranch", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -336,9 +336,9 @@ type PipelinesServer interface {
 	AddProjectRepos(context.Context, *AddProjectReposRequest) (*AddProjectReposResponse, error)
 	// RemoveProjectRepo removes a repository from a project.
 	RemoveProjectRepo(context.Context, *RemoveProjectRepoRequest) (*RemoveProjectRepoResponse, error)
-	// ChangeProjectRepoBranch modifies the pipeline_definition_branch for a project repository
+	// UpdateProjectRepoBranch modifies the reference_branch for a project repository
 	// This is a dedicated RPC because changing the definition_branch will cause a resync of pipelines (potentially destructive)
-	ChangeProjectRepoBranch(context.Context, *ChangeProjectRepoBranchRequest) (*ChangeProjectRepoBranchResponse, error)
+	UpdateProjectRepoBranch(context.Context, *UpdateProjectRepoBranchRequest) (*UpdateProjectRepoBranchResponse, error)
 	// ListProjectRespos lists all project repositories.
 	ListProjectRepos(context.Context, *ListProjectReposRequest) (*ListProjectReposResponse, error)
 	// ListRemotePipelines uses the GitHub API to list pipeline definitions present in a remote repository.
@@ -400,8 +400,8 @@ func (UnimplementedPipelinesServer) AddProjectRepos(context.Context, *AddProject
 func (UnimplementedPipelinesServer) RemoveProjectRepo(context.Context, *RemoveProjectRepoRequest) (*RemoveProjectRepoResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RemoveProjectRepo not implemented")
 }
-func (UnimplementedPipelinesServer) ChangeProjectRepoBranch(context.Context, *ChangeProjectRepoBranchRequest) (*ChangeProjectRepoBranchResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ChangeProjectRepoBranch not implemented")
+func (UnimplementedPipelinesServer) UpdateProjectRepoBranch(context.Context, *UpdateProjectRepoBranchRequest) (*UpdateProjectRepoBranchResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateProjectRepoBranch not implemented")
 }
 func (UnimplementedPipelinesServer) ListProjectRepos(context.Context, *ListProjectReposRequest) (*ListProjectReposResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListProjectRepos not implemented")
@@ -662,20 +662,20 @@ func _Pipelines_RemoveProjectRepo_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Pipelines_ChangeProjectRepoBranch_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ChangeProjectRepoBranchRequest)
+func _Pipelines_UpdateProjectRepoBranch_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateProjectRepoBranchRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(PipelinesServer).ChangeProjectRepoBranch(ctx, in)
+		return srv.(PipelinesServer).UpdateProjectRepoBranch(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/api.public.pipelines.Pipelines/ChangeProjectRepoBranch",
+		FullMethod: "/api.public.pipelines.Pipelines/UpdateProjectRepoBranch",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(PipelinesServer).ChangeProjectRepoBranch(ctx, req.(*ChangeProjectRepoBranchRequest))
+		return srv.(PipelinesServer).UpdateProjectRepoBranch(ctx, req.(*UpdateProjectRepoBranchRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -894,8 +894,8 @@ var Pipelines_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Pipelines_RemoveProjectRepo_Handler,
 		},
 		{
-			MethodName: "ChangeProjectRepoBranch",
-			Handler:    _Pipelines_ChangeProjectRepoBranch_Handler,
+			MethodName: "UpdateProjectRepoBranch",
+			Handler:    _Pipelines_UpdateProjectRepoBranch_Handler,
 		},
 		{
 			MethodName: "ListProjectRepos",

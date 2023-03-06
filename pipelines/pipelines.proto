@@ -85,11 +85,11 @@ service Pipelines {
     };
   }
 
-  // ChangeProjectRepoBranch modifies the pipeline_definition_branch for a project repository
+  // UpdateProjectRepoBranch modifies the reference_branch for a project repository
   // This is a dedicated RPC because changing the definition_branch will cause a resync of pipelines (potentially destructive)
-  rpc ChangeProjectRepoBranch(ChangeProjectRepoBranchRequest) returns (ChangeProjectRepoBranchResponse) {
+  rpc UpdateProjectRepoBranch(UpdateProjectRepoBranchRequest) returns (UpdateProjectRepoBranchResponse) {
     option (google.api.http) = {
-      post: "/api/vo/repos/{id}/pipeline-definition-branch"
+      post: "/api/vo/repos/{repo_id}/reference-branch"
       body: "*"
     };
   }
@@ -318,15 +318,15 @@ message RemoveProjectRepoRequest {
 
 message RemoveProjectRepoResponse {}
 
-message ChangeProjectRepoBranchRequest {
-  string id = 1;
+message UpdateProjectRepoBranchRequest {
+  string repo_id = 1;
 
-  // pipeline_definition_branch is the branch the pipeline definitions are retrieved from
+  // reference_branch is the branch the pipeline definitions are retrieved from
   // Note: The pipelines themselves will still run on the branch a run is occurring on.
-  string pipeline_definition_branch = 2;
+  string reference_branch = 2;
 }
 
-message ChangeProjectRepoBranchResponse {}
+message UpdateProjectRepoBranchResponse {}
 
 message ListProjectReposRequest {
   string project = 1;
