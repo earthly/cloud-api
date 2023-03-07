@@ -84,6 +84,16 @@ service Pipelines {
       delete: "/api/v0/repos/{id}"
     };
   }
+
+  // UpdateProjectRepoBranch modifies the reference_branch for a project repository
+  // This is a dedicated RPC because changing the definition_branch will cause a resync of pipelines (potentially destructive)
+  rpc UpdateProjectRepoBranch(UpdateProjectRepoBranchRequest) returns (UpdateProjectRepoBranchResponse) {
+    option (google.api.http) = {
+      post: "/api/vo/repos/{repo_id}/reference-branch"
+      body: "*"
+    };
+  }
+
   // ListProjectRespos lists all project repositories.
   rpc ListProjectRepos(ListProjectReposRequest) returns (ListProjectReposResponse) {
     option (google.api.http) = {
@@ -307,6 +317,20 @@ message RemoveProjectRepoRequest {
 }
 
 message RemoveProjectRepoResponse {}
+
+message UpdateProjectRepoBranchRequest {
+  string repo_id = 1;
+
+  // reference_branch is the branch the pipeline definitions are retrieved from
+  // Note: The pipelines themselves will still run on the branch a run is occurring on.
+  string reference_branch = 2;
+
+  // force_sync will force a sync even if the branch already matches.
+  // By default, no sync work is performed if we are setting the branch to the same value.
+  bool force_sync = 3;
+}
+
+message UpdateProjectRepoBranchResponse {}
 
 message ListProjectReposRequest {
   string project = 1;
