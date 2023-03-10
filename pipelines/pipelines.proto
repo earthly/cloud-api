@@ -302,10 +302,14 @@ message ProjectRepo {
   string project = 6;
   google.protobuf.Timestamp created_at = 7;
   string provider_org = 8;
+  // reference_branch is the branch used when syncing pipelines
+  string reference_branch = 9;
 }
 
 message AddProjectReposRequest {
   repeated ProjectRepo repos = 1;
+  // sync_pipelines indicates whether this add call should also sync the pipelines for these repositories
+  bool sync_pipelines = 2;
 }
 
 message AddProjectReposResponse {
@@ -411,6 +415,8 @@ message ListRemotePipelinesRequest {
   string repo = 1;
   string org = 2;
   string provider = 3;
+  // reference_branch is the branch to use when obtaining the RemotePipelines
+  string reference_branch = 4;
 }
 
 message ListRemotePipelinesResponse {
