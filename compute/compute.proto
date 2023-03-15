@@ -106,6 +106,7 @@ message LaunchSatelliteResponse {
 
 message ListSatellitesRequest {
   string org_id = 1;
+  bool include_hidden = 2;
 }
 
 message ListSatellitesResponse {
