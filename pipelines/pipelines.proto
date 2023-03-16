@@ -389,6 +389,7 @@ message Pipeline {
   string path_hash = 12;
   // The name of the provider organization (for example, the GH org name)
   string provider_org = 13;
+  string satellite_name = 14;
   reserved 7; // old 'enabled' field
 }
 
