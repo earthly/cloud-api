@@ -117,6 +117,7 @@ message ListSatellitesResponse {
     SatelliteStatus status = 4;
     string version = 5;
     string size = 6;
+    bool hidden = 7;
   }
   repeated SatelliteInstance instances = 1;
 }
@@ -160,6 +161,7 @@ message GetSatelliteResponse {
   int32 revision_id = 12;
   bool version_pinned = 13;
   bool maintenance_weekends_only = 14;
+  bool hidden = 15;
 }
 
 message WakeSatelliteRequest {
