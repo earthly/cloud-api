@@ -106,7 +106,7 @@ service Pipelines {
       get: "/api/v0/pipelines/remote"
     };
   }
-  // ListPipelines returns a collection of piplines that can be filtered by project.
+  // ListPipelines returns a collection of pipelines that can be filtered by project.
   rpc ListPipelines(ListPipelinesRequest) returns (ListPipelinesResponse) {
     option (google.api.http) = {
       get: "/api/v0/pipelines"

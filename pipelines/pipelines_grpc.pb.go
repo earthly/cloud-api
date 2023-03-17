@@ -58,7 +58,7 @@ type PipelinesClient interface {
 	ListProjectRepos(ctx context.Context, in *ListProjectReposRequest, opts ...grpc.CallOption) (*ListProjectReposResponse, error)
 	// ListRemotePipelines uses the GitHub API to list pipeline definitions present in a remote repository.
 	ListRemotePipelines(ctx context.Context, in *ListRemotePipelinesRequest, opts ...grpc.CallOption) (*ListRemotePipelinesResponse, error)
-	// ListPipelines returns a collection of piplines that can be filtered by project.
+	// ListPipelines returns a collection of pipelines that can be filtered by project.
 	ListPipelines(ctx context.Context, in *ListPipelinesRequest, opts ...grpc.CallOption) (*ListPipelinesResponse, error)
 	// AddPipelines will create one or more pipelines.
 	AddPipelines(ctx context.Context, in *AddPipelinesRequest, opts ...grpc.CallOption) (*AddPipelinesResponse, error)
@@ -343,7 +343,7 @@ type PipelinesServer interface {
 	ListProjectRepos(context.Context, *ListProjectReposRequest) (*ListProjectReposResponse, error)
 	// ListRemotePipelines uses the GitHub API to list pipeline definitions present in a remote repository.
 	ListRemotePipelines(context.Context, *ListRemotePipelinesRequest) (*ListRemotePipelinesResponse, error)
-	// ListPipelines returns a collection of piplines that can be filtered by project.
+	// ListPipelines returns a collection of pipelines that can be filtered by project.
 	ListPipelines(context.Context, *ListPipelinesRequest) (*ListPipelinesResponse, error)
 	// AddPipelines will create one or more pipelines.
 	AddPipelines(context.Context, *AddPipelinesRequest) (*AddPipelinesResponse, error)
