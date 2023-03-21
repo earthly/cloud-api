@@ -89,7 +89,7 @@ service Pipelines {
   // This is a dedicated RPC because changing the definition_branch will cause a resync of pipelines (potentially destructive)
   rpc UpdateProjectRepoBranch(UpdateProjectRepoBranchRequest) returns (UpdateProjectRepoBranchResponse) {
     option (google.api.http) = {
-      post: "/api/vo/repos/{repo_id}/reference-branch"
+      post: "/api/v0/repos/{repo_id}/reference-branch"
       body: "*"
     };
   }
