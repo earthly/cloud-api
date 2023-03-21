@@ -17,7 +17,12 @@ message StreamLogResponse {
   bool eof_ack = 1;
 }
 
-message GetFirebaseAuthTokenRequest {}
+message GetFirebaseAuthTokenRequest {
+  // build_id is the id of the build the token is attempting to access.
+  // If the build is public the corresponding token will have access to the build.
+  // If the build is not public the token will not have access to the build.
+  string build_id = 1;
+}
 
 message GetFirebaseAuthTokenResponse {
   string token = 1;
