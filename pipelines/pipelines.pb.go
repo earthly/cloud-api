@@ -3116,7 +3116,7 @@ type PipelineRun struct {
 	OrgSeqNum       int32                  `protobuf:"varint,14,opt,name=org_seq_num,json=orgSeqNum,proto3" json:"org_seq_num,omitempty"`
 	// head_branch is the branch that contains the proposed changes
 	HeadBranch string `protobuf:"bytes,15,opt,name=head_branch,json=headBranch,proto3" json:"head_branch,omitempty"`
-	// base_branch is the branch the changes from source_branch will be merged into (may be the same branch)
+	// base_branch is the branch the changes from head_branch will be merged into (may be the same branch)
 	BaseBranch string `protobuf:"bytes,16,opt,name=base_branch,json=baseBranch,proto3" json:"base_branch,omitempty"`
 }
 
