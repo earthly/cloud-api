@@ -29,9 +29,9 @@ type GitInfo struct {
 	Owner string `protobuf:"bytes,1,opt,name=owner,proto3" json:"owner,omitempty"`
 	Repo  string `protobuf:"bytes,2,opt,name=repo,proto3" json:"repo,omitempty"`
 	Hash  string `protobuf:"bytes,3,opt,name=hash,proto3" json:"hash,omitempty"`
-	// head_branch represents the branch the build should be considered to be running against
-	// In a build triggered by a push this is the branch being pushed to
-	// In a build triggered by a pr this is the branch being merged into
+	// head_branch represents the branch the build is running on (where changes are made)
+	// Whereas, base_branch would be the branch changes are merged into (i.e., main)
+	// Builds run on a SHA, but there we want to add the branch context for the appropriate trigger (push / pr)
 	HeadBranch string `protobuf:"bytes,15,opt,name=head_branch,json=headBranch,proto3" json:"head_branch,omitempty"`
 }
 
