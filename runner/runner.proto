@@ -12,6 +12,10 @@ message GitInfo {
   string owner = 1;
   string repo = 2;
   string hash = 3;
+  // head_branch represents the branch the build is running on (where changes are made)
+  // Whereas, base_branch would be the branch changes are merged into (i.e., main)
+  // Builds run on a SHA, but there we want to add the branch context for the appropriate trigger (push / pr)
+  string head_branch = 15;
 }
 
 message BuildRequest {

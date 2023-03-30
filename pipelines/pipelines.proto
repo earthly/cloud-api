@@ -488,7 +488,7 @@ message PipelineRun {
   int32 org_seq_num = 14;
   // head_branch is the branch that contains the proposed changes
   string head_branch = 15;
-  // base_branch is the branch the changes from source_branch will be merged into (may be the same branch)
+  // base_branch is the branch the changes from head_branch will be merged into (may be the same branch)
   string base_branch = 16;
 }
 
