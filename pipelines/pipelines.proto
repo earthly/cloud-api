@@ -106,7 +106,8 @@ service Pipelines {
       get: "/api/v0/pipelines/remote"
     };
   }
-  // ListPipelines returns a collection of piplines that can be filtered by project.
+
+  // ListPipelines returns a collection of pipelines that can be filtered by project.
   rpc ListPipelines(ListPipelinesRequest) returns (ListPipelinesResponse) {
     option (google.api.http) = {
       get: "/api/v0/pipelines"
@@ -119,6 +120,14 @@ service Pipelines {
       body: "*"
     };
   }
+
+  // GetPipeline will return a pipeline
+  rpc GetPipeline(GetPipelineRequest) returns (GetPipelineResponse) {
+    option (google.api.http) = {
+      get: "/api/v0/pipelines/{pipeline_id}"
+    };
+  }
+
   // RemovePipeline will remove an existing pipeline.
   rpc RemovePipeline(RemovePipelineRequest) returns (RemovePipelineResponse) {
     option (google.api.http) = {
@@ -437,6 +446,14 @@ message RemoteOrg {
 
 message ListRemoteOrgsResponse {
   repeated RemoteOrg remote_orgs = 1;
+}
+
+message GetPipelineRequest {
+  string pipeline_id = 1;
+}
+
+message GetPipelineResponse {
+  Pipeline pipeline = 1;
 }
 
 message ListPipelinesRequest {
