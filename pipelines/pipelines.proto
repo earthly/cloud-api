@@ -106,7 +106,8 @@ service Pipelines {
       get: "/api/v0/pipelines/remote"
     };
   }
-  // ListPipelines returns a collection of piplines that can be filtered by project.
+
+  // ListPipelines returns a collection of pipelines that can be filtered by project.
   rpc ListPipelines(ListPipelinesRequest) returns (ListPipelinesResponse) {
     option (google.api.http) = {
       get: "/api/v0/pipelines"
@@ -119,6 +120,14 @@ service Pipelines {
       body: "*"
     };
   }
+
+  // GetPipeline will return a pipeline
+  rpc GetPipeline(GetPipelineRequest) returns (GetPipelineResponse) {
+    option (google.api.http) = {
+      get: "/api/v0/pipelines/{pipeline_id}"
+    };
+  }
+
   // RemovePipeline will remove an existing pipeline.
   rpc RemovePipeline(RemovePipelineRequest) returns (RemovePipelineResponse) {
     option (google.api.http) = {
@@ -439,6 +448,14 @@ message ListRemoteOrgsResponse {
   repeated RemoteOrg remote_orgs = 1;
 }
 
+message GetPipelineRequest {
+  string pipeline_id = 1;
+}
+
+message GetPipelineResponse {
+  Pipeline pipeline = 1;
+}
+
 message ListPipelinesRequest {
   string project = 1;
   string org = 2;
@@ -488,7 +505,7 @@ message PipelineRun {
   int32 org_seq_num = 14;
   // head_branch is the branch that contains the proposed changes
   string head_branch = 15;
-  // base_branch is the branch the changes from source_branch will be merged into (may be the same branch)
+  // base_branch is the branch the changes from head_branch will be merged into (may be the same branch)
   string base_branch = 16;
 }
 
