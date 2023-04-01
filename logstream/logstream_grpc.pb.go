@@ -30,6 +30,11 @@ type LogStreamClient interface {
 	// 5. Server responds with eof_ack=true.
 	// 6. Client closes the channel. (optionally, the client can wait for server_exit_status)
 	StreamLogs(ctx context.Context, opts ...grpc.CallOption) (LogStream_StreamLogsClient, error)
+	// InitLogs can be used to set the status of a build before or after the core
+	// build task is run by the CLI. It's primarily meant to be used by the
+	// initialization process, but can also be used to surface errors that may not
+	// be handled well by the CLI.
+	InitLogs(ctx context.Context, in *InitLogsRequest, opts ...grpc.CallOption) (*InitLogsResponse, error)
 	// GetFirebaseAuthToken returns a token suitable for use with Firebase APIs
 	// The user must already be authenticated.
 	GetFirebaseAuthToken(ctx context.Context, in *GetFirebaseAuthTokenRequest, opts ...grpc.CallOption) (*GetFirebaseAuthTokenResponse, error)
@@ -76,6 +81,15 @@ func (x *logStreamStreamLogsClient) Recv() (*StreamLogResponse, error) {
 	return m, nil
 }
 
+func (c *logStreamClient) InitLogs(ctx context.Context, in *InitLogsRequest, opts ...grpc.CallOption) (*InitLogsResponse, error) {
+	out := new(InitLogsResponse)
+	err := c.cc.Invoke(ctx, "/api.public.logstream.LogStream/InitLogs", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *logStreamClient) GetFirebaseAuthToken(ctx context.Context, in *GetFirebaseAuthTokenRequest, opts ...grpc.CallOption) (*GetFirebaseAuthTokenResponse, error) {
 	out := new(GetFirebaseAuthTokenResponse)
 	err := c.cc.Invoke(ctx, "/api.public.logstream.LogStream/GetFirebaseAuthToken", in, out, opts...)
@@ -115,6 +129,11 @@ type LogStreamServer interface {
 	// 5. Server responds with eof_ack=true.
 	// 6. Client closes the channel. (optionally, the client can wait for server_exit_status)
 	StreamLogs(LogStream_StreamLogsServer) error
+	// InitLogs can be used to set the status of a build before or after the core
+	// build task is run by the CLI. It's primarily meant to be used by the
+	// initialization process, but can also be used to surface errors that may not
+	// be handled well by the CLI.
+	InitLogs(context.Context, *InitLogsRequest) (*InitLogsResponse, error)
 	// GetFirebaseAuthToken returns a token suitable for use with Firebase APIs
 	// The user must already be authenticated.
 	GetFirebaseAuthToken(context.Context, *GetFirebaseAuthTokenRequest) (*GetFirebaseAuthTokenResponse, error)
@@ -129,6 +148,9 @@ type UnimplementedLogStreamServer struct {
 
 func (UnimplementedLogStreamServer) StreamLogs(LogStream_StreamLogsServer) error {
 	return status.Errorf(codes.Unimplemented, "method StreamLogs not implemented")
+}
+func (UnimplementedLogStreamServer) InitLogs(context.Context, *InitLogsRequest) (*InitLogsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method InitLogs not implemented")
 }
 func (UnimplementedLogStreamServer) GetFirebaseAuthToken(context.Context, *GetFirebaseAuthTokenRequest) (*GetFirebaseAuthTokenResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetFirebaseAuthToken not implemented")
@@ -176,6 +198,24 @@ func (x *logStreamStreamLogsServer) Recv() (*StreamLogRequest, error) {
 		return nil, err
 	}
 	return m, nil
+}
+
+func _LogStream_InitLogs_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(InitLogsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(LogStreamServer).InitLogs(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.public.logstream.LogStream/InitLogs",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(LogStreamServer).InitLogs(ctx, req.(*InitLogsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _LogStream_GetFirebaseAuthToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -239,6 +279,10 @@ var LogStream_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "api.public.logstream.LogStream",
 	HandlerType: (*LogStreamServer)(nil),
 	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "InitLogs",
+			Handler:    _LogStream_InitLogs_Handler,
+		},
 		{
 			MethodName: "GetFirebaseAuthToken",
 			Handler:    _LogStream_GetFirebaseAuthToken_Handler,
