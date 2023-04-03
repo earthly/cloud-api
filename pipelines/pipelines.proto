@@ -124,7 +124,7 @@ service Pipelines {
   // GetPipeline will return a pipeline
   rpc GetPipeline(GetPipelineRequest) returns (GetPipelineResponse) {
     option (google.api.http) = {
-      get: "/api/v0/pipelines/{pipeline_id}"
+      get: "/api/v0/pipelines/local/{pipeline_id}"
     };
   }
 
