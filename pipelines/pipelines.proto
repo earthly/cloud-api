@@ -100,12 +100,6 @@ service Pipelines {
       get: "/api/v0/repos"
     };
   }
-  // ListRemotePipelines uses the GitHub API to list pipeline definitions present in a remote repository.
-  rpc ListRemotePipelines(ListRemotePipelinesRequest) returns (ListRemotePipelinesResponse) {
-    option (google.api.http) = {
-      get: "/api/v0/pipelines/remote"
-    };
-  }
 
   // ListPipelines returns a collection of pipelines that can be filtered by project.
   rpc ListPipelines(ListPipelinesRequest) returns (ListPipelinesResponse) {
@@ -121,10 +115,20 @@ service Pipelines {
     };
   }
 
+  /*
+   * GetPipeline and ListRemotePipelines must be defined in this order. Otherwise, the requests won't map properly
+  */
   // GetPipeline will return a pipeline
   rpc GetPipeline(GetPipelineRequest) returns (GetPipelineResponse) {
     option (google.api.http) = {
-      get: "/api/v0/pipelines/local/{pipeline_id}"
+      get: "/api/v0/pipelines/{pipeline_id}"
+    };
+  }
+
+  // ListRemotePipelines uses the GitHub API to list pipeline definitions present in a remote repository.
+  rpc ListRemotePipelines(ListRemotePipelinesRequest) returns (ListRemotePipelinesResponse) {
+    option (google.api.http) = {
+      get: "/api/v0/pipelines/remote"
     };
   }
 
