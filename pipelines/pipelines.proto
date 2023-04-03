@@ -116,7 +116,8 @@ service Pipelines {
   }
 
   /*
-   * GetPipeline and ListRemotePipelines must be defined in this order. Otherwise, the requests won't map properly
+   * REQUESTS WHERE ORDER OF DEFINITION MATTERS
+   * These requests NEED to be defined in this order; otherwise, the mappings will collide.
   */
   // GetPipeline will return a pipeline
   rpc GetPipeline(GetPipelineRequest) returns (GetPipelineResponse) {
@@ -131,6 +132,10 @@ service Pipelines {
       get: "/api/v0/pipelines/remote"
     };
   }
+
+  /*
+   * END REQUESTS WHERE ORDER OF DEFINITION MATTERS
+  */
 
   // RemovePipeline will remove an existing pipeline.
   rpc RemovePipeline(RemovePipelineRequest) returns (RemovePipelineResponse) {
