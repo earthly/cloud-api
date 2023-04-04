@@ -50,6 +50,13 @@ message GetLongTermResponse {
   repeated DeltaFormattedLog formatted_logs = 2;
 }
 
+message InitLogsRequest {
+  RunManifest manifest = 1;
+  repeated DeltaFormattedLog formatted_logs = 2;
+}
+
+message InitLogsResponse {}
+
 service LogStream {
   // StreamLogs streams logs to the server. Stream protocol:
   // 1. The client opens the channel.
@@ -59,6 +66,12 @@ service LogStream {
   // 5. Server responds with eof_ack=true.
   // 6. Client closes the channel. (optionally, the client can wait for server_exit_status)
   rpc StreamLogs(stream StreamLogRequest) returns (stream StreamLogResponse) {}
+
+  // InitLogs can be used to set the status of a build before or after the core
+  // build task is run by the CLI. It's primarily meant to be used by the
+  // initialization process, but can also be used to surface errors that may not
+  // be handled well by the CLI.
+  rpc InitLogs(InitLogsRequest) returns (InitLogsResponse) {}
 
   // GetFirebaseAuthToken returns a token suitable for use with Firebase APIs
   // The user must already be authenticated.
