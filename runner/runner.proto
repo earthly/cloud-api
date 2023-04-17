@@ -48,4 +48,5 @@ enum RunnerStatus {
 }
 message StatusResponse {
   RunnerStatus status = 1;
+  string status_reason = 2;
 }
