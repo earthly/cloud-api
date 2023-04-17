@@ -24,6 +24,7 @@ const _ = grpc.SupportPackageIsVersion7
 type RunnerClient interface {
 	// Build starts a build on a satellite.
 	Build(ctx context.Context, in *BuildRequest, opts ...grpc.CallOption) (*BuildResponse, error)
+	Status(ctx context.Context, in *StatusRequest, opts ...grpc.CallOption) (*StatusResponse, error)
 }
 
 type runnerClient struct {
@@ -43,12 +44,22 @@ func (c *runnerClient) Build(ctx context.Context, in *BuildRequest, opts ...grpc
 	return out, nil
 }
 
+func (c *runnerClient) Status(ctx context.Context, in *StatusRequest, opts ...grpc.CallOption) (*StatusResponse, error) {
+	out := new(StatusResponse)
+	err := c.cc.Invoke(ctx, "/api.public.runner.Runner/Status", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // RunnerServer is the server API for Runner service.
 // All implementations must embed UnimplementedRunnerServer
 // for forward compatibility
 type RunnerServer interface {
 	// Build starts a build on a satellite.
 	Build(context.Context, *BuildRequest) (*BuildResponse, error)
+	Status(context.Context, *StatusRequest) (*StatusResponse, error)
 	mustEmbedUnimplementedRunnerServer()
 }
 
@@ -58,6 +69,9 @@ type UnimplementedRunnerServer struct {
 
 func (UnimplementedRunnerServer) Build(context.Context, *BuildRequest) (*BuildResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Build not implemented")
+}
+func (UnimplementedRunnerServer) Status(context.Context, *StatusRequest) (*StatusResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Status not implemented")
 }
 func (UnimplementedRunnerServer) mustEmbedUnimplementedRunnerServer() {}
 
@@ -90,6 +104,24 @@ func _Runner_Build_Handler(srv interface{}, ctx context.Context, dec func(interf
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Runner_Status_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(StatusRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RunnerServer).Status(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.public.runner.Runner/Status",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RunnerServer).Status(ctx, req.(*StatusRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Runner_ServiceDesc is the grpc.ServiceDesc for Runner service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -100,6 +132,10 @@ var Runner_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Build",
 			Handler:    _Runner_Build_Handler,
+		},
+		{
+			MethodName: "Status",
+			Handler:    _Runner_Status_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

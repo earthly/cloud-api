@@ -5,6 +5,7 @@ option go_package = "./runner";
 service Runner {
   // Build starts a build on a satellite.
   rpc Build(BuildRequest) returns (BuildResponse) {}
+  rpc Status(StatusRequest) returns (StatusResponse) {}
 }
 
 message GitInfo {
@@ -36,3 +37,16 @@ message BuildRequest {
 }
 
 message BuildResponse {}
+
+message StatusRequest {}
+
+enum RunnerStatus {
+  RUNNER_STATUS_UNKNOWN = 0;
+  RUNNER_STATUS_WAITING = 1;
+  RUNNER_STATUS_READY = 2;
+  RUNNER_STATUS_ERROR = 3;
+}
+message StatusResponse {
+  RunnerStatus status = 1;
+  string status_reason = 2;
+}
