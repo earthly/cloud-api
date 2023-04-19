@@ -393,6 +393,12 @@ message RemotePipeline {
   bool is_push = 9;
 }
 
+enum PipelineStatus {
+  STATUS_UNKNOWN = 0;
+  STATUS_OK = 1;
+  STATUS_ERROR = 2;
+}
+
 message Pipeline {
   string repo = 1;
   string path = 2;
@@ -408,6 +414,9 @@ message Pipeline {
   // The name of the provider organization (for example, the GH org name)
   string provider_org = 13;
   string satellite_name = 14;
+  PipelineStatus status = 15;
+  string error_code = 16;
+  string error_details = 17;
   reserved 7; // old 'enabled' field
 }
 
