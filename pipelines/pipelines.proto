@@ -399,6 +399,14 @@ enum PipelineStatus {
   STATUS_ERROR = 2;
 }
 
+enum PipelineErrorCode {
+  ERROR_UNKNOWN = 0;
+  ERROR_NONE = 1;
+  ERROR_PAYMENT = 2;
+  ERROR_PARSING = 3;
+  ERROR_PROJECT = 4;
+}
+
 message Pipeline {
   string repo = 1;
   string path = 2;
@@ -415,7 +423,7 @@ message Pipeline {
   string provider_org = 13;
   string satellite_name = 14;
   PipelineStatus status = 15;
-  string error_code = 16;
+  PipelineErrorCode error_code = 16;
   string error_details = 17;
   reserved 7; // old 'enabled' field
 }
