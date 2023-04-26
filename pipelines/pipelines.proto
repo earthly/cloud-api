@@ -587,9 +587,10 @@ enum SyncStatusType {
 
 enum SyncErrorCode {
   SYNC_ERROR_UNKNOWN = 0;
-  SYNC_ERROR_PARSING = 1;
-  SYNC_ERROR_PAYMENT = 2;
-  SYNC_ERROR_OTHER = 3;
+  SYNC_ERROR_NONE = 1;
+  SYNC_ERROR_PARSING = 2;
+  SYNC_ERROR_PAYMENT = 3;
+  SYNC_ERROR_OTHER = 4;
 }
 
 message SyncStatus {
