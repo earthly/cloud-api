@@ -60,7 +60,7 @@ type PipelinesClient interface {
 	ListPipelines(ctx context.Context, in *ListPipelinesRequest, opts ...grpc.CallOption) (*ListPipelinesResponse, error)
 	// AddPipelines will create one or more pipelines.
 	AddPipelines(ctx context.Context, in *AddPipelinesRequest, opts ...grpc.CallOption) (*AddPipelinesResponse, error)
-	// GetPipeline will return a pipeline
+	// GetPipeline will return a pipeline. Needs to appear before ListRemotePipelines due to gRPC specificity rules.
 	GetPipeline(ctx context.Context, in *GetPipelineRequest, opts ...grpc.CallOption) (*GetPipelineResponse, error)
 	// ListRemotePipelines uses the GitHub API to list pipeline definitions present in a remote repository.
 	ListRemotePipelines(ctx context.Context, in *ListRemotePipelinesRequest, opts ...grpc.CallOption) (*ListRemotePipelinesResponse, error)
@@ -74,6 +74,8 @@ type PipelinesClient interface {
 	Rerun(ctx context.Context, in *RerunRequest, opts ...grpc.CallOption) (*RerunResponse, error)
 	// GetOrgLimits will return the org limits for the CI beta testers
 	GetOrgLimits(ctx context.Context, in *GetOrgLimitsRequest, opts ...grpc.CallOption) (*GetOrgLimitsResponse, error)
+	// ListSyncStatuses returns all pipeline sync statuses for projects within an organization.
+	ListSyncStatuses(ctx context.Context, in *ListSyncStatusesRequest, opts ...grpc.CallOption) (*ListSyncStatusesResponse, error)
 }
 
 type pipelinesClient struct {
@@ -314,6 +316,15 @@ func (c *pipelinesClient) GetOrgLimits(ctx context.Context, in *GetOrgLimitsRequ
 	return out, nil
 }
 
+func (c *pipelinesClient) ListSyncStatuses(ctx context.Context, in *ListSyncStatusesRequest, opts ...grpc.CallOption) (*ListSyncStatusesResponse, error) {
+	out := new(ListSyncStatusesResponse)
+	err := c.cc.Invoke(ctx, "/api.public.pipelines.Pipelines/ListSyncStatuses", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // PipelinesServer is the server API for Pipelines service.
 // All implementations must embed UnimplementedPipelinesServer
 // for forward compatibility
@@ -356,7 +367,7 @@ type PipelinesServer interface {
 	ListPipelines(context.Context, *ListPipelinesRequest) (*ListPipelinesResponse, error)
 	// AddPipelines will create one or more pipelines.
 	AddPipelines(context.Context, *AddPipelinesRequest) (*AddPipelinesResponse, error)
-	// GetPipeline will return a pipeline
+	// GetPipeline will return a pipeline. Needs to appear before ListRemotePipelines due to gRPC specificity rules.
 	GetPipeline(context.Context, *GetPipelineRequest) (*GetPipelineResponse, error)
 	// ListRemotePipelines uses the GitHub API to list pipeline definitions present in a remote repository.
 	ListRemotePipelines(context.Context, *ListRemotePipelinesRequest) (*ListRemotePipelinesResponse, error)
@@ -370,6 +381,8 @@ type PipelinesServer interface {
 	Rerun(context.Context, *RerunRequest) (*RerunResponse, error)
 	// GetOrgLimits will return the org limits for the CI beta testers
 	GetOrgLimits(context.Context, *GetOrgLimitsRequest) (*GetOrgLimitsResponse, error)
+	// ListSyncStatuses returns all pipeline sync statuses for projects within an organization.
+	ListSyncStatuses(context.Context, *ListSyncStatusesRequest) (*ListSyncStatusesResponse, error)
 	mustEmbedUnimplementedPipelinesServer()
 }
 
@@ -445,6 +458,9 @@ func (UnimplementedPipelinesServer) Rerun(context.Context, *RerunRequest) (*Reru
 }
 func (UnimplementedPipelinesServer) GetOrgLimits(context.Context, *GetOrgLimitsRequest) (*GetOrgLimitsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetOrgLimits not implemented")
+}
+func (UnimplementedPipelinesServer) ListSyncStatuses(context.Context, *ListSyncStatusesRequest) (*ListSyncStatusesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListSyncStatuses not implemented")
 }
 func (UnimplementedPipelinesServer) mustEmbedUnimplementedPipelinesServer() {}
 
@@ -876,6 +892,24 @@ func _Pipelines_GetOrgLimits_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Pipelines_ListSyncStatuses_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListSyncStatusesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PipelinesServer).ListSyncStatuses(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.public.pipelines.Pipelines/ListSyncStatuses",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PipelinesServer).ListSyncStatuses(ctx, req.(*ListSyncStatusesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Pipelines_ServiceDesc is the grpc.ServiceDesc for Pipelines service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -970,6 +1004,10 @@ var Pipelines_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetOrgLimits",
 			Handler:    _Pipelines_GetOrgLimits_Handler,
+		},
+		{
+			MethodName: "ListSyncStatuses",
+			Handler:    _Pipelines_ListSyncStatuses_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{
