@@ -21,7 +21,7 @@ message RunManifest {
   map<string, TargetManifest> targets = 7;
   map<string, CommandManifest> commands = 13;
   string main_target_id = 8;
-  
+
   Failure failure = 9;
 
   // org_name is the name of the organization that owns this run.
@@ -53,6 +53,7 @@ enum FailureType {
   FAILURE_TYPE_CONNECTION_FAILURE = 7;
   FAILURE_TYPE_NEEDS_PRIVILEGED = 8;
   FAILURE_TYPE_GIT = 9;
+  FAILURE_TYPE_CANCELED = 10;
 }
 
 message Failure {
