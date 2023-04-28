@@ -1,0 +1,30 @@
+syntax = "proto3";
+package api.public.askv;
+option go_package = "./askv";
+
+import "google/api/annotations.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/duration.proto";
+
+service Askv {
+  rpc Exists(ExistsRequest) returns (ExistsResponse) {}
+  rpc Add(AddRequest) returns (AddResponse) {}
+}
+
+message ExistsRequest {
+  string org_id = 1;
+  bytes hash = 2;
+}
+
+message ExistsResponse {
+  bool exists = 1;
+}
+
+message AddRequest {
+  string org_id = 1;
+  bytes hash = 2;
+}
+
+message AddResponse {
+}
+
