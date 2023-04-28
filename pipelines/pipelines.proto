@@ -115,11 +115,7 @@ service Pipelines {
     };
   }
 
-  /*
-   * REQUESTS WHERE ORDER OF DEFINITION MATTERS
-   * These requests NEED to be defined in this order; otherwise, the mappings will collide.
-  */
-  // GetPipeline will return a pipeline
+  // GetPipeline will return a pipeline. Needs to appear before ListRemotePipelines due to gRPC specificity rules.
   rpc GetPipeline(GetPipelineRequest) returns (GetPipelineResponse) {
     option (google.api.http) = {
       get: "/api/v0/pipelines/{pipeline_id}"
@@ -132,10 +128,6 @@ service Pipelines {
       get: "/api/v0/pipelines/remote"
     };
   }
-
-  /*
-   * END REQUESTS WHERE ORDER OF DEFINITION MATTERS
-  */
 
   // RemovePipeline will remove an existing pipeline.
   rpc RemovePipeline(RemovePipelineRequest) returns (RemovePipelineResponse) {
@@ -166,6 +158,12 @@ service Pipelines {
   rpc GetOrgLimits(GetOrgLimitsRequest) returns (GetOrgLimitsResponse) {
     option (google.api.http) = {
       get: "/api/v0/limits/org/{orgName}"
+    };
+  }
+  // ListSyncStatuses returns all pipeline sync statuses for projects within an organization.
+  rpc ListSyncStatuses(ListSyncStatusesRequest) returns (ListSyncStatusesResponse) {
+    option (google.api.http) = {
+      get: "/api/v0/sync/status"
     };
   }
 }
@@ -574,4 +572,35 @@ message RerunRequest {
 message RerunResponse {
   PipelineRun run = 1;
   CommitInfo commit_info = 2;
+}
+
+message ListSyncStatusesRequest {
+  string org_id = 1;
+  string project_id = 2;
+}
+
+enum SyncStatusType {
+  SYNC_STATUS_UNKNOWN = 0;
+  SYNC_STATUS_OK = 1;
+  SYNC_STATUS_ERROR = 2;
+}
+
+enum SyncErrorCode {
+  SYNC_ERROR_UNKNOWN = 0;
+  SYNC_ERROR_NONE = 1;
+  SYNC_ERROR_PARSING = 2;
+  SYNC_ERROR_PAYMENT = 3;
+  SYNC_ERROR_OTHER = 4;
+}
+
+message SyncStatus {
+  string org_id = 1;
+  string project_id = 2;
+  SyncStatusType status = 3;
+  SyncErrorCode error_code = 4;
+  string details = 5;
+}
+
+message ListSyncStatusesResponse {
+  repeated SyncStatus statuses = 1;
 }
