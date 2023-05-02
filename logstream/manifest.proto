@@ -16,6 +16,7 @@ enum RunType {
   RUN_TYPE_LOCAL = 1;
   RUN_TYPE_SATELLITE = 2;
   RUN_TYPE_CI = 3;
+  RUN_TYPE_REMOTE = 4;
 }
 
 message RunManifest {
