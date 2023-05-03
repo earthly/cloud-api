@@ -51,6 +51,13 @@ message RunManifest {
   // The run type helps identify the origin of the build invocation. Valid
   // types include: local, satellite, CI, etc.
   RunType type = 16;
+
+  // Additional pipeline & Git information that's used by Logstream.
+  string pipeline_id = 17;
+  string pipeline_name = 18;
+  string git_owner = 19;
+  string git_repo = 20;
+  string git_sha = 21;
 }
 
 enum FailureType {
