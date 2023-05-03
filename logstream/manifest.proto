@@ -11,6 +11,14 @@ enum RunStatus {
   RUN_STATUS_CANCELED = 5;
 }
 
+enum RunType {
+  RUN_TYPE_UNKNOWN = 0;
+  RUN_TYPE_LOCAL = 1;
+  RUN_TYPE_SATELLITE = 2;
+  RUN_TYPE_CI = 3;
+  RUN_TYPE_REMOTE = 4;
+}
+
 message RunManifest {
   string build_id = 1;
   int32 version = 2;
@@ -21,7 +29,7 @@ message RunManifest {
   map<string, TargetManifest> targets = 7;
   map<string, CommandManifest> commands = 13;
   string main_target_id = 8;
-  
+
   Failure failure = 9;
 
   // org_name is the name of the organization that owns this run.
@@ -31,7 +39,6 @@ message RunManifest {
   // May be empty for builds that don't have a PROJECT declaration.
   string project_name = 15;
 
-  //
   // The following are populated by the logstream server on delta ingestion.
 
   // user_id is the UUID of the user that ran the build.
@@ -40,6 +47,17 @@ message RunManifest {
   string org_id = 11;
   // project_id is the UUID of the project that owns this run.
   string project_id = 12;
+
+  // The run type helps identify the origin of the build invocation. Valid
+  // types include: local, satellite, CI, etc.
+  RunType type = 16;
+
+  // Additional pipeline & Git information that's used by Logstream.
+  string pipeline_id = 17;
+  string pipeline_name = 18;
+  string git_owner = 19;
+  string git_repo = 20;
+  string git_sha = 21;
 }
 
 enum FailureType {
