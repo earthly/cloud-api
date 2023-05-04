@@ -102,6 +102,7 @@ service Pipelines {
   }
 
   // ListPipelines returns a collection of pipelines that can be filtered by project.
+  // listing can be done according to project name & org name OR project id & org id
   rpc ListPipelines(ListPipelinesRequest) returns (ListPipelinesResponse) {
     option (google.api.http) = {
       get: "/api/v0/pipelines"
@@ -481,9 +482,11 @@ message GetPipelineResponse {
 }
 
 message ListPipelinesRequest {
-  string project = 1;
-  string org = 2;
+  string project = 1; // project Name
+  string org = 2; // Org Name
   string earthfile_hash = 3;
+  string project_id = 4;
+  string org_id = 5;
 }
 
 message ListPipelinesResponse {
