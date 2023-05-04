@@ -167,12 +167,7 @@ service Pipelines {
     };
   }
   // TriggerRunEvent will publish a build start or end event.
-  rpc TriggerRunEvent(TriggerRunEventRequest) returns (TriggerRunEventResponse) {
-    option (google.api.http) = {
-      post: "/api/v0/runs/{run_id}/events"
-      body: "*"
-    };
-  }
+  rpc TriggerRunEvent(TriggerRunEventRequest) returns (TriggerRunEventResponse) {}
 }
 
 message GetOrgLimitsRequest {
