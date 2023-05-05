@@ -130,6 +130,7 @@ message UpdateSatelliteRequest {
   string maintenance_window_start = 5;
   repeated string feature_flags = 6;
   bool maintenance_weekends_only = 7;
+  string size = 8; // Changes the size of the satellite when set
 }
 
 message UpdateSatelliteResponse {}
