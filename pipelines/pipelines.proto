@@ -167,6 +167,8 @@ service Pipelines {
       get: "/api/v0/sync/status"
     };
   }
+  // TriggerRunEvent will publish a build start or end event.
+  rpc TriggerRunEvent(TriggerRunEventRequest) returns (TriggerRunEventResponse) {}
 }
 
 message GetOrgLimitsRequest {
@@ -607,3 +609,11 @@ message SyncStatus {
 message ListSyncStatusesResponse {
   repeated SyncStatus statuses = 1;
 }
+
+message TriggerRunEventRequest {
+  string run_id = 1;
+  RunStatus status = 2;
+  google.protobuf.Timestamp happened_at = 3;
+}
+
+message TriggerRunEventResponse {}

@@ -77,6 +77,8 @@ type PipelinesClient interface {
 	GetOrgLimits(ctx context.Context, in *GetOrgLimitsRequest, opts ...grpc.CallOption) (*GetOrgLimitsResponse, error)
 	// ListSyncStatuses returns all pipeline sync statuses for projects within an organization.
 	ListSyncStatuses(ctx context.Context, in *ListSyncStatusesRequest, opts ...grpc.CallOption) (*ListSyncStatusesResponse, error)
+	// TriggerRunEvent will publish a build start or end event.
+	TriggerRunEvent(ctx context.Context, in *TriggerRunEventRequest, opts ...grpc.CallOption) (*TriggerRunEventResponse, error)
 }
 
 type pipelinesClient struct {
@@ -326,6 +328,15 @@ func (c *pipelinesClient) ListSyncStatuses(ctx context.Context, in *ListSyncStat
 	return out, nil
 }
 
+func (c *pipelinesClient) TriggerRunEvent(ctx context.Context, in *TriggerRunEventRequest, opts ...grpc.CallOption) (*TriggerRunEventResponse, error) {
+	out := new(TriggerRunEventResponse)
+	err := c.cc.Invoke(ctx, "/api.public.pipelines.Pipelines/TriggerRunEvent", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // PipelinesServer is the server API for Pipelines service.
 // All implementations must embed UnimplementedPipelinesServer
 // for forward compatibility
@@ -385,6 +396,8 @@ type PipelinesServer interface {
 	GetOrgLimits(context.Context, *GetOrgLimitsRequest) (*GetOrgLimitsResponse, error)
 	// ListSyncStatuses returns all pipeline sync statuses for projects within an organization.
 	ListSyncStatuses(context.Context, *ListSyncStatusesRequest) (*ListSyncStatusesResponse, error)
+	// TriggerRunEvent will publish a build start or end event.
+	TriggerRunEvent(context.Context, *TriggerRunEventRequest) (*TriggerRunEventResponse, error)
 	mustEmbedUnimplementedPipelinesServer()
 }
 
@@ -463,6 +476,9 @@ func (UnimplementedPipelinesServer) GetOrgLimits(context.Context, *GetOrgLimitsR
 }
 func (UnimplementedPipelinesServer) ListSyncStatuses(context.Context, *ListSyncStatusesRequest) (*ListSyncStatusesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListSyncStatuses not implemented")
+}
+func (UnimplementedPipelinesServer) TriggerRunEvent(context.Context, *TriggerRunEventRequest) (*TriggerRunEventResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method TriggerRunEvent not implemented")
 }
 func (UnimplementedPipelinesServer) mustEmbedUnimplementedPipelinesServer() {}
 
@@ -912,6 +928,24 @@ func _Pipelines_ListSyncStatuses_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Pipelines_TriggerRunEvent_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(TriggerRunEventRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PipelinesServer).TriggerRunEvent(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.public.pipelines.Pipelines/TriggerRunEvent",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PipelinesServer).TriggerRunEvent(ctx, req.(*TriggerRunEventRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Pipelines_ServiceDesc is the grpc.ServiceDesc for Pipelines service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -1010,6 +1044,10 @@ var Pipelines_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListSyncStatuses",
 			Handler:    _Pipelines_ListSyncStatuses_Handler,
+		},
+		{
+			MethodName: "TriggerRunEvent",
+			Handler:    _Pipelines_TriggerRunEvent_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{
