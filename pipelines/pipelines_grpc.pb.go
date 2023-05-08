@@ -57,6 +57,7 @@ type PipelinesClient interface {
 	// ListProjectRespos lists all project repositories.
 	ListProjectRepos(ctx context.Context, in *ListProjectReposRequest, opts ...grpc.CallOption) (*ListProjectReposResponse, error)
 	// ListPipelines returns a collection of pipelines that can be filtered by project.
+	// listing can be done according to project name & org name OR project id & org id
 	ListPipelines(ctx context.Context, in *ListPipelinesRequest, opts ...grpc.CallOption) (*ListPipelinesResponse, error)
 	// AddPipelines will create one or more pipelines.
 	AddPipelines(ctx context.Context, in *AddPipelinesRequest, opts ...grpc.CallOption) (*AddPipelinesResponse, error)
@@ -375,6 +376,7 @@ type PipelinesServer interface {
 	// ListProjectRespos lists all project repositories.
 	ListProjectRepos(context.Context, *ListProjectReposRequest) (*ListProjectReposResponse, error)
 	// ListPipelines returns a collection of pipelines that can be filtered by project.
+	// listing can be done according to project name & org name OR project id & org id
 	ListPipelines(context.Context, *ListPipelinesRequest) (*ListPipelinesResponse, error)
 	// AddPipelines will create one or more pipelines.
 	AddPipelines(context.Context, *AddPipelinesRequest) (*AddPipelinesResponse, error)
