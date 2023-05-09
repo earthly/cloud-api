@@ -21,6 +21,7 @@ message SendAnalyticsRequest {
   bool is_satellite = 10;
   string satellite_version = 11;
   bool is_remote_buildkit = 12;
+  string target_hash = 19;
   string repo_hash = 13;
   double execution_seconds = 14;
   bool terminal = 15;
