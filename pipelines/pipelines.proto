@@ -582,6 +582,8 @@ message RerunResponse {
 message ListSyncStatusesRequest {
   string org_id = 1;
   string project_id = 2;
+  string org_name = 3;
+  string project_name = 4;
 }
 
 enum SyncStatusType {
