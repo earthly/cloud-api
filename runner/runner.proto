@@ -6,6 +6,7 @@ service Runner {
   // Build starts a build on a satellite.
   rpc Build(BuildRequest) returns (BuildResponse) {}
   rpc Status(StatusRequest) returns (StatusResponse) {}
+  rpc Cancel(CancelRequest) returns (CancelResponse) {}
 }
 
 message GitInfo {
@@ -36,9 +37,18 @@ message BuildRequest {
   bool is_push = 14;
   string org_name = 15;
   string project_name = 16;
+  string timeout = 17;
 }
 
 message BuildResponse {}
+
+message CancelRequest {
+  string build_id = 1;
+}
+
+message CancelResponse {
+  bool cancelled = 1;
+}
 
 message StatusRequest {}
 
