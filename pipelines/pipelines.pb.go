@@ -3929,6 +3929,91 @@ func (x *GetRunResponse) GetCommitInfo() *CommitInfo {
 	return nil
 }
 
+type CancelRunRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	RunId string `protobuf:"bytes,1,opt,name=run_id,json=runId,proto3" json:"run_id,omitempty"`
+}
+
+func (x *CancelRunRequest) Reset() {
+	*x = CancelRunRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_pipelines_proto_msgTypes[57]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *CancelRunRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CancelRunRequest) ProtoMessage() {}
+
+func (x *CancelRunRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_pipelines_proto_msgTypes[57]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CancelRunRequest.ProtoReflect.Descriptor instead.
+func (*CancelRunRequest) Descriptor() ([]byte, []int) {
+	return file_pipelines_proto_rawDescGZIP(), []int{57}
+}
+
+func (x *CancelRunRequest) GetRunId() string {
+	if x != nil {
+		return x.RunId
+	}
+	return ""
+}
+
+type CancelRunResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *CancelRunResponse) Reset() {
+	*x = CancelRunResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_pipelines_proto_msgTypes[58]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *CancelRunResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CancelRunResponse) ProtoMessage() {}
+
+func (x *CancelRunResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_pipelines_proto_msgTypes[58]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CancelRunResponse.ProtoReflect.Descriptor instead.
+func (*CancelRunResponse) Descriptor() ([]byte, []int) {
+	return file_pipelines_proto_rawDescGZIP(), []int{58}
+}
+
 type RerunRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -3941,7 +4026,7 @@ type RerunRequest struct {
 func (x *RerunRequest) Reset() {
 	*x = RerunRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_pipelines_proto_msgTypes[57]
+		mi := &file_pipelines_proto_msgTypes[59]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3954,7 +4039,7 @@ func (x *RerunRequest) String() string {
 func (*RerunRequest) ProtoMessage() {}
 
 func (x *RerunRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pipelines_proto_msgTypes[57]
+	mi := &file_pipelines_proto_msgTypes[59]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3967,7 +4052,7 @@ func (x *RerunRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RerunRequest.ProtoReflect.Descriptor instead.
 func (*RerunRequest) Descriptor() ([]byte, []int) {
-	return file_pipelines_proto_rawDescGZIP(), []int{57}
+	return file_pipelines_proto_rawDescGZIP(), []int{59}
 }
 
 func (x *RerunRequest) GetRunId() string {
@@ -3989,7 +4074,7 @@ type RerunResponse struct {
 func (x *RerunResponse) Reset() {
 	*x = RerunResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_pipelines_proto_msgTypes[58]
+		mi := &file_pipelines_proto_msgTypes[60]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4002,7 +4087,7 @@ func (x *RerunResponse) String() string {
 func (*RerunResponse) ProtoMessage() {}
 
 func (x *RerunResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pipelines_proto_msgTypes[58]
+	mi := &file_pipelines_proto_msgTypes[60]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4015,7 +4100,7 @@ func (x *RerunResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RerunResponse.ProtoReflect.Descriptor instead.
 func (*RerunResponse) Descriptor() ([]byte, []int) {
-	return file_pipelines_proto_rawDescGZIP(), []int{58}
+	return file_pipelines_proto_rawDescGZIP(), []int{60}
 }
 
 func (x *RerunResponse) GetRun() *PipelineRun {
@@ -4046,7 +4131,7 @@ type ListSyncStatusesRequest struct {
 func (x *ListSyncStatusesRequest) Reset() {
 	*x = ListSyncStatusesRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_pipelines_proto_msgTypes[59]
+		mi := &file_pipelines_proto_msgTypes[61]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4059,7 +4144,7 @@ func (x *ListSyncStatusesRequest) String() string {
 func (*ListSyncStatusesRequest) ProtoMessage() {}
 
 func (x *ListSyncStatusesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pipelines_proto_msgTypes[59]
+	mi := &file_pipelines_proto_msgTypes[61]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4072,7 +4157,7 @@ func (x *ListSyncStatusesRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListSyncStatusesRequest.ProtoReflect.Descriptor instead.
 func (*ListSyncStatusesRequest) Descriptor() ([]byte, []int) {
-	return file_pipelines_proto_rawDescGZIP(), []int{59}
+	return file_pipelines_proto_rawDescGZIP(), []int{61}
 }
 
 func (x *ListSyncStatusesRequest) GetOrgId() string {
@@ -4118,7 +4203,7 @@ type SyncStatus struct {
 func (x *SyncStatus) Reset() {
 	*x = SyncStatus{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_pipelines_proto_msgTypes[60]
+		mi := &file_pipelines_proto_msgTypes[62]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4131,7 +4216,7 @@ func (x *SyncStatus) String() string {
 func (*SyncStatus) ProtoMessage() {}
 
 func (x *SyncStatus) ProtoReflect() protoreflect.Message {
-	mi := &file_pipelines_proto_msgTypes[60]
+	mi := &file_pipelines_proto_msgTypes[62]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4144,7 +4229,7 @@ func (x *SyncStatus) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SyncStatus.ProtoReflect.Descriptor instead.
 func (*SyncStatus) Descriptor() ([]byte, []int) {
-	return file_pipelines_proto_rawDescGZIP(), []int{60}
+	return file_pipelines_proto_rawDescGZIP(), []int{62}
 }
 
 func (x *SyncStatus) GetOrgId() string {
@@ -4193,7 +4278,7 @@ type ListSyncStatusesResponse struct {
 func (x *ListSyncStatusesResponse) Reset() {
 	*x = ListSyncStatusesResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_pipelines_proto_msgTypes[61]
+		mi := &file_pipelines_proto_msgTypes[63]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4206,7 +4291,7 @@ func (x *ListSyncStatusesResponse) String() string {
 func (*ListSyncStatusesResponse) ProtoMessage() {}
 
 func (x *ListSyncStatusesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pipelines_proto_msgTypes[61]
+	mi := &file_pipelines_proto_msgTypes[63]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4219,7 +4304,7 @@ func (x *ListSyncStatusesResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListSyncStatusesResponse.ProtoReflect.Descriptor instead.
 func (*ListSyncStatusesResponse) Descriptor() ([]byte, []int) {
-	return file_pipelines_proto_rawDescGZIP(), []int{61}
+	return file_pipelines_proto_rawDescGZIP(), []int{63}
 }
 
 func (x *ListSyncStatusesResponse) GetStatuses() []*SyncStatus {
@@ -4242,7 +4327,7 @@ type TriggerRunEventRequest struct {
 func (x *TriggerRunEventRequest) Reset() {
 	*x = TriggerRunEventRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_pipelines_proto_msgTypes[62]
+		mi := &file_pipelines_proto_msgTypes[64]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4255,7 +4340,7 @@ func (x *TriggerRunEventRequest) String() string {
 func (*TriggerRunEventRequest) ProtoMessage() {}
 
 func (x *TriggerRunEventRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pipelines_proto_msgTypes[62]
+	mi := &file_pipelines_proto_msgTypes[64]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4268,7 +4353,7 @@ func (x *TriggerRunEventRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TriggerRunEventRequest.ProtoReflect.Descriptor instead.
 func (*TriggerRunEventRequest) Descriptor() ([]byte, []int) {
-	return file_pipelines_proto_rawDescGZIP(), []int{62}
+	return file_pipelines_proto_rawDescGZIP(), []int{64}
 }
 
 func (x *TriggerRunEventRequest) GetRunId() string {
@@ -4301,7 +4386,7 @@ type TriggerRunEventResponse struct {
 func (x *TriggerRunEventResponse) Reset() {
 	*x = TriggerRunEventResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_pipelines_proto_msgTypes[63]
+		mi := &file_pipelines_proto_msgTypes[65]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4314,7 +4399,7 @@ func (x *TriggerRunEventResponse) String() string {
 func (*TriggerRunEventResponse) ProtoMessage() {}
 
 func (x *TriggerRunEventResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pipelines_proto_msgTypes[63]
+	mi := &file_pipelines_proto_msgTypes[65]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4327,7 +4412,7 @@ func (x *TriggerRunEventResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TriggerRunEventResponse.ProtoReflect.Descriptor instead.
 func (*TriggerRunEventResponse) Descriptor() ([]byte, []int) {
-	return file_pipelines_proto_rawDescGZIP(), []int{63}
+	return file_pipelines_proto_rawDescGZIP(), []int{65}
 }
 
 type ListSatellitesResponse_SatelliteInstance struct {
@@ -4345,7 +4430,7 @@ type ListSatellitesResponse_SatelliteInstance struct {
 func (x *ListSatellitesResponse_SatelliteInstance) Reset() {
 	*x = ListSatellitesResponse_SatelliteInstance{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_pipelines_proto_msgTypes[64]
+		mi := &file_pipelines_proto_msgTypes[66]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4358,7 +4443,7 @@ func (x *ListSatellitesResponse_SatelliteInstance) String() string {
 func (*ListSatellitesResponse_SatelliteInstance) ProtoMessage() {}
 
 func (x *ListSatellitesResponse_SatelliteInstance) ProtoReflect() protoreflect.Message {
-	mi := &file_pipelines_proto_msgTypes[64]
+	mi := &file_pipelines_proto_msgTypes[66]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4854,7 +4939,11 @@ var file_pipelines_proto_rawDesc = []byte{
 	0x69, 0x6e, 0x66, 0x6f, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x20, 0x2e, 0x61, 0x70, 0x69,
 	0x2e, 0x70, 0x75, 0x62, 0x6c, 0x69, 0x63, 0x2e, 0x70, 0x69, 0x70, 0x65, 0x6c, 0x69, 0x6e, 0x65,
 	0x73, 0x2e, 0x43, 0x6f, 0x6d, 0x6d, 0x69, 0x74, 0x49, 0x6e, 0x66, 0x6f, 0x52, 0x0a, 0x63, 0x6f,
-	0x6d, 0x6d, 0x69, 0x74, 0x49, 0x6e, 0x66, 0x6f, 0x22, 0x25, 0x0a, 0x0c, 0x52, 0x65, 0x72, 0x75,
+	0x6d, 0x6d, 0x69, 0x74, 0x49, 0x6e, 0x66, 0x6f, 0x22, 0x29, 0x0a, 0x10, 0x43, 0x61, 0x6e, 0x63,
+	0x65, 0x6c, 0x52, 0x75, 0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x15, 0x0a, 0x06,
+	0x72, 0x75, 0x6e, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x72, 0x75,
+	0x6e, 0x49, 0x64, 0x22, 0x13, 0x0a, 0x11, 0x43, 0x61, 0x6e, 0x63, 0x65, 0x6c, 0x52, 0x75, 0x6e,
+	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x25, 0x0a, 0x0c, 0x52, 0x65, 0x72, 0x75,
 	0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x15, 0x0a, 0x06, 0x72, 0x75, 0x6e, 0x5f,
 	0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x72, 0x75, 0x6e, 0x49, 0x64, 0x22,
 	0x87, 0x01, 0x0a, 0x0d, 0x52, 0x65, 0x72, 0x75, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73,
@@ -4975,7 +5064,7 @@ var file_pipelines_proto_rawDesc = []byte{
 	0x47, 0x10, 0x02, 0x12, 0x16, 0x0a, 0x12, 0x53, 0x59, 0x4e, 0x43, 0x5f, 0x45, 0x52, 0x52, 0x4f,
 	0x52, 0x5f, 0x50, 0x41, 0x59, 0x4d, 0x45, 0x4e, 0x54, 0x10, 0x03, 0x12, 0x14, 0x0a, 0x10, 0x53,
 	0x59, 0x4e, 0x43, 0x5f, 0x45, 0x52, 0x52, 0x4f, 0x52, 0x5f, 0x4f, 0x54, 0x48, 0x45, 0x52, 0x10,
-	0x04, 0x32, 0xc9, 0x1b, 0x0a, 0x09, 0x50, 0x69, 0x70, 0x65, 0x6c, 0x69, 0x6e, 0x65, 0x73, 0x12,
+	0x04, 0x32, 0xc6, 0x1c, 0x0a, 0x09, 0x50, 0x69, 0x70, 0x65, 0x6c, 0x69, 0x6e, 0x65, 0x73, 0x12,
 	0xab, 0x01, 0x0a, 0x0b, 0x4d, 0x61, 0x6e, 0x75, 0x61, 0x6c, 0x42, 0x75, 0x69, 0x6c, 0x64, 0x12,
 	0x28, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x70, 0x75, 0x62, 0x6c, 0x69, 0x63, 0x2e, 0x70, 0x69, 0x70,
 	0x65, 0x6c, 0x69, 0x6e, 0x65, 0x73, 0x2e, 0x4d, 0x61, 0x6e, 0x75, 0x61, 0x6c, 0x42, 0x75, 0x69,
@@ -5170,34 +5259,42 @@ var file_pipelines_proto_rawDesc = []byte{
 	0x70, 0x75, 0x62, 0x6c, 0x69, 0x63, 0x2e, 0x70, 0x69, 0x70, 0x65, 0x6c, 0x69, 0x6e, 0x65, 0x73,
 	0x2e, 0x52, 0x65, 0x72, 0x75, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x1c,
 	0x82, 0xd3, 0xe4, 0x93, 0x02, 0x16, 0x22, 0x11, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x76, 0x30, 0x2f,
-	0x72, 0x75, 0x6e, 0x2f, 0x63, 0x6c, 0x6f, 0x6e, 0x65, 0x3a, 0x01, 0x2a, 0x12, 0x8b, 0x01, 0x0a,
-	0x0c, 0x47, 0x65, 0x74, 0x4f, 0x72, 0x67, 0x4c, 0x69, 0x6d, 0x69, 0x74, 0x73, 0x12, 0x29, 0x2e,
-	0x61, 0x70, 0x69, 0x2e, 0x70, 0x75, 0x62, 0x6c, 0x69, 0x63, 0x2e, 0x70, 0x69, 0x70, 0x65, 0x6c,
-	0x69, 0x6e, 0x65, 0x73, 0x2e, 0x47, 0x65, 0x74, 0x4f, 0x72, 0x67, 0x4c, 0x69, 0x6d, 0x69, 0x74,
-	0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x2a, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x70,
-	0x75, 0x62, 0x6c, 0x69, 0x63, 0x2e, 0x70, 0x69, 0x70, 0x65, 0x6c, 0x69, 0x6e, 0x65, 0x73, 0x2e,
-	0x47, 0x65, 0x74, 0x4f, 0x72, 0x67, 0x4c, 0x69, 0x6d, 0x69, 0x74, 0x73, 0x52, 0x65, 0x73, 0x70,
-	0x6f, 0x6e, 0x73, 0x65, 0x22, 0x24, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x1e, 0x12, 0x1c, 0x2f, 0x61,
-	0x70, 0x69, 0x2f, 0x76, 0x30, 0x2f, 0x6c, 0x69, 0x6d, 0x69, 0x74, 0x73, 0x2f, 0x6f, 0x72, 0x67,
-	0x2f, 0x7b, 0x6f, 0x72, 0x67, 0x4e, 0x61, 0x6d, 0x65, 0x7d, 0x12, 0x8e, 0x01, 0x0a, 0x10, 0x4c,
-	0x69, 0x73, 0x74, 0x53, 0x79, 0x6e, 0x63, 0x53, 0x74, 0x61, 0x74, 0x75, 0x73, 0x65, 0x73, 0x12,
-	0x2d, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x70, 0x75, 0x62, 0x6c, 0x69, 0x63, 0x2e, 0x70, 0x69, 0x70,
-	0x65, 0x6c, 0x69, 0x6e, 0x65, 0x73, 0x2e, 0x4c, 0x69, 0x73, 0x74, 0x53, 0x79, 0x6e, 0x63, 0x53,
-	0x74, 0x61, 0x74, 0x75, 0x73, 0x65, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x2e,
-	0x2e, 0x61, 0x70, 0x69, 0x2e, 0x70, 0x75, 0x62, 0x6c, 0x69, 0x63, 0x2e, 0x70, 0x69, 0x70, 0x65,
-	0x6c, 0x69, 0x6e, 0x65, 0x73, 0x2e, 0x4c, 0x69, 0x73, 0x74, 0x53, 0x79, 0x6e, 0x63, 0x53, 0x74,
-	0x61, 0x74, 0x75, 0x73, 0x65, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x1b,
-	0x82, 0xd3, 0xe4, 0x93, 0x02, 0x15, 0x12, 0x13, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x76, 0x30, 0x2f,
-	0x73, 0x79, 0x6e, 0x63, 0x2f, 0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x12, 0x70, 0x0a, 0x0f, 0x54,
-	0x72, 0x69, 0x67, 0x67, 0x65, 0x72, 0x52, 0x75, 0x6e, 0x45, 0x76, 0x65, 0x6e, 0x74, 0x12, 0x2c,
-	0x2e, 0x61, 0x70, 0x69, 0x2e, 0x70, 0x75, 0x62, 0x6c, 0x69, 0x63, 0x2e, 0x70, 0x69, 0x70, 0x65,
-	0x6c, 0x69, 0x6e, 0x65, 0x73, 0x2e, 0x54, 0x72, 0x69, 0x67, 0x67, 0x65, 0x72, 0x52, 0x75, 0x6e,
-	0x45, 0x76, 0x65, 0x6e, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x2d, 0x2e, 0x61,
+	0x72, 0x75, 0x6e, 0x2f, 0x63, 0x6c, 0x6f, 0x6e, 0x65, 0x3a, 0x01, 0x2a, 0x12, 0x7b, 0x0a, 0x09,
+	0x43, 0x61, 0x6e, 0x63, 0x65, 0x6c, 0x52, 0x75, 0x6e, 0x12, 0x26, 0x2e, 0x61, 0x70, 0x69, 0x2e,
+	0x70, 0x75, 0x62, 0x6c, 0x69, 0x63, 0x2e, 0x70, 0x69, 0x70, 0x65, 0x6c, 0x69, 0x6e, 0x65, 0x73,
+	0x2e, 0x43, 0x61, 0x6e, 0x63, 0x65, 0x6c, 0x52, 0x75, 0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
+	0x74, 0x1a, 0x27, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x70, 0x75, 0x62, 0x6c, 0x69, 0x63, 0x2e, 0x70,
+	0x69, 0x70, 0x65, 0x6c, 0x69, 0x6e, 0x65, 0x73, 0x2e, 0x43, 0x61, 0x6e, 0x63, 0x65, 0x6c, 0x52,
+	0x75, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x1d, 0x82, 0xd3, 0xe4, 0x93,
+	0x02, 0x17, 0x22, 0x12, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x76, 0x30, 0x2f, 0x72, 0x75, 0x6e, 0x2f,
+	0x63, 0x61, 0x6e, 0x63, 0x65, 0x6c, 0x3a, 0x01, 0x2a, 0x12, 0x8b, 0x01, 0x0a, 0x0c, 0x47, 0x65,
+	0x74, 0x4f, 0x72, 0x67, 0x4c, 0x69, 0x6d, 0x69, 0x74, 0x73, 0x12, 0x29, 0x2e, 0x61, 0x70, 0x69,
+	0x2e, 0x70, 0x75, 0x62, 0x6c, 0x69, 0x63, 0x2e, 0x70, 0x69, 0x70, 0x65, 0x6c, 0x69, 0x6e, 0x65,
+	0x73, 0x2e, 0x47, 0x65, 0x74, 0x4f, 0x72, 0x67, 0x4c, 0x69, 0x6d, 0x69, 0x74, 0x73, 0x52, 0x65,
+	0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x2a, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x70, 0x75, 0x62, 0x6c,
+	0x69, 0x63, 0x2e, 0x70, 0x69, 0x70, 0x65, 0x6c, 0x69, 0x6e, 0x65, 0x73, 0x2e, 0x47, 0x65, 0x74,
+	0x4f, 0x72, 0x67, 0x4c, 0x69, 0x6d, 0x69, 0x74, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73,
+	0x65, 0x22, 0x24, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x1e, 0x12, 0x1c, 0x2f, 0x61, 0x70, 0x69, 0x2f,
+	0x76, 0x30, 0x2f, 0x6c, 0x69, 0x6d, 0x69, 0x74, 0x73, 0x2f, 0x6f, 0x72, 0x67, 0x2f, 0x7b, 0x6f,
+	0x72, 0x67, 0x4e, 0x61, 0x6d, 0x65, 0x7d, 0x12, 0x8e, 0x01, 0x0a, 0x10, 0x4c, 0x69, 0x73, 0x74,
+	0x53, 0x79, 0x6e, 0x63, 0x53, 0x74, 0x61, 0x74, 0x75, 0x73, 0x65, 0x73, 0x12, 0x2d, 0x2e, 0x61,
 	0x70, 0x69, 0x2e, 0x70, 0x75, 0x62, 0x6c, 0x69, 0x63, 0x2e, 0x70, 0x69, 0x70, 0x65, 0x6c, 0x69,
-	0x6e, 0x65, 0x73, 0x2e, 0x54, 0x72, 0x69, 0x67, 0x67, 0x65, 0x72, 0x52, 0x75, 0x6e, 0x45, 0x76,
-	0x65, 0x6e, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x42, 0x0d, 0x5a,
-	0x0b, 0x2e, 0x2f, 0x70, 0x69, 0x70, 0x65, 0x6c, 0x69, 0x6e, 0x65, 0x73, 0x62, 0x06, 0x70, 0x72,
-	0x6f, 0x74, 0x6f, 0x33,
+	0x6e, 0x65, 0x73, 0x2e, 0x4c, 0x69, 0x73, 0x74, 0x53, 0x79, 0x6e, 0x63, 0x53, 0x74, 0x61, 0x74,
+	0x75, 0x73, 0x65, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x2e, 0x2e, 0x61, 0x70,
+	0x69, 0x2e, 0x70, 0x75, 0x62, 0x6c, 0x69, 0x63, 0x2e, 0x70, 0x69, 0x70, 0x65, 0x6c, 0x69, 0x6e,
+	0x65, 0x73, 0x2e, 0x4c, 0x69, 0x73, 0x74, 0x53, 0x79, 0x6e, 0x63, 0x53, 0x74, 0x61, 0x74, 0x75,
+	0x73, 0x65, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x1b, 0x82, 0xd3, 0xe4,
+	0x93, 0x02, 0x15, 0x12, 0x13, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x76, 0x30, 0x2f, 0x73, 0x79, 0x6e,
+	0x63, 0x2f, 0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x12, 0x70, 0x0a, 0x0f, 0x54, 0x72, 0x69, 0x67,
+	0x67, 0x65, 0x72, 0x52, 0x75, 0x6e, 0x45, 0x76, 0x65, 0x6e, 0x74, 0x12, 0x2c, 0x2e, 0x61, 0x70,
+	0x69, 0x2e, 0x70, 0x75, 0x62, 0x6c, 0x69, 0x63, 0x2e, 0x70, 0x69, 0x70, 0x65, 0x6c, 0x69, 0x6e,
+	0x65, 0x73, 0x2e, 0x54, 0x72, 0x69, 0x67, 0x67, 0x65, 0x72, 0x52, 0x75, 0x6e, 0x45, 0x76, 0x65,
+	0x6e, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x2d, 0x2e, 0x61, 0x70, 0x69, 0x2e,
+	0x70, 0x75, 0x62, 0x6c, 0x69, 0x63, 0x2e, 0x70, 0x69, 0x70, 0x65, 0x6c, 0x69, 0x6e, 0x65, 0x73,
+	0x2e, 0x54, 0x72, 0x69, 0x67, 0x67, 0x65, 0x72, 0x52, 0x75, 0x6e, 0x45, 0x76, 0x65, 0x6e, 0x74,
+	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x42, 0x0d, 0x5a, 0x0b, 0x2e, 0x2f,
+	0x70, 0x69, 0x70, 0x65, 0x6c, 0x69, 0x6e, 0x65, 0x73, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f,
+	0x33,
 }
 
 var (
@@ -5213,7 +5310,7 @@ func file_pipelines_proto_rawDescGZIP() []byte {
 }
 
 var file_pipelines_proto_enumTypes = make([]protoimpl.EnumInfo, 8)
-var file_pipelines_proto_msgTypes = make([]protoimpl.MessageInfo, 65)
+var file_pipelines_proto_msgTypes = make([]protoimpl.MessageInfo, 67)
 var file_pipelines_proto_goTypes = []interface{}{
 	(SatelliteStatus)(0),                             // 0: api.public.pipelines.SatelliteStatus
 	(TriggerType)(0),                                 // 1: api.public.pipelines.TriggerType
@@ -5280,26 +5377,28 @@ var file_pipelines_proto_goTypes = []interface{}{
 	(*ListRunsResponse)(nil),                         // 62: api.public.pipelines.ListRunsResponse
 	(*GetRunRequest)(nil),                            // 63: api.public.pipelines.GetRunRequest
 	(*GetRunResponse)(nil),                           // 64: api.public.pipelines.GetRunResponse
-	(*RerunRequest)(nil),                             // 65: api.public.pipelines.RerunRequest
-	(*RerunResponse)(nil),                            // 66: api.public.pipelines.RerunResponse
-	(*ListSyncStatusesRequest)(nil),                  // 67: api.public.pipelines.ListSyncStatusesRequest
-	(*SyncStatus)(nil),                               // 68: api.public.pipelines.SyncStatus
-	(*ListSyncStatusesResponse)(nil),                 // 69: api.public.pipelines.ListSyncStatusesResponse
-	(*TriggerRunEventRequest)(nil),                   // 70: api.public.pipelines.TriggerRunEventRequest
-	(*TriggerRunEventResponse)(nil),                  // 71: api.public.pipelines.TriggerRunEventResponse
-	(*ListSatellitesResponse_SatelliteInstance)(nil), // 72: api.public.pipelines.ListSatellitesResponse.SatelliteInstance
-	(*timestamppb.Timestamp)(nil),                    // 73: google.protobuf.Timestamp
+	(*CancelRunRequest)(nil),                         // 65: api.public.pipelines.CancelRunRequest
+	(*CancelRunResponse)(nil),                        // 66: api.public.pipelines.CancelRunResponse
+	(*RerunRequest)(nil),                             // 67: api.public.pipelines.RerunRequest
+	(*RerunResponse)(nil),                            // 68: api.public.pipelines.RerunResponse
+	(*ListSyncStatusesRequest)(nil),                  // 69: api.public.pipelines.ListSyncStatusesRequest
+	(*SyncStatus)(nil),                               // 70: api.public.pipelines.SyncStatus
+	(*ListSyncStatusesResponse)(nil),                 // 71: api.public.pipelines.ListSyncStatusesResponse
+	(*TriggerRunEventRequest)(nil),                   // 72: api.public.pipelines.TriggerRunEventRequest
+	(*TriggerRunEventResponse)(nil),                  // 73: api.public.pipelines.TriggerRunEventResponse
+	(*ListSatellitesResponse_SatelliteInstance)(nil), // 74: api.public.pipelines.ListSatellitesResponse.SatelliteInstance
+	(*timestamppb.Timestamp)(nil),                    // 75: google.protobuf.Timestamp
 }
 var file_pipelines_proto_depIdxs = []int32{
 	12, // 0: api.public.pipelines.ManualBuildRequest.targets:type_name -> api.public.pipelines.Target
 	13, // 1: api.public.pipelines.Target.args:type_name -> api.public.pipelines.TargetArg
 	14, // 2: api.public.pipelines.Target.secrets:type_name -> api.public.pipelines.TargetSecret
 	0,  // 3: api.public.pipelines.LaunchSatelliteResponse.status:type_name -> api.public.pipelines.SatelliteStatus
-	72, // 4: api.public.pipelines.ListSatellitesResponse.instances:type_name -> api.public.pipelines.ListSatellitesResponse.SatelliteInstance
+	74, // 4: api.public.pipelines.ListSatellitesResponse.instances:type_name -> api.public.pipelines.ListSatellitesResponse.SatelliteInstance
 	0,  // 5: api.public.pipelines.GetSatelliteResponse.status:type_name -> api.public.pipelines.SatelliteStatus
 	0,  // 6: api.public.pipelines.ReserveSatelliteResponse.status:type_name -> api.public.pipelines.SatelliteStatus
 	30, // 7: api.public.pipelines.ListRemoteReposResponse.repos:type_name -> api.public.pipelines.RemoteRepo
-	73, // 8: api.public.pipelines.ProjectRepo.created_at:type_name -> google.protobuf.Timestamp
+	75, // 8: api.public.pipelines.ProjectRepo.created_at:type_name -> google.protobuf.Timestamp
 	32, // 9: api.public.pipelines.AddProjectReposRequest.repos:type_name -> api.public.pipelines.ProjectRepo
 	32, // 10: api.public.pipelines.AddProjectReposResponse.repos:type_name -> api.public.pipelines.ProjectRepo
 	32, // 11: api.public.pipelines.ListProjectReposResponse.repos:type_name -> api.public.pipelines.ProjectRepo
@@ -5319,9 +5418,9 @@ var file_pipelines_proto_depIdxs = []int32{
 	44, // 25: api.public.pipelines.AddPipelinesRequest.pipelines:type_name -> api.public.pipelines.Pipeline
 	44, // 26: api.public.pipelines.AddPipelinesResponse.pipelines:type_name -> api.public.pipelines.Pipeline
 	5,  // 27: api.public.pipelines.PipelineRun.status:type_name -> api.public.pipelines.RunStatus
-	73, // 28: api.public.pipelines.PipelineRun.created_at:type_name -> google.protobuf.Timestamp
-	73, // 29: api.public.pipelines.PipelineRun.started_at:type_name -> google.protobuf.Timestamp
-	73, // 30: api.public.pipelines.PipelineRun.ended_at:type_name -> google.protobuf.Timestamp
+	75, // 28: api.public.pipelines.PipelineRun.created_at:type_name -> google.protobuf.Timestamp
+	75, // 29: api.public.pipelines.PipelineRun.started_at:type_name -> google.protobuf.Timestamp
+	75, // 30: api.public.pipelines.PipelineRun.ended_at:type_name -> google.protobuf.Timestamp
 	1,  // 31: api.public.pipelines.PipelineRun.trigger_type:type_name -> api.public.pipelines.TriggerType
 	59, // 32: api.public.pipelines.ListRunsResponse.runs:type_name -> api.public.pipelines.PipelineRun
 	60, // 33: api.public.pipelines.ListRunsResponse.commit_info:type_name -> api.public.pipelines.CommitInfo
@@ -5331,9 +5430,9 @@ var file_pipelines_proto_depIdxs = []int32{
 	60, // 37: api.public.pipelines.RerunResponse.commit_info:type_name -> api.public.pipelines.CommitInfo
 	6,  // 38: api.public.pipelines.SyncStatus.status:type_name -> api.public.pipelines.SyncStatusType
 	7,  // 39: api.public.pipelines.SyncStatus.error_code:type_name -> api.public.pipelines.SyncErrorCode
-	68, // 40: api.public.pipelines.ListSyncStatusesResponse.statuses:type_name -> api.public.pipelines.SyncStatus
+	70, // 40: api.public.pipelines.ListSyncStatusesResponse.statuses:type_name -> api.public.pipelines.SyncStatus
 	5,  // 41: api.public.pipelines.TriggerRunEventRequest.status:type_name -> api.public.pipelines.RunStatus
-	73, // 42: api.public.pipelines.TriggerRunEventRequest.happened_at:type_name -> google.protobuf.Timestamp
+	75, // 42: api.public.pipelines.TriggerRunEventRequest.happened_at:type_name -> google.protobuf.Timestamp
 	0,  // 43: api.public.pipelines.ListSatellitesResponse.SatelliteInstance.status:type_name -> api.public.pipelines.SatelliteStatus
 	10, // 44: api.public.pipelines.Pipelines.ManualBuild:input_type -> api.public.pipelines.ManualBuildRequest
 	15, // 45: api.public.pipelines.Pipelines.LaunchSatellite:input_type -> api.public.pipelines.LaunchSatelliteRequest
@@ -5356,37 +5455,39 @@ var file_pipelines_proto_depIdxs = []int32{
 	57, // 62: api.public.pipelines.Pipelines.RemovePipeline:input_type -> api.public.pipelines.RemovePipelineRequest
 	61, // 63: api.public.pipelines.Pipelines.ListRuns:input_type -> api.public.pipelines.ListRunsRequest
 	63, // 64: api.public.pipelines.Pipelines.GetRun:input_type -> api.public.pipelines.GetRunRequest
-	65, // 65: api.public.pipelines.Pipelines.Rerun:input_type -> api.public.pipelines.RerunRequest
-	8,  // 66: api.public.pipelines.Pipelines.GetOrgLimits:input_type -> api.public.pipelines.GetOrgLimitsRequest
-	67, // 67: api.public.pipelines.Pipelines.ListSyncStatuses:input_type -> api.public.pipelines.ListSyncStatusesRequest
-	70, // 68: api.public.pipelines.Pipelines.TriggerRunEvent:input_type -> api.public.pipelines.TriggerRunEventRequest
-	11, // 69: api.public.pipelines.Pipelines.ManualBuild:output_type -> api.public.pipelines.ManualBuildResponse
-	16, // 70: api.public.pipelines.Pipelines.LaunchSatellite:output_type -> api.public.pipelines.LaunchSatelliteResponse
-	18, // 71: api.public.pipelines.Pipelines.ListSatellites:output_type -> api.public.pipelines.ListSatellitesResponse
-	20, // 72: api.public.pipelines.Pipelines.UpdateSatellite:output_type -> api.public.pipelines.UpdateSatelliteResponse
-	22, // 73: api.public.pipelines.Pipelines.DeleteSatellite:output_type -> api.public.pipelines.DeleteSatelliteResponse
-	24, // 74: api.public.pipelines.Pipelines.GetSatellite:output_type -> api.public.pipelines.GetSatelliteResponse
-	26, // 75: api.public.pipelines.Pipelines.WakeSatellite:output_type -> api.public.pipelines.WakeSatelliteResponse
-	28, // 76: api.public.pipelines.Pipelines.ReserveSatellite:output_type -> api.public.pipelines.ReserveSatelliteResponse
-	31, // 77: api.public.pipelines.Pipelines.ListRemoteRepos:output_type -> api.public.pipelines.ListRemoteReposResponse
-	50, // 78: api.public.pipelines.Pipelines.ListRemoteOrgs:output_type -> api.public.pipelines.ListRemoteOrgsResponse
-	34, // 79: api.public.pipelines.Pipelines.AddProjectRepos:output_type -> api.public.pipelines.AddProjectReposResponse
-	36, // 80: api.public.pipelines.Pipelines.RemoveProjectRepo:output_type -> api.public.pipelines.RemoveProjectRepoResponse
-	38, // 81: api.public.pipelines.Pipelines.UpdateProjectRepoBranch:output_type -> api.public.pipelines.UpdateProjectRepoBranchResponse
-	40, // 82: api.public.pipelines.Pipelines.ListProjectRepos:output_type -> api.public.pipelines.ListProjectReposResponse
-	54, // 83: api.public.pipelines.Pipelines.ListPipelines:output_type -> api.public.pipelines.ListPipelinesResponse
-	56, // 84: api.public.pipelines.Pipelines.AddPipelines:output_type -> api.public.pipelines.AddPipelinesResponse
-	52, // 85: api.public.pipelines.Pipelines.GetPipeline:output_type -> api.public.pipelines.GetPipelineResponse
-	47, // 86: api.public.pipelines.Pipelines.ListRemotePipelines:output_type -> api.public.pipelines.ListRemotePipelinesResponse
-	58, // 87: api.public.pipelines.Pipelines.RemovePipeline:output_type -> api.public.pipelines.RemovePipelineResponse
-	62, // 88: api.public.pipelines.Pipelines.ListRuns:output_type -> api.public.pipelines.ListRunsResponse
-	64, // 89: api.public.pipelines.Pipelines.GetRun:output_type -> api.public.pipelines.GetRunResponse
-	66, // 90: api.public.pipelines.Pipelines.Rerun:output_type -> api.public.pipelines.RerunResponse
-	9,  // 91: api.public.pipelines.Pipelines.GetOrgLimits:output_type -> api.public.pipelines.GetOrgLimitsResponse
-	69, // 92: api.public.pipelines.Pipelines.ListSyncStatuses:output_type -> api.public.pipelines.ListSyncStatusesResponse
-	71, // 93: api.public.pipelines.Pipelines.TriggerRunEvent:output_type -> api.public.pipelines.TriggerRunEventResponse
-	69, // [69:94] is the sub-list for method output_type
-	44, // [44:69] is the sub-list for method input_type
+	67, // 65: api.public.pipelines.Pipelines.Rerun:input_type -> api.public.pipelines.RerunRequest
+	65, // 66: api.public.pipelines.Pipelines.CancelRun:input_type -> api.public.pipelines.CancelRunRequest
+	8,  // 67: api.public.pipelines.Pipelines.GetOrgLimits:input_type -> api.public.pipelines.GetOrgLimitsRequest
+	69, // 68: api.public.pipelines.Pipelines.ListSyncStatuses:input_type -> api.public.pipelines.ListSyncStatusesRequest
+	72, // 69: api.public.pipelines.Pipelines.TriggerRunEvent:input_type -> api.public.pipelines.TriggerRunEventRequest
+	11, // 70: api.public.pipelines.Pipelines.ManualBuild:output_type -> api.public.pipelines.ManualBuildResponse
+	16, // 71: api.public.pipelines.Pipelines.LaunchSatellite:output_type -> api.public.pipelines.LaunchSatelliteResponse
+	18, // 72: api.public.pipelines.Pipelines.ListSatellites:output_type -> api.public.pipelines.ListSatellitesResponse
+	20, // 73: api.public.pipelines.Pipelines.UpdateSatellite:output_type -> api.public.pipelines.UpdateSatelliteResponse
+	22, // 74: api.public.pipelines.Pipelines.DeleteSatellite:output_type -> api.public.pipelines.DeleteSatelliteResponse
+	24, // 75: api.public.pipelines.Pipelines.GetSatellite:output_type -> api.public.pipelines.GetSatelliteResponse
+	26, // 76: api.public.pipelines.Pipelines.WakeSatellite:output_type -> api.public.pipelines.WakeSatelliteResponse
+	28, // 77: api.public.pipelines.Pipelines.ReserveSatellite:output_type -> api.public.pipelines.ReserveSatelliteResponse
+	31, // 78: api.public.pipelines.Pipelines.ListRemoteRepos:output_type -> api.public.pipelines.ListRemoteReposResponse
+	50, // 79: api.public.pipelines.Pipelines.ListRemoteOrgs:output_type -> api.public.pipelines.ListRemoteOrgsResponse
+	34, // 80: api.public.pipelines.Pipelines.AddProjectRepos:output_type -> api.public.pipelines.AddProjectReposResponse
+	36, // 81: api.public.pipelines.Pipelines.RemoveProjectRepo:output_type -> api.public.pipelines.RemoveProjectRepoResponse
+	38, // 82: api.public.pipelines.Pipelines.UpdateProjectRepoBranch:output_type -> api.public.pipelines.UpdateProjectRepoBranchResponse
+	40, // 83: api.public.pipelines.Pipelines.ListProjectRepos:output_type -> api.public.pipelines.ListProjectReposResponse
+	54, // 84: api.public.pipelines.Pipelines.ListPipelines:output_type -> api.public.pipelines.ListPipelinesResponse
+	56, // 85: api.public.pipelines.Pipelines.AddPipelines:output_type -> api.public.pipelines.AddPipelinesResponse
+	52, // 86: api.public.pipelines.Pipelines.GetPipeline:output_type -> api.public.pipelines.GetPipelineResponse
+	47, // 87: api.public.pipelines.Pipelines.ListRemotePipelines:output_type -> api.public.pipelines.ListRemotePipelinesResponse
+	58, // 88: api.public.pipelines.Pipelines.RemovePipeline:output_type -> api.public.pipelines.RemovePipelineResponse
+	62, // 89: api.public.pipelines.Pipelines.ListRuns:output_type -> api.public.pipelines.ListRunsResponse
+	64, // 90: api.public.pipelines.Pipelines.GetRun:output_type -> api.public.pipelines.GetRunResponse
+	68, // 91: api.public.pipelines.Pipelines.Rerun:output_type -> api.public.pipelines.RerunResponse
+	66, // 92: api.public.pipelines.Pipelines.CancelRun:output_type -> api.public.pipelines.CancelRunResponse
+	9,  // 93: api.public.pipelines.Pipelines.GetOrgLimits:output_type -> api.public.pipelines.GetOrgLimitsResponse
+	71, // 94: api.public.pipelines.Pipelines.ListSyncStatuses:output_type -> api.public.pipelines.ListSyncStatusesResponse
+	73, // 95: api.public.pipelines.Pipelines.TriggerRunEvent:output_type -> api.public.pipelines.TriggerRunEventResponse
+	70, // [70:96] is the sub-list for method output_type
+	44, // [44:70] is the sub-list for method input_type
 	44, // [44:44] is the sub-list for extension type_name
 	44, // [44:44] is the sub-list for extension extendee
 	0,  // [0:44] is the sub-list for field type_name
@@ -6083,7 +6184,7 @@ func file_pipelines_proto_init() {
 			}
 		}
 		file_pipelines_proto_msgTypes[57].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*RerunRequest); i {
+			switch v := v.(*CancelRunRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6095,7 +6196,7 @@ func file_pipelines_proto_init() {
 			}
 		}
 		file_pipelines_proto_msgTypes[58].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*RerunResponse); i {
+			switch v := v.(*CancelRunResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6107,7 +6208,7 @@ func file_pipelines_proto_init() {
 			}
 		}
 		file_pipelines_proto_msgTypes[59].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ListSyncStatusesRequest); i {
+			switch v := v.(*RerunRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6119,7 +6220,7 @@ func file_pipelines_proto_init() {
 			}
 		}
 		file_pipelines_proto_msgTypes[60].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*SyncStatus); i {
+			switch v := v.(*RerunResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6131,7 +6232,7 @@ func file_pipelines_proto_init() {
 			}
 		}
 		file_pipelines_proto_msgTypes[61].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ListSyncStatusesResponse); i {
+			switch v := v.(*ListSyncStatusesRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6143,7 +6244,7 @@ func file_pipelines_proto_init() {
 			}
 		}
 		file_pipelines_proto_msgTypes[62].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*TriggerRunEventRequest); i {
+			switch v := v.(*SyncStatus); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6155,7 +6256,7 @@ func file_pipelines_proto_init() {
 			}
 		}
 		file_pipelines_proto_msgTypes[63].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*TriggerRunEventResponse); i {
+			switch v := v.(*ListSyncStatusesResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6167,6 +6268,30 @@ func file_pipelines_proto_init() {
 			}
 		}
 		file_pipelines_proto_msgTypes[64].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*TriggerRunEventRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_pipelines_proto_msgTypes[65].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*TriggerRunEventResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_pipelines_proto_msgTypes[66].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*ListSatellitesResponse_SatelliteInstance); i {
 			case 0:
 				return &v.state
@@ -6185,7 +6310,7 @@ func file_pipelines_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_pipelines_proto_rawDesc,
 			NumEnums:      8,
-			NumMessages:   65,
+			NumMessages:   67,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

@@ -73,6 +73,8 @@ type PipelinesClient interface {
 	GetRun(ctx context.Context, in *GetRunRequest, opts ...grpc.CallOption) (*GetRunResponse, error)
 	// Rerun can trigger a new pipeline run using an existing run as a reference.
 	Rerun(ctx context.Context, in *RerunRequest, opts ...grpc.CallOption) (*RerunResponse, error)
+	// Cancel triggers a run cancellation.
+	CancelRun(ctx context.Context, in *CancelRunRequest, opts ...grpc.CallOption) (*CancelRunResponse, error)
 	// GetOrgLimits will return the org limits for the CI beta testers
 	GetOrgLimits(ctx context.Context, in *GetOrgLimitsRequest, opts ...grpc.CallOption) (*GetOrgLimitsResponse, error)
 	// ListSyncStatuses returns all pipeline sync statuses for projects within an organization.
@@ -310,6 +312,15 @@ func (c *pipelinesClient) Rerun(ctx context.Context, in *RerunRequest, opts ...g
 	return out, nil
 }
 
+func (c *pipelinesClient) CancelRun(ctx context.Context, in *CancelRunRequest, opts ...grpc.CallOption) (*CancelRunResponse, error) {
+	out := new(CancelRunResponse)
+	err := c.cc.Invoke(ctx, "/api.public.pipelines.Pipelines/CancelRun", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *pipelinesClient) GetOrgLimits(ctx context.Context, in *GetOrgLimitsRequest, opts ...grpc.CallOption) (*GetOrgLimitsResponse, error) {
 	out := new(GetOrgLimitsResponse)
 	err := c.cc.Invoke(ctx, "/api.public.pipelines.Pipelines/GetOrgLimits", in, out, opts...)
@@ -392,6 +403,8 @@ type PipelinesServer interface {
 	GetRun(context.Context, *GetRunRequest) (*GetRunResponse, error)
 	// Rerun can trigger a new pipeline run using an existing run as a reference.
 	Rerun(context.Context, *RerunRequest) (*RerunResponse, error)
+	// Cancel triggers a run cancellation.
+	CancelRun(context.Context, *CancelRunRequest) (*CancelRunResponse, error)
 	// GetOrgLimits will return the org limits for the CI beta testers
 	GetOrgLimits(context.Context, *GetOrgLimitsRequest) (*GetOrgLimitsResponse, error)
 	// ListSyncStatuses returns all pipeline sync statuses for projects within an organization.
@@ -470,6 +483,9 @@ func (UnimplementedPipelinesServer) GetRun(context.Context, *GetRunRequest) (*Ge
 }
 func (UnimplementedPipelinesServer) Rerun(context.Context, *RerunRequest) (*RerunResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Rerun not implemented")
+}
+func (UnimplementedPipelinesServer) CancelRun(context.Context, *CancelRunRequest) (*CancelRunResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CancelRun not implemented")
 }
 func (UnimplementedPipelinesServer) GetOrgLimits(context.Context, *GetOrgLimitsRequest) (*GetOrgLimitsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetOrgLimits not implemented")
@@ -892,6 +908,24 @@ func _Pipelines_Rerun_Handler(srv interface{}, ctx context.Context, dec func(int
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Pipelines_CancelRun_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CancelRunRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PipelinesServer).CancelRun(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.public.pipelines.Pipelines/CancelRun",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PipelinesServer).CancelRun(ctx, req.(*CancelRunRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Pipelines_GetOrgLimits_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetOrgLimitsRequest)
 	if err := dec(in); err != nil {
@@ -1036,6 +1070,10 @@ var Pipelines_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Rerun",
 			Handler:    _Pipelines_Rerun_Handler,
+		},
+		{
+			MethodName: "CancelRun",
+			Handler:    _Pipelines_CancelRun_Handler,
 		},
 		{
 			MethodName: "GetOrgLimits",

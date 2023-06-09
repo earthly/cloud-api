@@ -155,6 +155,13 @@ service Pipelines {
       body: "*"
     };
   }
+  // Cancel triggers a run cancellation.
+  rpc CancelRun(CancelRunRequest) returns (CancelRunResponse) {
+    option (google.api.http) = {
+      post: "/api/v0/run/cancel"
+      body: "*"
+    };
+  }
   // GetOrgLimits will return the org limits for the CI beta testers
   rpc GetOrgLimits(GetOrgLimitsRequest) returns (GetOrgLimitsResponse) {
     option (google.api.http) = {
@@ -567,6 +574,13 @@ message GetRunRequest {
 message GetRunResponse {
   PipelineRun run = 1;
   CommitInfo commit_info = 2;
+}
+
+message CancelRunRequest {
+  string run_id = 1;
+}
+
+message CancelRunResponse {
 }
 
 message RerunRequest {
