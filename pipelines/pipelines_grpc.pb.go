@@ -81,6 +81,8 @@ type PipelinesClient interface {
 	ListSyncStatuses(ctx context.Context, in *ListSyncStatusesRequest, opts ...grpc.CallOption) (*ListSyncStatusesResponse, error)
 	// TriggerRunEvent will publish a build start or end event.
 	TriggerRunEvent(ctx context.Context, in *TriggerRunEventRequest, opts ...grpc.CallOption) (*TriggerRunEventResponse, error)
+	// ListAccountEmails lists all emails associated with an account from external providers like GitHub.
+	ListAccountEmails(ctx context.Context, in *ListAccountEmailsRequest, opts ...grpc.CallOption) (*ListAccountEmailsResponse, error)
 }
 
 type pipelinesClient struct {
@@ -348,6 +350,15 @@ func (c *pipelinesClient) TriggerRunEvent(ctx context.Context, in *TriggerRunEve
 	return out, nil
 }
 
+func (c *pipelinesClient) ListAccountEmails(ctx context.Context, in *ListAccountEmailsRequest, opts ...grpc.CallOption) (*ListAccountEmailsResponse, error) {
+	out := new(ListAccountEmailsResponse)
+	err := c.cc.Invoke(ctx, "/api.public.pipelines.Pipelines/ListAccountEmails", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // PipelinesServer is the server API for Pipelines service.
 // All implementations must embed UnimplementedPipelinesServer
 // for forward compatibility
@@ -411,6 +422,8 @@ type PipelinesServer interface {
 	ListSyncStatuses(context.Context, *ListSyncStatusesRequest) (*ListSyncStatusesResponse, error)
 	// TriggerRunEvent will publish a build start or end event.
 	TriggerRunEvent(context.Context, *TriggerRunEventRequest) (*TriggerRunEventResponse, error)
+	// ListAccountEmails lists all emails associated with an account from external providers like GitHub.
+	ListAccountEmails(context.Context, *ListAccountEmailsRequest) (*ListAccountEmailsResponse, error)
 	mustEmbedUnimplementedPipelinesServer()
 }
 
@@ -495,6 +508,9 @@ func (UnimplementedPipelinesServer) ListSyncStatuses(context.Context, *ListSyncS
 }
 func (UnimplementedPipelinesServer) TriggerRunEvent(context.Context, *TriggerRunEventRequest) (*TriggerRunEventResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method TriggerRunEvent not implemented")
+}
+func (UnimplementedPipelinesServer) ListAccountEmails(context.Context, *ListAccountEmailsRequest) (*ListAccountEmailsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListAccountEmails not implemented")
 }
 func (UnimplementedPipelinesServer) mustEmbedUnimplementedPipelinesServer() {}
 
@@ -980,6 +996,24 @@ func _Pipelines_TriggerRunEvent_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Pipelines_ListAccountEmails_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListAccountEmailsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PipelinesServer).ListAccountEmails(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.public.pipelines.Pipelines/ListAccountEmails",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PipelinesServer).ListAccountEmails(ctx, req.(*ListAccountEmailsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Pipelines_ServiceDesc is the grpc.ServiceDesc for Pipelines service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -1086,6 +1120,10 @@ var Pipelines_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "TriggerRunEvent",
 			Handler:    _Pipelines_TriggerRunEvent_Handler,
+		},
+		{
+			MethodName: "ListAccountEmails",
+			Handler:    _Pipelines_ListAccountEmails_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{
