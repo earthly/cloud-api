@@ -176,6 +176,13 @@ service Pipelines {
   }
   // TriggerRunEvent will publish a build start or end event.
   rpc TriggerRunEvent(TriggerRunEventRequest) returns (TriggerRunEventResponse) {}
+
+  // ListAccountEmails lists all emails associated with an account from external providers like GitHub.
+  rpc ListAccountEmails(ListAccountEmailsRequest) returns (ListAccountEmailsResponse) {
+    option (google.api.http) = {
+      get: "/api/v0/account-emails"
+    };
+  }
 }
 
 message GetOrgLimitsRequest {
@@ -633,3 +640,11 @@ message TriggerRunEventRequest {
 }
 
 message TriggerRunEventResponse {}
+
+message ListAccountEmailsRequest {
+}
+
+message ListAccountEmailsResponse {
+  repeated string emails = 1;
+  string primary_email = 2;
+}
