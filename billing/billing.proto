@@ -8,12 +8,12 @@ import "google/protobuf/timestamp.proto";
 service Billing {
   rpc GetBillingPlan(GetBillingPlanRequest) returns (GetBillingPlanResponse) {
     option (google.api.http) = {
-      get: "/api/v0/billing/plans/{org_id}"
+      get: "/api/v0/billing/plans/{org_name}"
     };
   }
 }
 message GetBillingPlanRequest {
-  string org_id = 1;
+  string org_name = 1;
 }
 
 message GetBillingPlanResponse {
@@ -83,5 +83,7 @@ message BillingPlan {
   bool selectable_earthly_version = 18;
   // Outgoing traffic coming from Satellites observed from static IP(s)
   bool static_originating_ip_address = 19;
+  // Default size to launch new instances when none is specified by the user
+  InstanceType default_instance_type = 20;
 }
 

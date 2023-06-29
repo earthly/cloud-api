@@ -42,14 +42,14 @@ func request_Billing_GetBillingPlan_0(ctx context.Context, marshaler runtime.Mar
 		_   = err
 	)
 
-	val, ok = pathParams["org_id"]
+	val, ok = pathParams["org_name"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "org_id")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "org_name")
 	}
 
-	protoReq.OrgId, err = runtime.String(val)
+	protoReq.OrgName, err = runtime.String(val)
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "org_id", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "org_name", err)
 	}
 
 	msg, err := client.GetBillingPlan(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -68,14 +68,14 @@ func local_request_Billing_GetBillingPlan_0(ctx context.Context, marshaler runti
 		_   = err
 	)
 
-	val, ok = pathParams["org_id"]
+	val, ok = pathParams["org_name"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "org_id")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "org_name")
 	}
 
-	protoReq.OrgId, err = runtime.String(val)
+	protoReq.OrgName, err = runtime.String(val)
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "org_id", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "org_name", err)
 	}
 
 	msg, err := server.GetBillingPlan(ctx, &protoReq)
@@ -95,7 +95,7 @@ func RegisterBillingHandlerServer(ctx context.Context, mux *runtime.ServeMux, se
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/api.public.billing.Billing/GetBillingPlan", runtime.WithHTTPPathPattern("/api/v0/billing/plans/{org_id}"))
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/api.public.billing.Billing/GetBillingPlan", runtime.WithHTTPPathPattern("/api/v0/billing/plans/{org_name}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -157,7 +157,7 @@ func RegisterBillingHandlerClient(ctx context.Context, mux *runtime.ServeMux, cl
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/api.public.billing.Billing/GetBillingPlan", runtime.WithHTTPPathPattern("/api/v0/billing/plans/{org_id}"))
+		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/api.public.billing.Billing/GetBillingPlan", runtime.WithHTTPPathPattern("/api/v0/billing/plans/{org_name}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -177,7 +177,7 @@ func RegisterBillingHandlerClient(ctx context.Context, mux *runtime.ServeMux, cl
 }
 
 var (
-	pattern_Billing_GetBillingPlan_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"api", "v0", "billing", "plans", "org_id"}, ""))
+	pattern_Billing_GetBillingPlan_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"api", "v0", "billing", "plans", "org_name"}, ""))
 )
 
 var (
