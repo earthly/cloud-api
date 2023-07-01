@@ -18,6 +18,7 @@ message GetBillingPlanRequest {
 
 message GetBillingPlanResponse {
   BillingPlan plan = 1;
+  int64 billing_cycle_used_build_seconds = 2;
 }
 message BillingPlan {
   enum PlanType {
