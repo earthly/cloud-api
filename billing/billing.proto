@@ -3,7 +3,6 @@ package api.public.billing;
 option go_package = "./billing";
 
 import "google/api/annotations.proto";
-import "google/protobuf/duration.proto";
 import "google/protobuf/timestamp.proto";
 
 service Billing {
@@ -19,7 +18,7 @@ message GetBillingPlanRequest {
 
 message GetBillingPlanResponse {
   BillingPlan plan = 1;
-  google.protobuf.Duration current_billing_cycle_used_minutes = 2;
+  int64 billing_cycle_used_build_seconds = 2;
 }
 message BillingPlan {
   enum PlanType {
