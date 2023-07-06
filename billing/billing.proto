@@ -56,6 +56,7 @@ message BillingPlan {
   int32 max_minutes_per_build = 9;
   // Buildkit cache TTL. 0 means forever
   int32 max_hours_cache_retention = 10;
+  // consider moving this to a common proto file
   enum Tier {
     TIER_UNKNOWN = 0;
     TIER_SATELLITES = 1;
