@@ -181,6 +181,7 @@ func (BillingPlan_ArchType) EnumDescriptor() ([]byte, []int) {
 	return file_billing_proto_rawDescGZIP(), []int{2, 2}
 }
 
+// consider moving this to a common proto file
 type BillingPlan_Tier int32
 
 const (
