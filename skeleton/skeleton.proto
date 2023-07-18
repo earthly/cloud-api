@@ -1,0 +1,11 @@
+syntax = "proto3";
+package api.public.skeleton;
+option go_package = "./skeleton";
+
+service Skeleton {
+  rpc DoIt(DoItRequest) returns (DoItResponse) {}
+}
+
+message DoItRequest {}
+
+message DoItResponse {}
