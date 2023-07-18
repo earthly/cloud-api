@@ -118,6 +118,8 @@ message ListSatellitesResponse {
     string version = 5;
     string size = 6;
     bool hidden = 7;
+    google.protobuf.Duration cache_retention = 8;
+    google.protobuf.Timestamp last_used = 9;
   }
   repeated SatelliteInstance instances = 1;
 }
@@ -163,6 +165,8 @@ message GetSatelliteResponse {
   bool version_pinned = 13;
   bool maintenance_weekends_only = 14;
   bool hidden = 15;
+  google.protobuf.Duration cache_retention = 16;
+  google.protobuf.Timestamp last_used = 17;
 }
 
 message WakeSatelliteRequest {

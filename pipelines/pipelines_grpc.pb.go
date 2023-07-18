@@ -73,12 +73,16 @@ type PipelinesClient interface {
 	GetRun(ctx context.Context, in *GetRunRequest, opts ...grpc.CallOption) (*GetRunResponse, error)
 	// Rerun can trigger a new pipeline run using an existing run as a reference.
 	Rerun(ctx context.Context, in *RerunRequest, opts ...grpc.CallOption) (*RerunResponse, error)
+	// Cancel triggers a run cancellation.
+	CancelRun(ctx context.Context, in *CancelRunRequest, opts ...grpc.CallOption) (*CancelRunResponse, error)
 	// GetOrgLimits will return the org limits for the CI beta testers
 	GetOrgLimits(ctx context.Context, in *GetOrgLimitsRequest, opts ...grpc.CallOption) (*GetOrgLimitsResponse, error)
 	// ListSyncStatuses returns all pipeline sync statuses for projects within an organization.
 	ListSyncStatuses(ctx context.Context, in *ListSyncStatusesRequest, opts ...grpc.CallOption) (*ListSyncStatusesResponse, error)
 	// TriggerRunEvent will publish a build start or end event.
 	TriggerRunEvent(ctx context.Context, in *TriggerRunEventRequest, opts ...grpc.CallOption) (*TriggerRunEventResponse, error)
+	// ListAccountEmails lists all emails associated with an account from external providers like GitHub.
+	ListAccountEmails(ctx context.Context, in *ListAccountEmailsRequest, opts ...grpc.CallOption) (*ListAccountEmailsResponse, error)
 }
 
 type pipelinesClient struct {
@@ -310,6 +314,15 @@ func (c *pipelinesClient) Rerun(ctx context.Context, in *RerunRequest, opts ...g
 	return out, nil
 }
 
+func (c *pipelinesClient) CancelRun(ctx context.Context, in *CancelRunRequest, opts ...grpc.CallOption) (*CancelRunResponse, error) {
+	out := new(CancelRunResponse)
+	err := c.cc.Invoke(ctx, "/api.public.pipelines.Pipelines/CancelRun", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *pipelinesClient) GetOrgLimits(ctx context.Context, in *GetOrgLimitsRequest, opts ...grpc.CallOption) (*GetOrgLimitsResponse, error) {
 	out := new(GetOrgLimitsResponse)
 	err := c.cc.Invoke(ctx, "/api.public.pipelines.Pipelines/GetOrgLimits", in, out, opts...)
@@ -331,6 +344,15 @@ func (c *pipelinesClient) ListSyncStatuses(ctx context.Context, in *ListSyncStat
 func (c *pipelinesClient) TriggerRunEvent(ctx context.Context, in *TriggerRunEventRequest, opts ...grpc.CallOption) (*TriggerRunEventResponse, error) {
 	out := new(TriggerRunEventResponse)
 	err := c.cc.Invoke(ctx, "/api.public.pipelines.Pipelines/TriggerRunEvent", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *pipelinesClient) ListAccountEmails(ctx context.Context, in *ListAccountEmailsRequest, opts ...grpc.CallOption) (*ListAccountEmailsResponse, error) {
+	out := new(ListAccountEmailsResponse)
+	err := c.cc.Invoke(ctx, "/api.public.pipelines.Pipelines/ListAccountEmails", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -392,12 +414,16 @@ type PipelinesServer interface {
 	GetRun(context.Context, *GetRunRequest) (*GetRunResponse, error)
 	// Rerun can trigger a new pipeline run using an existing run as a reference.
 	Rerun(context.Context, *RerunRequest) (*RerunResponse, error)
+	// Cancel triggers a run cancellation.
+	CancelRun(context.Context, *CancelRunRequest) (*CancelRunResponse, error)
 	// GetOrgLimits will return the org limits for the CI beta testers
 	GetOrgLimits(context.Context, *GetOrgLimitsRequest) (*GetOrgLimitsResponse, error)
 	// ListSyncStatuses returns all pipeline sync statuses for projects within an organization.
 	ListSyncStatuses(context.Context, *ListSyncStatusesRequest) (*ListSyncStatusesResponse, error)
 	// TriggerRunEvent will publish a build start or end event.
 	TriggerRunEvent(context.Context, *TriggerRunEventRequest) (*TriggerRunEventResponse, error)
+	// ListAccountEmails lists all emails associated with an account from external providers like GitHub.
+	ListAccountEmails(context.Context, *ListAccountEmailsRequest) (*ListAccountEmailsResponse, error)
 	mustEmbedUnimplementedPipelinesServer()
 }
 
@@ -471,6 +497,9 @@ func (UnimplementedPipelinesServer) GetRun(context.Context, *GetRunRequest) (*Ge
 func (UnimplementedPipelinesServer) Rerun(context.Context, *RerunRequest) (*RerunResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Rerun not implemented")
 }
+func (UnimplementedPipelinesServer) CancelRun(context.Context, *CancelRunRequest) (*CancelRunResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CancelRun not implemented")
+}
 func (UnimplementedPipelinesServer) GetOrgLimits(context.Context, *GetOrgLimitsRequest) (*GetOrgLimitsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetOrgLimits not implemented")
 }
@@ -479,6 +508,9 @@ func (UnimplementedPipelinesServer) ListSyncStatuses(context.Context, *ListSyncS
 }
 func (UnimplementedPipelinesServer) TriggerRunEvent(context.Context, *TriggerRunEventRequest) (*TriggerRunEventResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method TriggerRunEvent not implemented")
+}
+func (UnimplementedPipelinesServer) ListAccountEmails(context.Context, *ListAccountEmailsRequest) (*ListAccountEmailsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListAccountEmails not implemented")
 }
 func (UnimplementedPipelinesServer) mustEmbedUnimplementedPipelinesServer() {}
 
@@ -892,6 +924,24 @@ func _Pipelines_Rerun_Handler(srv interface{}, ctx context.Context, dec func(int
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Pipelines_CancelRun_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CancelRunRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PipelinesServer).CancelRun(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.public.pipelines.Pipelines/CancelRun",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PipelinesServer).CancelRun(ctx, req.(*CancelRunRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Pipelines_GetOrgLimits_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetOrgLimitsRequest)
 	if err := dec(in); err != nil {
@@ -942,6 +992,24 @@ func _Pipelines_TriggerRunEvent_Handler(srv interface{}, ctx context.Context, de
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(PipelinesServer).TriggerRunEvent(ctx, req.(*TriggerRunEventRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Pipelines_ListAccountEmails_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListAccountEmailsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PipelinesServer).ListAccountEmails(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.public.pipelines.Pipelines/ListAccountEmails",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PipelinesServer).ListAccountEmails(ctx, req.(*ListAccountEmailsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1038,6 +1106,10 @@ var Pipelines_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Pipelines_Rerun_Handler,
 		},
 		{
+			MethodName: "CancelRun",
+			Handler:    _Pipelines_CancelRun_Handler,
+		},
+		{
 			MethodName: "GetOrgLimits",
 			Handler:    _Pipelines_GetOrgLimits_Handler,
 		},
@@ -1048,6 +1120,10 @@ var Pipelines_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "TriggerRunEvent",
 			Handler:    _Pipelines_TriggerRunEvent_Handler,
+		},
+		{
+			MethodName: "ListAccountEmails",
+			Handler:    _Pipelines_ListAccountEmails_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{
