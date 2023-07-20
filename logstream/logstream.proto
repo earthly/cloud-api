@@ -57,6 +57,15 @@ message InitLogsRequest {
 
 message InitLogsResponse {}
 
+message GetLogsRequest {
+  string build_id = 1;
+}
+
+message GetLogsResponse {
+  RunManifest manifest = 1;
+  repeated DeltaFormattedLog formatted_logs = 2;
+}
+
 service LogStream {
   // StreamLogs streams logs to the server. Stream protocol:
   // 1. The client opens the channel.
@@ -66,6 +75,8 @@ service LogStream {
   // 5. Server responds with eof_ack=true.
   // 6. Client closes the channel. (optionally, the client can wait for server_exit_status)
   rpc StreamLogs(stream StreamLogRequest) returns (stream StreamLogResponse) {}
+
+  rpc GetLogs(GetLogsRequest) returns (GetLogsResponse) {}
 
   // InitLogs can be used to set the status of a build before or after the core
   // build task is run by the CLI. It's primarily meant to be used by the
