@@ -212,7 +212,7 @@ message ReserveSatelliteResponse {
   SatelliteStatus status = 1;
 }
 
-enum MetricTypes {
+enum MetricType {
   CPU_INSTANT = 0;
   CPU_FIVE_MIN = 1;
   CPU_FIFTEEN_MIN = 2;
@@ -228,7 +228,7 @@ message GetSatelliteMetricsRequest {
   string org_id = 1;
   repeated string names = 2;
   int32 history_minutes = 3;
-  repeated MetricTypes metrics = 4;
+  repeated MetricType metrics = 4;
 }
 
 message GetSatelliteMetricsResponse {
@@ -241,7 +241,7 @@ message SatelliteMetrics {
 }
 
 message MetricSeries {
-  MetricTypes type = 1;
+  MetricType type = 1;
   repeated Datapoint data = 2;
 }
 
