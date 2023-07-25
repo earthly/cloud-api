@@ -309,6 +309,34 @@ func local_request_Compute_GetSatellite_0(ctx context.Context, marshaler runtime
 
 }
 
+var (
+	filter_Compute_GetSatelliteMetrics_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
+)
+
+func request_Compute_GetSatelliteMetrics_0(ctx context.Context, marshaler runtime.Marshaler, client ComputeClient, req *http.Request, pathParams map[string]string) (Compute_GetSatelliteMetricsClient, runtime.ServerMetadata, error) {
+	var protoReq GetSatelliteMetricsRequest
+	var metadata runtime.ServerMetadata
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_Compute_GetSatelliteMetrics_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	stream, err := client.GetSatelliteMetrics(ctx, &protoReq)
+	if err != nil {
+		return nil, metadata, err
+	}
+	header, err := stream.Header()
+	if err != nil {
+		return nil, metadata, err
+	}
+	metadata.HeaderMD = header
+	return stream, metadata, nil
+
+}
+
 func request_Compute_WakeSatellite_0(ctx context.Context, marshaler runtime.Marshaler, client ComputeClient, req *http.Request, pathParams map[string]string) (Compute_WakeSatelliteClient, runtime.ServerMetadata, error) {
 	var protoReq WakeSatelliteRequest
 	var metadata runtime.ServerMetadata
@@ -505,6 +533,13 @@ func RegisterComputeHandlerServer(ctx context.Context, mux *runtime.ServeMux, se
 
 	})
 
+	mux.Handle("GET", pattern_Compute_GetSatelliteMetrics_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
+		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+		return
+	})
+
 	mux.Handle("POST", pattern_Compute_WakeSatellite_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
 		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -667,6 +702,26 @@ func RegisterComputeHandlerClient(ctx context.Context, mux *runtime.ServeMux, cl
 
 	})
 
+	mux.Handle("GET", pattern_Compute_GetSatelliteMetrics_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/api.public.compute.Compute/GetSatelliteMetrics", runtime.WithHTTPPathPattern("/api/v0/satellites/metrics"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_Compute_GetSatelliteMetrics_0(rctx, inboundMarshaler, client, req, pathParams)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_Compute_GetSatelliteMetrics_0(ctx, mux, outboundMarshaler, w, req, func() (proto.Message, error) { return resp.Recv() }, mux.GetForwardResponseOptions()...)
+
+	})
+
 	mux.Handle("POST", pattern_Compute_WakeSatellite_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
@@ -741,6 +796,8 @@ var (
 
 	pattern_Compute_GetSatellite_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"api", "v0", "satellites", "name"}, ""))
 
+	pattern_Compute_GetSatelliteMetrics_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "v0", "satellites", "metrics"}, ""))
+
 	pattern_Compute_WakeSatellite_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"api.public.compute.Compute", "WakeSatellite"}, ""))
 
 	pattern_Compute_SleepSatellite_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"api.public.compute.Compute", "SleepSatellite"}, ""))
@@ -758,6 +815,8 @@ var (
 	forward_Compute_DeleteSatellite_0 = runtime.ForwardResponseMessage
 
 	forward_Compute_GetSatellite_0 = runtime.ForwardResponseMessage
+
+	forward_Compute_GetSatelliteMetrics_0 = runtime.ForwardResponseStream
 
 	forward_Compute_WakeSatellite_0 = runtime.ForwardResponseStream
 

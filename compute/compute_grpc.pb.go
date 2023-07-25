@@ -36,6 +36,10 @@ type ComputeClient interface {
 	// GetSatellite retrieves the details of a particular Satellite instance.
 	// Mainly intended for use by Buildkit Proxy when establishing a new connection to an instance.
 	GetSatellite(ctx context.Context, in *GetSatelliteRequest, opts ...grpc.CallOption) (*GetSatelliteResponse, error)
+	// GetSatelliteMetrics retrieves the recent requested metrics for the given satellites. This is not meant to be a
+	// definitive historical record of build metrics, but instead a way to catch a glimpse into the current or recent
+	// state of the satellite.
+	GetSatelliteMetrics(ctx context.Context, in *GetSatelliteMetricsRequest, opts ...grpc.CallOption) (Compute_GetSatelliteMetricsClient, error)
 	// WakeSatellite wakes a satellite that is in a sleep state.
 	// The response returns a stream that sends updates as the satellite wakes up.
 	// For example, the stream may send the following statuses:
@@ -115,8 +119,40 @@ func (c *computeClient) GetSatellite(ctx context.Context, in *GetSatelliteReques
 	return out, nil
 }
 
+func (c *computeClient) GetSatelliteMetrics(ctx context.Context, in *GetSatelliteMetricsRequest, opts ...grpc.CallOption) (Compute_GetSatelliteMetricsClient, error) {
+	stream, err := c.cc.NewStream(ctx, &Compute_ServiceDesc.Streams[0], "/api.public.compute.Compute/GetSatelliteMetrics", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &computeGetSatelliteMetricsClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type Compute_GetSatelliteMetricsClient interface {
+	Recv() (*GetSatelliteMetricsResponse, error)
+	grpc.ClientStream
+}
+
+type computeGetSatelliteMetricsClient struct {
+	grpc.ClientStream
+}
+
+func (x *computeGetSatelliteMetricsClient) Recv() (*GetSatelliteMetricsResponse, error) {
+	m := new(GetSatelliteMetricsResponse)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 func (c *computeClient) WakeSatellite(ctx context.Context, in *WakeSatelliteRequest, opts ...grpc.CallOption) (Compute_WakeSatelliteClient, error) {
-	stream, err := c.cc.NewStream(ctx, &Compute_ServiceDesc.Streams[0], "/api.public.compute.Compute/WakeSatellite", opts...)
+	stream, err := c.cc.NewStream(ctx, &Compute_ServiceDesc.Streams[1], "/api.public.compute.Compute/WakeSatellite", opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -148,7 +184,7 @@ func (x *computeWakeSatelliteClient) Recv() (*WakeSatelliteResponse, error) {
 }
 
 func (c *computeClient) SleepSatellite(ctx context.Context, in *SleepSatelliteRequest, opts ...grpc.CallOption) (Compute_SleepSatelliteClient, error) {
-	stream, err := c.cc.NewStream(ctx, &Compute_ServiceDesc.Streams[1], "/api.public.compute.Compute/SleepSatellite", opts...)
+	stream, err := c.cc.NewStream(ctx, &Compute_ServiceDesc.Streams[2], "/api.public.compute.Compute/SleepSatellite", opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -180,7 +216,7 @@ func (x *computeSleepSatelliteClient) Recv() (*SleepSatelliteResponse, error) {
 }
 
 func (c *computeClient) ReserveSatellite(ctx context.Context, in *ReserveSatelliteRequest, opts ...grpc.CallOption) (Compute_ReserveSatelliteClient, error) {
-	stream, err := c.cc.NewStream(ctx, &Compute_ServiceDesc.Streams[2], "/api.public.compute.Compute/ReserveSatellite", opts...)
+	stream, err := c.cc.NewStream(ctx, &Compute_ServiceDesc.Streams[3], "/api.public.compute.Compute/ReserveSatellite", opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -229,6 +265,10 @@ type ComputeServer interface {
 	// GetSatellite retrieves the details of a particular Satellite instance.
 	// Mainly intended for use by Buildkit Proxy when establishing a new connection to an instance.
 	GetSatellite(context.Context, *GetSatelliteRequest) (*GetSatelliteResponse, error)
+	// GetSatelliteMetrics retrieves the recent requested metrics for the given satellites. This is not meant to be a
+	// definitive historical record of build metrics, but instead a way to catch a glimpse into the current or recent
+	// state of the satellite.
+	GetSatelliteMetrics(*GetSatelliteMetricsRequest, Compute_GetSatelliteMetricsServer) error
 	// WakeSatellite wakes a satellite that is in a sleep state.
 	// The response returns a stream that sends updates as the satellite wakes up.
 	// For example, the stream may send the following statuses:
@@ -274,6 +314,9 @@ func (UnimplementedComputeServer) DeleteSatellite(context.Context, *DeleteSatell
 }
 func (UnimplementedComputeServer) GetSatellite(context.Context, *GetSatelliteRequest) (*GetSatelliteResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetSatellite not implemented")
+}
+func (UnimplementedComputeServer) GetSatelliteMetrics(*GetSatelliteMetricsRequest, Compute_GetSatelliteMetricsServer) error {
+	return status.Errorf(codes.Unimplemented, "method GetSatelliteMetrics not implemented")
 }
 func (UnimplementedComputeServer) WakeSatellite(*WakeSatelliteRequest, Compute_WakeSatelliteServer) error {
 	return status.Errorf(codes.Unimplemented, "method WakeSatellite not implemented")
@@ -387,6 +430,27 @@ func _Compute_GetSatellite_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Compute_GetSatelliteMetrics_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(GetSatelliteMetricsRequest)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(ComputeServer).GetSatelliteMetrics(m, &computeGetSatelliteMetricsServer{stream})
+}
+
+type Compute_GetSatelliteMetricsServer interface {
+	Send(*GetSatelliteMetricsResponse) error
+	grpc.ServerStream
+}
+
+type computeGetSatelliteMetricsServer struct {
+	grpc.ServerStream
+}
+
+func (x *computeGetSatelliteMetricsServer) Send(m *GetSatelliteMetricsResponse) error {
+	return x.ServerStream.SendMsg(m)
+}
+
 func _Compute_WakeSatellite_Handler(srv interface{}, stream grpc.ServerStream) error {
 	m := new(WakeSatelliteRequest)
 	if err := stream.RecvMsg(m); err != nil {
@@ -479,6 +543,11 @@ var Compute_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams: []grpc.StreamDesc{
+		{
+			StreamName:    "GetSatelliteMetrics",
+			Handler:       _Compute_GetSatelliteMetrics_Handler,
+			ServerStreams: true,
+		},
 		{
 			StreamName:    "WakeSatellite",
 			Handler:       _Compute_WakeSatellite_Handler,
