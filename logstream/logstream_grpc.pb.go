@@ -30,6 +30,7 @@ type LogStreamClient interface {
 	// 5. Server responds with eof_ack=true.
 	// 6. Client closes the channel. (optionally, the client can wait for server_exit_status)
 	StreamLogs(ctx context.Context, opts ...grpc.CallOption) (LogStream_StreamLogsClient, error)
+	GetLogs(ctx context.Context, in *GetLogsRequest, opts ...grpc.CallOption) (*GetLogsResponse, error)
 	// InitLogs can be used to set the status of a build before or after the core
 	// build task is run by the CLI. It's primarily meant to be used by the
 	// initialization process, but can also be used to surface errors that may not
@@ -81,6 +82,15 @@ func (x *logStreamStreamLogsClient) Recv() (*StreamLogResponse, error) {
 	return m, nil
 }
 
+func (c *logStreamClient) GetLogs(ctx context.Context, in *GetLogsRequest, opts ...grpc.CallOption) (*GetLogsResponse, error) {
+	out := new(GetLogsResponse)
+	err := c.cc.Invoke(ctx, "/api.public.logstream.LogStream/GetLogs", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *logStreamClient) InitLogs(ctx context.Context, in *InitLogsRequest, opts ...grpc.CallOption) (*InitLogsResponse, error) {
 	out := new(InitLogsResponse)
 	err := c.cc.Invoke(ctx, "/api.public.logstream.LogStream/InitLogs", in, out, opts...)
@@ -129,6 +139,7 @@ type LogStreamServer interface {
 	// 5. Server responds with eof_ack=true.
 	// 6. Client closes the channel. (optionally, the client can wait for server_exit_status)
 	StreamLogs(LogStream_StreamLogsServer) error
+	GetLogs(context.Context, *GetLogsRequest) (*GetLogsResponse, error)
 	// InitLogs can be used to set the status of a build before or after the core
 	// build task is run by the CLI. It's primarily meant to be used by the
 	// initialization process, but can also be used to surface errors that may not
@@ -148,6 +159,9 @@ type UnimplementedLogStreamServer struct {
 
 func (UnimplementedLogStreamServer) StreamLogs(LogStream_StreamLogsServer) error {
 	return status.Errorf(codes.Unimplemented, "method StreamLogs not implemented")
+}
+func (UnimplementedLogStreamServer) GetLogs(context.Context, *GetLogsRequest) (*GetLogsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetLogs not implemented")
 }
 func (UnimplementedLogStreamServer) InitLogs(context.Context, *InitLogsRequest) (*InitLogsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method InitLogs not implemented")
@@ -198,6 +212,24 @@ func (x *logStreamStreamLogsServer) Recv() (*StreamLogRequest, error) {
 		return nil, err
 	}
 	return m, nil
+}
+
+func _LogStream_GetLogs_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetLogsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(LogStreamServer).GetLogs(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.public.logstream.LogStream/GetLogs",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(LogStreamServer).GetLogs(ctx, req.(*GetLogsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _LogStream_InitLogs_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -279,6 +311,10 @@ var LogStream_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "api.public.logstream.LogStream",
 	HandlerType: (*LogStreamServer)(nil),
 	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "GetLogs",
+			Handler:    _LogStream_GetLogs_Handler,
+		},
 		{
 			MethodName: "InitLogs",
 			Handler:    _LogStream_InitLogs_Handler,
