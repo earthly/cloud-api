@@ -44,6 +44,15 @@ service Compute {
     };
   }
 
+  // GetSatelliteMetrics retrieves the recent requested metrics for the given satellites. This is not meant to be a
+  // definitive historical record of build metrics, but instead a way to catch a glimpse into the current or recent
+  // state of the satellite.
+  rpc ListSatelliteMetrics(ListSatellitesMetricsRequest) returns (ListSatellitesMetricsResponse) {
+    option (google.api.http) = {
+      get: "/api/v0/satellites/metrics"
+    };
+  }
+
   // WakeSatellite wakes a satellite that is in a sleep state.
   // The response returns a stream that sends updates as the satellite wakes up.
   // For example, the stream may send the following statuses:
@@ -167,6 +176,7 @@ message GetSatelliteResponse {
   bool hidden = 15;
   google.protobuf.Duration cache_retention = 16;
   google.protobuf.Timestamp last_used = 17;
+  SatelliteMetrics current_metrics = 18;
 }
 
 message WakeSatelliteRequest {
@@ -200,4 +210,44 @@ message ReserveSatelliteRequest {
 
 message ReserveSatelliteResponse {
   SatelliteStatus status = 1;
+}
+
+enum MetricType {
+  METRICTYPE_UNSPECIFIED = 0;
+  METRICTYPE_CPU_INSTANT_PCT = 1;
+  METRICTYPE_CPU_FIVE_MIN_PCT = 2;
+  METRICTYPE_CPU_FIFTEEN_MIN_PCT = 3;
+  METRICTYPE_MEMORY_INSTANT_GIB = 4;
+  METRICTYPE_CACHE_USAGE_GIB = 5;
+  METRICTYPE_DISK_READ_MIBPS = 6;
+  METRICTYPE_DISK_WRITE_MIBPS = 7;
+  METRICTYPE_NETWORK_TX_MBPS = 8;
+  METRICTYPE_NETWORK_RX_MBPS = 9;
+}
+
+// Double? Or Single? Plural? Who knows we all gave up
+message ListSatellitesMetricsRequest {
+  string org_id = 1;
+  repeated string names = 2; // At least one required
+  int32 history_minutes = 3;
+  repeated MetricType metrics = 4; // Empty means all metrics
+}
+
+message ListSatellitesMetricsResponse {
+  repeated SatelliteMetrics metrics = 1;
+}
+
+message SatelliteMetrics {
+  string name = 1;
+  repeated MetricSeries metrics = 2;
+}
+
+message MetricSeries {
+  MetricType type = 1;
+  repeated Datapoint data = 2;
+}
+
+message Datapoint {
+  google.protobuf.Timestamp time = 1; // this should be minute-truncated, unless its not a complete minute yet
+  float value = 2;
 }
