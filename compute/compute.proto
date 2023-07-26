@@ -47,7 +47,7 @@ service Compute {
   // GetSatelliteMetrics retrieves the recent requested metrics for the given satellites. This is not meant to be a
   // definitive historical record of build metrics, but instead a way to catch a glimpse into the current or recent
   // state of the satellite.
-  rpc GetSatelliteMetrics(GetSatelliteMetricsRequest) returns (stream GetSatelliteMetricsResponse) {
+  rpc ListSatelliteMetrics(ListSatelliteMetricsRequest) returns (ListSatelliteMetricsResponse) {
     option (google.api.http) = {
       get: "/api/v0/satellites/metrics"
     };
@@ -213,25 +213,26 @@ message ReserveSatelliteResponse {
 }
 
 enum MetricType {
-  CPU_INSTANT = 0;
-  CPU_FIVE_MIN = 1;
-  CPU_FIFTEEN_MIN = 2;
-  MEMORY_INSTANT = 3;
-  CACHE_USAGE = 4;
-  DISK_READ = 5;
-  DISK_WRITE = 6;
-  NETWORK_TX = 7;
-  NETWORK_RX = 8;
+  METRICTYPE_UNKNOWN = 0;
+  METRICTYPE_CPU_INSTANT_PCT = 1;
+  METRICTYPE_CPU_FIVE_MIN_PCT = 2;
+  METRICTYPE_CPU_FIFTEEN_MIN_PCT = 3;
+  METRICTYPE_MEMORY_INSTANT_GIB = 4;
+  METRICTYPE_CACHE_USAGE_GIB = 5;
+  METRICTYPE_DISK_READ_MIBPS = 6;
+  METRICTYPE_DISK_WRITE_MIBPS = 7;
+  METRICTYPE_NETWORK_TX_MBPS = 8;
+  METRICTYPE_NETWORK_RX_MBPS = 9;
 }
 
-message GetSatelliteMetricsRequest {
+message ListSatelliteMetricsRequest {
   string org_id = 1;
-  repeated string names = 2;
+  repeated string names = 2; // At least one required
   int32 history_minutes = 3;
-  repeated MetricType metrics = 4;
+  repeated MetricType metrics = 4; // Empty means all metrics
 }
 
-message GetSatelliteMetricsResponse {
+message ListSatelliteMetricsResponse {
   repeated SatelliteMetrics metrics = 1;
 }
 
