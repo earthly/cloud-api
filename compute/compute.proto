@@ -47,7 +47,7 @@ service Compute {
   // GetSatelliteMetrics retrieves the recent requested metrics for the given satellites. This is not meant to be a
   // definitive historical record of build metrics, but instead a way to catch a glimpse into the current or recent
   // state of the satellite.
-  rpc ListSatelliteMetrics(ListSatelliteMetricsRequest) returns (ListSatelliteMetricsResponse) {
+  rpc ListSatelliteMetrics(ListSatellitesMetricsRequest) returns (ListSatellitesMetricsResponse) {
     option (google.api.http) = {
       get: "/api/v0/satellites/metrics"
     };
@@ -225,14 +225,15 @@ enum MetricType {
   METRICTYPE_NETWORK_RX_MBPS = 9;
 }
 
-message ListSatelliteMetricsRequest {
+// Double? Or Single? Plural? Who knows we all gave up
+message ListSatellitesMetricsRequest {
   string org_id = 1;
   repeated string names = 2; // At least one required
   int32 history_minutes = 3;
   repeated MetricType metrics = 4; // Empty means all metrics
 }
 
-message ListSatelliteMetricsResponse {
+message ListSatellitesMetricsResponse {
   repeated SatelliteMetrics metrics = 1;
 }
 

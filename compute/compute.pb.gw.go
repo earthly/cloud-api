@@ -314,7 +314,7 @@ var (
 )
 
 func request_Compute_ListSatelliteMetrics_0(ctx context.Context, marshaler runtime.Marshaler, client ComputeClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq ListSatelliteMetricsRequest
+	var protoReq ListSatellitesMetricsRequest
 	var metadata runtime.ServerMetadata
 
 	if err := req.ParseForm(); err != nil {
@@ -330,7 +330,7 @@ func request_Compute_ListSatelliteMetrics_0(ctx context.Context, marshaler runti
 }
 
 func local_request_Compute_ListSatelliteMetrics_0(ctx context.Context, marshaler runtime.Marshaler, server ComputeServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq ListSatelliteMetricsRequest
+	var protoReq ListSatellitesMetricsRequest
 	var metadata runtime.ServerMetadata
 
 	if err := req.ParseForm(); err != nil {

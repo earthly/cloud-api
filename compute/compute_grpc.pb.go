@@ -39,7 +39,7 @@ type ComputeClient interface {
 	// GetSatelliteMetrics retrieves the recent requested metrics for the given satellites. This is not meant to be a
 	// definitive historical record of build metrics, but instead a way to catch a glimpse into the current or recent
 	// state of the satellite.
-	ListSatelliteMetrics(ctx context.Context, in *ListSatelliteMetricsRequest, opts ...grpc.CallOption) (*ListSatelliteMetricsResponse, error)
+	ListSatelliteMetrics(ctx context.Context, in *ListSatellitesMetricsRequest, opts ...grpc.CallOption) (*ListSatellitesMetricsResponse, error)
 	// WakeSatellite wakes a satellite that is in a sleep state.
 	// The response returns a stream that sends updates as the satellite wakes up.
 	// For example, the stream may send the following statuses:
@@ -119,8 +119,8 @@ func (c *computeClient) GetSatellite(ctx context.Context, in *GetSatelliteReques
 	return out, nil
 }
 
-func (c *computeClient) ListSatelliteMetrics(ctx context.Context, in *ListSatelliteMetricsRequest, opts ...grpc.CallOption) (*ListSatelliteMetricsResponse, error) {
-	out := new(ListSatelliteMetricsResponse)
+func (c *computeClient) ListSatelliteMetrics(ctx context.Context, in *ListSatellitesMetricsRequest, opts ...grpc.CallOption) (*ListSatellitesMetricsResponse, error) {
+	out := new(ListSatellitesMetricsResponse)
 	err := c.cc.Invoke(ctx, "/api.public.compute.Compute/ListSatelliteMetrics", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -245,7 +245,7 @@ type ComputeServer interface {
 	// GetSatelliteMetrics retrieves the recent requested metrics for the given satellites. This is not meant to be a
 	// definitive historical record of build metrics, but instead a way to catch a glimpse into the current or recent
 	// state of the satellite.
-	ListSatelliteMetrics(context.Context, *ListSatelliteMetricsRequest) (*ListSatelliteMetricsResponse, error)
+	ListSatelliteMetrics(context.Context, *ListSatellitesMetricsRequest) (*ListSatellitesMetricsResponse, error)
 	// WakeSatellite wakes a satellite that is in a sleep state.
 	// The response returns a stream that sends updates as the satellite wakes up.
 	// For example, the stream may send the following statuses:
@@ -292,7 +292,7 @@ func (UnimplementedComputeServer) DeleteSatellite(context.Context, *DeleteSatell
 func (UnimplementedComputeServer) GetSatellite(context.Context, *GetSatelliteRequest) (*GetSatelliteResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetSatellite not implemented")
 }
-func (UnimplementedComputeServer) ListSatelliteMetrics(context.Context, *ListSatelliteMetricsRequest) (*ListSatelliteMetricsResponse, error) {
+func (UnimplementedComputeServer) ListSatelliteMetrics(context.Context, *ListSatellitesMetricsRequest) (*ListSatellitesMetricsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListSatelliteMetrics not implemented")
 }
 func (UnimplementedComputeServer) WakeSatellite(*WakeSatelliteRequest, Compute_WakeSatelliteServer) error {
@@ -408,7 +408,7 @@ func _Compute_GetSatellite_Handler(srv interface{}, ctx context.Context, dec fun
 }
 
 func _Compute_ListSatelliteMetrics_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListSatelliteMetricsRequest)
+	in := new(ListSatellitesMetricsRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -420,7 +420,7 @@ func _Compute_ListSatelliteMetrics_Handler(srv interface{}, ctx context.Context,
 		FullMethod: "/api.public.compute.Compute/ListSatelliteMetrics",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ComputeServer).ListSatelliteMetrics(ctx, req.(*ListSatelliteMetricsRequest))
+		return srv.(ComputeServer).ListSatelliteMetrics(ctx, req.(*ListSatellitesMetricsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
