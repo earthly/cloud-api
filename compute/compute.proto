@@ -142,6 +142,7 @@ message UpdateSatelliteRequest {
   repeated string feature_flags = 6;
   bool maintenance_weekends_only = 7;
   string size = 8; // Changes the size of the satellite when set
+  string platform = 9; // Changes the platform of the satellite when set
 }
 
 message UpdateSatelliteResponse {}
