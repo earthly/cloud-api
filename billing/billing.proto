@@ -11,7 +11,27 @@ service Billing {
       get: "/api/v0/billing/plans/{org_name}"
     };
   }
+  rpc Subscribe(SubscribeRequest) returns (SubscribeResponse) {}
 }
+
+message SubscribeRequest {
+  string org_name = 1;
+  enum Type {
+    PAYMENT_UNKNOWN = 0;
+    PAYMENT_FREE_TIER_VALIDATION = 4;
+    PAYMENT_STARTER_SUBSCRIPTION = 5;
+    PAYMENT_PRO_SUBSCRIPTION = 6;
+    PAYMENT_TEAM_SUBSCRIPTION = 7;
+  }
+  Type type = 2;
+  bool monthly = 3;
+}
+
+message SubscribeResponse {
+  // Used by the frontend to collect the payment https://stripe.com/docs/billing/subscriptions/build-subscriptions?ui=elements#collect-payment
+  string stripe_client_secret = 1;
+}
+
 message GetBillingPlanRequest {
   string org_name = 1;
 }
@@ -88,4 +108,3 @@ message BillingPlan {
   // Default size to launch new instances when none is specified by the user
   InstanceType default_instance_type = 20;
 }
-

@@ -20,6 +20,7 @@ const _ = grpc.SupportPackageIsVersion7
 
 const (
 	Billing_GetBillingPlan_FullMethodName = "/api.public.billing.Billing/GetBillingPlan"
+	Billing_Subscribe_FullMethodName      = "/api.public.billing.Billing/Subscribe"
 )
 
 // BillingClient is the client API for Billing service.
@@ -27,6 +28,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type BillingClient interface {
 	GetBillingPlan(ctx context.Context, in *GetBillingPlanRequest, opts ...grpc.CallOption) (*GetBillingPlanResponse, error)
+	Subscribe(ctx context.Context, in *SubscribeRequest, opts ...grpc.CallOption) (*SubscribeResponse, error)
 }
 
 type billingClient struct {
@@ -46,11 +48,21 @@ func (c *billingClient) GetBillingPlan(ctx context.Context, in *GetBillingPlanRe
 	return out, nil
 }
 
+func (c *billingClient) Subscribe(ctx context.Context, in *SubscribeRequest, opts ...grpc.CallOption) (*SubscribeResponse, error) {
+	out := new(SubscribeResponse)
+	err := c.cc.Invoke(ctx, Billing_Subscribe_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // BillingServer is the server API for Billing service.
 // All implementations must embed UnimplementedBillingServer
 // for forward compatibility
 type BillingServer interface {
 	GetBillingPlan(context.Context, *GetBillingPlanRequest) (*GetBillingPlanResponse, error)
+	Subscribe(context.Context, *SubscribeRequest) (*SubscribeResponse, error)
 	mustEmbedUnimplementedBillingServer()
 }
 
@@ -60,6 +72,9 @@ type UnimplementedBillingServer struct {
 
 func (UnimplementedBillingServer) GetBillingPlan(context.Context, *GetBillingPlanRequest) (*GetBillingPlanResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetBillingPlan not implemented")
+}
+func (UnimplementedBillingServer) Subscribe(context.Context, *SubscribeRequest) (*SubscribeResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Subscribe not implemented")
 }
 func (UnimplementedBillingServer) mustEmbedUnimplementedBillingServer() {}
 
@@ -92,6 +107,24 @@ func _Billing_GetBillingPlan_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Billing_Subscribe_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SubscribeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BillingServer).Subscribe(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Billing_Subscribe_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BillingServer).Subscribe(ctx, req.(*SubscribeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Billing_ServiceDesc is the grpc.ServiceDesc for Billing service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -102,6 +135,10 @@ var Billing_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetBillingPlan",
 			Handler:    _Billing_GetBillingPlan_Handler,
+		},
+		{
+			MethodName: "Subscribe",
+			Handler:    _Billing_Subscribe_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
