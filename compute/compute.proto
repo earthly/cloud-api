@@ -230,7 +230,7 @@ enum MetricType {
 message ListSatellitesMetricsRequest {
   string org_id = 1;
   repeated string names = 2; // At least one required
-  int32 history_minutes = 3;
+  uint32 history_minutes = 3;
   repeated MetricType metrics = 4; // Empty means all metrics
 }
 
