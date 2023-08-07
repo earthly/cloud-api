@@ -250,6 +250,7 @@ message SatelliteSpecs {
   int32 vcpus = 2;
   double memoryGiB = 3;
   double cacheSizeGiB = 4;
+  string size = 5;
 }
 
 message MetricSeries {
