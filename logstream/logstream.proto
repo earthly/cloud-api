@@ -96,7 +96,11 @@ service LogStream {
 
   rpc GetLogs(GetLogsRequest) returns (GetLogsResponse) {}
 
-  rpc GetMetadata(GetMetadataRequest) returns (GetMetadataResponse) {}
+  rpc GetMetadata(GetMetadataRequest) returns (GetMetadataResponse) {
+    option (google.api.http) = {
+      get: "/api/v0/logstream/metadata/{build_id}"
+    };
+  }
 
   // InitLogs can be used to set the status of a build before or after the core
   // build task is run by the CLI. It's primarily meant to be used by the
