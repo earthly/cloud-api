@@ -242,6 +242,7 @@ message SatelliteMetrics {
   string name = 1;
   repeated MetricSeries metrics = 2;
   SatelliteSpecs specs = 3;
+  string error = 4; // Allow for partial success/failure
 }
 
 message SatelliteSpecs {
