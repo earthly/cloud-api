@@ -559,7 +559,7 @@ func RegisterComputeHandlerServer(ctx context.Context, mux *runtime.ServeMux, se
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/api.public.compute.Compute/ListSatellitesMetrics", runtime.WithHTTPPathPattern("/api/v0/satellites/metrics"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/api.public.compute.Compute/ListSatellitesMetrics", runtime.WithHTTPPathPattern("/api/v0/satellites-metrics"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -754,7 +754,7 @@ func RegisterComputeHandlerClient(ctx context.Context, mux *runtime.ServeMux, cl
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/api.public.compute.Compute/ListSatellitesMetrics", runtime.WithHTTPPathPattern("/api/v0/satellites/metrics"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/api.public.compute.Compute/ListSatellitesMetrics", runtime.WithHTTPPathPattern("/api/v0/satellites-metrics"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -850,7 +850,7 @@ var (
 
 	pattern_Compute_GetSatellite_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"api", "v0", "satellites", "name"}, ""))
 
-	pattern_Compute_ListSatellitesMetrics_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "v0", "satellites", "metrics"}, ""))
+	pattern_Compute_ListSatellitesMetrics_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v0", "satellites-metrics"}, ""))
 
 	pattern_Compute_WakeSatellite_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"api.public.compute.Compute", "WakeSatellite"}, ""))
 
