@@ -11,10 +11,10 @@ service Billing {
       get: "/api/v0/billing/plans/{org_name}"
     };
   }
-  rpc Subscribe(SubscribeRequest) returns (SubscribeResponse) {}
+  rpc CreateSubscriptionLink(CreateSubscriptionLinkRequest) returns (CreateSubscriptionLinkResponse) {}
 }
 
-message SubscribeRequest {
+message CreateSubscriptionLinkRequest {
   string org_name = 1;
   enum Type {
     PAYMENT_UNKNOWN = 0;
@@ -27,9 +27,8 @@ message SubscribeRequest {
   bool monthly = 3;
 }
 
-message SubscribeResponse {
-  // Used by the frontend to collect the payment https://stripe.com/docs/billing/subscriptions/build-subscriptions?ui=elements#collect-payment
-  string stripe_client_secret = 1;
+message CreateSubscriptionLinkResponse {
+  string url = 1;
 }
 
 message GetBillingPlanRequest {
