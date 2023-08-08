@@ -3,6 +3,7 @@ package api.public.logstream;
 option go_package = "./logstream";
 
 import "google/api/annotations.proto";
+import "google/protobuf/timestamp.proto";
 
 import "manifest.proto";
 import "delta.proto";
@@ -66,6 +67,23 @@ message GetLogsResponse {
   repeated DeltaFormattedLog formatted_logs = 2;
 }
 
+message GetMetadataRequest {
+  string build_id = 1;
+}
+
+message BuildMetadata {
+  string build_id = 1;
+  string org_id = 2;
+  string project_id = 3;
+  string user_id = 4;
+  string shard = 5;
+  google.protobuf.Timestamp created_at = 6;
+}
+
+message GetMetadataResponse {
+  BuildMetadata metadata = 1;
+}
+
 service LogStream {
   // StreamLogs streams logs to the server. Stream protocol:
   // 1. The client opens the channel.
@@ -77,6 +95,12 @@ service LogStream {
   rpc StreamLogs(stream StreamLogRequest) returns (stream StreamLogResponse) {}
 
   rpc GetLogs(GetLogsRequest) returns (GetLogsResponse) {}
+
+  rpc GetMetadata(GetMetadataRequest) returns (GetMetadataResponse) {
+    option (google.api.http) = {
+      get: "/api/v0/logstream/metadata/{build_id}"
+    };
+  }
 
   // InitLogs can be used to set the status of a build before or after the core
   // build task is run by the CLI. It's primarily meant to be used by the
