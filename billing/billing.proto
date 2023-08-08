@@ -11,7 +11,26 @@ service Billing {
       get: "/api/v0/billing/plans/{org_name}"
     };
   }
+  rpc CreateSubscriptionLink(CreateSubscriptionLinkRequest) returns (CreateSubscriptionLinkResponse) {}
 }
+
+message CreateSubscriptionLinkRequest {
+  string org_name = 1;
+  enum Type {
+    PAYMENT_UNKNOWN = 0;
+    PAYMENT_FREE_TIER_VALIDATION = 4;
+    PAYMENT_STARTER_SUBSCRIPTION = 5;
+    PAYMENT_PRO_SUBSCRIPTION = 6;
+    PAYMENT_TEAM_SUBSCRIPTION = 7;
+  }
+  Type type = 2;
+  bool monthly = 3;
+}
+
+message CreateSubscriptionLinkResponse {
+  string url = 1;
+}
+
 message GetBillingPlanRequest {
   string org_name = 1;
 }
@@ -88,4 +107,3 @@ message BillingPlan {
   // Default size to launch new instances when none is specified by the user
   InstanceType default_instance_type = 20;
 }
-
