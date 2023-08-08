@@ -47,9 +47,9 @@ service Compute {
   // GetSatelliteMetrics retrieves the recent requested metrics for the given satellites. This is not meant to be a
   // definitive historical record of build metrics, but instead a way to catch a glimpse into the current or recent
   // state of the satellite.
-  rpc ListSatelliteMetrics(ListSatellitesMetricsRequest) returns (ListSatellitesMetricsResponse) {
+  rpc ListSatellitesMetrics(ListSatellitesMetricsRequest) returns (ListSatellitesMetricsResponse) {
     option (google.api.http) = {
-      get: "/api/v0/satellites/metrics"
+      get: "/api/v0/satellites-metrics"
     };
   }
 
@@ -215,13 +215,13 @@ message ReserveSatelliteResponse {
 
 enum MetricType {
   METRICTYPE_UNSPECIFIED = 0;
-  METRICTYPE_CPU_INSTANT_PCT = 1;
+  METRICTYPE_CPU_ONE_MIN_PCT = 1;
   METRICTYPE_CPU_FIVE_MIN_PCT = 2;
   METRICTYPE_CPU_FIFTEEN_MIN_PCT = 3;
-  METRICTYPE_MEMORY_INSTANT_GIB = 4;
+  METRICTYPE_MEMORY_USAGE_GIB = 4;
   METRICTYPE_CACHE_USAGE_GIB = 5;
-  METRICTYPE_DISK_READ_MIBPS = 6;
-  METRICTYPE_DISK_WRITE_MIBPS = 7;
+  METRICTYPE_DISK_READ_MBPS = 6;
+  METRICTYPE_DISK_WRITE_MBPS = 7;
   METRICTYPE_NETWORK_TX_MBPS = 8;
   METRICTYPE_NETWORK_RX_MBPS = 9;
 }
@@ -230,7 +230,7 @@ enum MetricType {
 message ListSatellitesMetricsRequest {
   string org_id = 1;
   repeated string names = 2; // At least one required
-  int32 history_minutes = 3;
+  uint32 history_minutes = 3;
   repeated MetricType metrics = 4; // Empty means all metrics
 }
 
@@ -241,6 +241,16 @@ message ListSatellitesMetricsResponse {
 message SatelliteMetrics {
   string name = 1;
   repeated MetricSeries metrics = 2;
+  SatelliteSpecs specs = 3;
+  string error = 4; // Allow for partial success/failure
+}
+
+message SatelliteSpecs {
+  string platform = 1;
+  int32 vcpus = 2;
+  double memory_gib = 3;
+  double cache_size_gib = 4;
+  string size = 5;
 }
 
 message MetricSeries {
@@ -250,5 +260,5 @@ message MetricSeries {
 
 message Datapoint {
   google.protobuf.Timestamp time = 1; // this should be minute-truncated, unless its not a complete minute yet
-  float value = 2;
+  double value = 2;
 }

@@ -19,15 +19,15 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	Compute_LaunchSatellite_FullMethodName      = "/api.public.compute.Compute/LaunchSatellite"
-	Compute_ListSatellites_FullMethodName       = "/api.public.compute.Compute/ListSatellites"
-	Compute_UpdateSatellite_FullMethodName      = "/api.public.compute.Compute/UpdateSatellite"
-	Compute_DeleteSatellite_FullMethodName      = "/api.public.compute.Compute/DeleteSatellite"
-	Compute_GetSatellite_FullMethodName         = "/api.public.compute.Compute/GetSatellite"
-	Compute_ListSatelliteMetrics_FullMethodName = "/api.public.compute.Compute/ListSatelliteMetrics"
-	Compute_WakeSatellite_FullMethodName        = "/api.public.compute.Compute/WakeSatellite"
-	Compute_SleepSatellite_FullMethodName       = "/api.public.compute.Compute/SleepSatellite"
-	Compute_ReserveSatellite_FullMethodName     = "/api.public.compute.Compute/ReserveSatellite"
+	Compute_LaunchSatellite_FullMethodName       = "/api.public.compute.Compute/LaunchSatellite"
+	Compute_ListSatellites_FullMethodName        = "/api.public.compute.Compute/ListSatellites"
+	Compute_UpdateSatellite_FullMethodName       = "/api.public.compute.Compute/UpdateSatellite"
+	Compute_DeleteSatellite_FullMethodName       = "/api.public.compute.Compute/DeleteSatellite"
+	Compute_GetSatellite_FullMethodName          = "/api.public.compute.Compute/GetSatellite"
+	Compute_ListSatellitesMetrics_FullMethodName = "/api.public.compute.Compute/ListSatellitesMetrics"
+	Compute_WakeSatellite_FullMethodName         = "/api.public.compute.Compute/WakeSatellite"
+	Compute_SleepSatellite_FullMethodName        = "/api.public.compute.Compute/SleepSatellite"
+	Compute_ReserveSatellite_FullMethodName      = "/api.public.compute.Compute/ReserveSatellite"
 )
 
 // ComputeClient is the client API for Compute service.
@@ -51,7 +51,7 @@ type ComputeClient interface {
 	// GetSatelliteMetrics retrieves the recent requested metrics for the given satellites. This is not meant to be a
 	// definitive historical record of build metrics, but instead a way to catch a glimpse into the current or recent
 	// state of the satellite.
-	ListSatelliteMetrics(ctx context.Context, in *ListSatellitesMetricsRequest, opts ...grpc.CallOption) (*ListSatellitesMetricsResponse, error)
+	ListSatellitesMetrics(ctx context.Context, in *ListSatellitesMetricsRequest, opts ...grpc.CallOption) (*ListSatellitesMetricsResponse, error)
 	// WakeSatellite wakes a satellite that is in a sleep state.
 	// The response returns a stream that sends updates as the satellite wakes up.
 	// For example, the stream may send the following statuses:
@@ -142,9 +142,9 @@ func (c *computeClient) GetSatellite(ctx context.Context, in *GetSatelliteReques
 	return out, nil
 }
 
-func (c *computeClient) ListSatelliteMetrics(ctx context.Context, in *ListSatellitesMetricsRequest, opts ...grpc.CallOption) (*ListSatellitesMetricsResponse, error) {
+func (c *computeClient) ListSatellitesMetrics(ctx context.Context, in *ListSatellitesMetricsRequest, opts ...grpc.CallOption) (*ListSatellitesMetricsResponse, error) {
 	out := new(ListSatellitesMetricsResponse)
-	err := c.cc.Invoke(ctx, Compute_ListSatelliteMetrics_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, Compute_ListSatellitesMetrics_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -268,7 +268,7 @@ type ComputeServer interface {
 	// GetSatelliteMetrics retrieves the recent requested metrics for the given satellites. This is not meant to be a
 	// definitive historical record of build metrics, but instead a way to catch a glimpse into the current or recent
 	// state of the satellite.
-	ListSatelliteMetrics(context.Context, *ListSatellitesMetricsRequest) (*ListSatellitesMetricsResponse, error)
+	ListSatellitesMetrics(context.Context, *ListSatellitesMetricsRequest) (*ListSatellitesMetricsResponse, error)
 	// WakeSatellite wakes a satellite that is in a sleep state.
 	// The response returns a stream that sends updates as the satellite wakes up.
 	// For example, the stream may send the following statuses:
@@ -326,8 +326,8 @@ func (UnimplementedComputeServer) DeleteSatellite(context.Context, *DeleteSatell
 func (UnimplementedComputeServer) GetSatellite(context.Context, *GetSatelliteRequest) (*GetSatelliteResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetSatellite not implemented")
 }
-func (UnimplementedComputeServer) ListSatelliteMetrics(context.Context, *ListSatellitesMetricsRequest) (*ListSatellitesMetricsResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ListSatelliteMetrics not implemented")
+func (UnimplementedComputeServer) ListSatellitesMetrics(context.Context, *ListSatellitesMetricsRequest) (*ListSatellitesMetricsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListSatellitesMetrics not implemented")
 }
 func (UnimplementedComputeServer) WakeSatellite(*WakeSatelliteRequest, Compute_WakeSatelliteServer) error {
 	return status.Errorf(codes.Unimplemented, "method WakeSatellite not implemented")
@@ -441,20 +441,20 @@ func _Compute_GetSatellite_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Compute_ListSatelliteMetrics_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Compute_ListSatellitesMetrics_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ListSatellitesMetricsRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ComputeServer).ListSatelliteMetrics(ctx, in)
+		return srv.(ComputeServer).ListSatellitesMetrics(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Compute_ListSatelliteMetrics_FullMethodName,
+		FullMethod: Compute_ListSatellitesMetrics_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ComputeServer).ListSatelliteMetrics(ctx, req.(*ListSatellitesMetricsRequest))
+		return srv.(ComputeServer).ListSatellitesMetrics(ctx, req.(*ListSatellitesMetricsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -550,8 +550,8 @@ var Compute_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Compute_GetSatellite_Handler,
 		},
 		{
-			MethodName: "ListSatelliteMetrics",
-			Handler:    _Compute_ListSatelliteMetrics_Handler,
+			MethodName: "ListSatellitesMetrics",
+			Handler:    _Compute_ListSatellitesMetrics_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{
