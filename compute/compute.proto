@@ -248,8 +248,8 @@ message SatelliteMetrics {
 message SatelliteSpecs {
   string platform = 1;
   int32 vcpus = 2;
-  double memoryGiB = 3;
-  double cacheSizeGiB = 4;
+  double memory_gib = 3;
+  double cache_size_gib = 4;
   string size = 5;
 }
 
