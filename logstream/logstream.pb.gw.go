@@ -108,8 +108,8 @@ func local_request_LogStream_GetLogs_0(ctx context.Context, marshaler runtime.Ma
 
 }
 
-func request_LogStream_GetMetadata_0(ctx context.Context, marshaler runtime.Marshaler, client LogStreamClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq GetMetadataRequest
+func request_LogStream_GetLogMetadata_0(ctx context.Context, marshaler runtime.Marshaler, client LogStreamClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetLogMetadataRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -129,13 +129,13 @@ func request_LogStream_GetMetadata_0(ctx context.Context, marshaler runtime.Mars
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "build_id", err)
 	}
 
-	msg, err := client.GetMetadata(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	msg, err := client.GetLogMetadata(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
 }
 
-func local_request_LogStream_GetMetadata_0(ctx context.Context, marshaler runtime.Marshaler, server LogStreamServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq GetMetadataRequest
+func local_request_LogStream_GetLogMetadata_0(ctx context.Context, marshaler runtime.Marshaler, server LogStreamServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetLogMetadataRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -155,7 +155,43 @@ func local_request_LogStream_GetMetadata_0(ctx context.Context, marshaler runtim
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "build_id", err)
 	}
 
-	msg, err := server.GetMetadata(ctx, &protoReq)
+	msg, err := server.GetLogMetadata(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
+var (
+	filter_LogStream_ListLogMetadata_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
+)
+
+func request_LogStream_ListLogMetadata_0(ctx context.Context, marshaler runtime.Marshaler, client LogStreamClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListLogMetadataRequest
+	var metadata runtime.ServerMetadata
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_LogStream_ListLogMetadata_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := client.ListLogMetadata(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_LogStream_ListLogMetadata_0(ctx context.Context, marshaler runtime.Marshaler, server LogStreamServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListLogMetadataRequest
+	var metadata runtime.ServerMetadata
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_LogStream_ListLogMetadata_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := server.ListLogMetadata(ctx, &protoReq)
 	return msg, metadata, err
 
 }
@@ -372,7 +408,7 @@ func RegisterLogStreamHandlerServer(ctx context.Context, mux *runtime.ServeMux, 
 
 	})
 
-	mux.Handle("GET", pattern_LogStream_GetMetadata_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_LogStream_GetLogMetadata_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -380,12 +416,12 @@ func RegisterLogStreamHandlerServer(ctx context.Context, mux *runtime.ServeMux, 
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/api.public.logstream.LogStream/GetMetadata", runtime.WithHTTPPathPattern("/api/v0/logstream/metadata/{build_id}"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/api.public.logstream.LogStream/GetLogMetadata", runtime.WithHTTPPathPattern("/api/v0/logstream/metadata/{build_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_LogStream_GetMetadata_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_LogStream_GetLogMetadata_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
@@ -393,7 +429,32 @@ func RegisterLogStreamHandlerServer(ctx context.Context, mux *runtime.ServeMux, 
 			return
 		}
 
-		forward_LogStream_GetMetadata_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_LogStream_GetLogMetadata_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("GET", pattern_LogStream_ListLogMetadata_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/api.public.logstream.LogStream/ListLogMetadata", runtime.WithHTTPPathPattern("/api/v0/logstream/metadata"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_LogStream_ListLogMetadata_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_LogStream_ListLogMetadata_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -582,25 +643,47 @@ func RegisterLogStreamHandlerClient(ctx context.Context, mux *runtime.ServeMux, 
 
 	})
 
-	mux.Handle("GET", pattern_LogStream_GetMetadata_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_LogStream_GetLogMetadata_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/api.public.logstream.LogStream/GetMetadata", runtime.WithHTTPPathPattern("/api/v0/logstream/metadata/{build_id}"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/api.public.logstream.LogStream/GetLogMetadata", runtime.WithHTTPPathPattern("/api/v0/logstream/metadata/{build_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_LogStream_GetMetadata_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_LogStream_GetLogMetadata_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_LogStream_GetMetadata_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_LogStream_GetLogMetadata_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("GET", pattern_LogStream_ListLogMetadata_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/api.public.logstream.LogStream/ListLogMetadata", runtime.WithHTTPPathPattern("/api/v0/logstream/metadata"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_LogStream_ListLogMetadata_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_LogStream_ListLogMetadata_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -700,7 +783,9 @@ var (
 
 	pattern_LogStream_GetLogs_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"api.public.logstream.LogStream", "GetLogs"}, ""))
 
-	pattern_LogStream_GetMetadata_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"api", "v0", "logstream", "metadata", "build_id"}, ""))
+	pattern_LogStream_GetLogMetadata_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"api", "v0", "logstream", "metadata", "build_id"}, ""))
+
+	pattern_LogStream_ListLogMetadata_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "v0", "logstream", "metadata"}, ""))
 
 	pattern_LogStream_InitLogs_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"api.public.logstream.LogStream", "InitLogs"}, ""))
 
@@ -716,7 +801,9 @@ var (
 
 	forward_LogStream_GetLogs_0 = runtime.ForwardResponseMessage
 
-	forward_LogStream_GetMetadata_0 = runtime.ForwardResponseMessage
+	forward_LogStream_GetLogMetadata_0 = runtime.ForwardResponseMessage
+
+	forward_LogStream_ListLogMetadata_0 = runtime.ForwardResponseMessage
 
 	forward_LogStream_InitLogs_0 = runtime.ForwardResponseMessage
 

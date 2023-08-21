@@ -67,21 +67,43 @@ message GetLogsResponse {
   repeated DeltaFormattedLog formatted_logs = 2;
 }
 
-message GetMetadataRequest {
+message GetLogMetadataRequest {
   string build_id = 1;
 }
 
-message BuildMetadata {
+message LogMetadata {
   string build_id = 1;
   string org_id = 2;
   string project_id = 3;
   string user_id = 4;
   string shard = 5;
   google.protobuf.Timestamp created_at = 6;
+  Runner runner = 7;
 }
 
-message GetMetadataResponse {
-  BuildMetadata metadata = 1;
+message GetLogMetadataResponse {
+  LogMetadata metadata = 1;
+}
+
+enum Runner {
+  UNSPECIFIED = 0;
+  LOCAL = 1;
+  SATELLITE = 2;
+  CI = 3;
+  REMOTE_BUILDKIT = 4;
+}
+
+message ListLogMetadataRequest {
+  string org_id = 1;
+  string project_id = 2;
+  Runner runner = 3;
+  int32 limit = 4;
+  int32 offset = 5;
+}
+
+message ListLogMetadataResponse {
+  int32 total_results = 1;
+  repeated LogMetadata metadata = 2;
 }
 
 service LogStream {
@@ -96,9 +118,15 @@ service LogStream {
 
   rpc GetLogs(GetLogsRequest) returns (GetLogsResponse) {}
 
-  rpc GetMetadata(GetMetadataRequest) returns (GetMetadataResponse) {
+  rpc GetLogMetadata(GetLogMetadataRequest) returns (GetLogMetadataResponse) {
     option (google.api.http) = {
       get: "/api/v0/logstream/metadata/{build_id}"
+    };
+  }
+
+  rpc ListLogMetadata(ListLogMetadataRequest) returns (ListLogMetadataResponse) {
+    option (google.api.http) = {
+      get: "/api/v0/logstream/metadata"
     };
   }
 
