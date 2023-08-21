@@ -224,6 +224,7 @@ enum MetricType {
   METRICTYPE_DISK_WRITE_MBPS = 7;
   METRICTYPE_NETWORK_TX_MBPS = 8;
   METRICTYPE_NETWORK_RX_MBPS = 9;
+  METRICTYPE_OP_LOAD = 10;
 }
 
 // Double? Or Single? Plural? Who knows we all gave up
@@ -243,6 +244,7 @@ message SatelliteMetrics {
   repeated MetricSeries metrics = 2;
   SatelliteSpecs specs = 3;
   string error = 4; // Allow for partial success/failure
+  SatelliteStatus status = 5;
 }
 
 message SatelliteSpecs {
@@ -251,6 +253,7 @@ message SatelliteSpecs {
   double memory_gib = 3;
   double cache_size_gib = 4;
   string size = 5;
+  int32 max_op_load = 6;
 }
 
 message MetricSeries {
