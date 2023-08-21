@@ -11,7 +11,12 @@ service Billing {
       get: "/api/v0/billing/plans/{org_name}"
     };
   }
-  rpc CreateSubscriptionLink(CreateSubscriptionLinkRequest) returns (CreateSubscriptionLinkResponse) {}
+  rpc CreateSubscriptionLink(CreateSubscriptionLinkRequest) returns (CreateSubscriptionLinkResponse) {
+    option (google.api.http) = {
+      post: "/api/v0/billing/subscribe"
+      body: "*"
+    };
+  }
 }
 
 message CreateSubscriptionLinkRequest {
