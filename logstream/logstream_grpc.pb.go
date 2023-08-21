@@ -21,7 +21,8 @@ const _ = grpc.SupportPackageIsVersion7
 const (
 	LogStream_StreamLogs_FullMethodName           = "/api.public.logstream.LogStream/StreamLogs"
 	LogStream_GetLogs_FullMethodName              = "/api.public.logstream.LogStream/GetLogs"
-	LogStream_GetMetadata_FullMethodName          = "/api.public.logstream.LogStream/GetMetadata"
+	LogStream_GetLogMetadata_FullMethodName       = "/api.public.logstream.LogStream/GetLogMetadata"
+	LogStream_ListLogMetadata_FullMethodName      = "/api.public.logstream.LogStream/ListLogMetadata"
 	LogStream_InitLogs_FullMethodName             = "/api.public.logstream.LogStream/InitLogs"
 	LogStream_GetFirebaseAuthToken_FullMethodName = "/api.public.logstream.LogStream/GetFirebaseAuthToken"
 	LogStream_LongTermExists_FullMethodName       = "/api.public.logstream.LogStream/LongTermExists"
@@ -41,7 +42,8 @@ type LogStreamClient interface {
 	// 6. Client closes the channel. (optionally, the client can wait for server_exit_status)
 	StreamLogs(ctx context.Context, opts ...grpc.CallOption) (LogStream_StreamLogsClient, error)
 	GetLogs(ctx context.Context, in *GetLogsRequest, opts ...grpc.CallOption) (*GetLogsResponse, error)
-	GetMetadata(ctx context.Context, in *GetMetadataRequest, opts ...grpc.CallOption) (*GetMetadataResponse, error)
+	GetLogMetadata(ctx context.Context, in *GetLogMetadataRequest, opts ...grpc.CallOption) (*GetLogMetadataResponse, error)
+	ListLogMetadata(ctx context.Context, in *ListLogMetadataRequest, opts ...grpc.CallOption) (*ListLogMetadataResponse, error)
 	// InitLogs can be used to set the status of a build before or after the core
 	// build task is run by the CLI. It's primarily meant to be used by the
 	// initialization process, but can also be used to surface errors that may not
@@ -102,9 +104,18 @@ func (c *logStreamClient) GetLogs(ctx context.Context, in *GetLogsRequest, opts 
 	return out, nil
 }
 
-func (c *logStreamClient) GetMetadata(ctx context.Context, in *GetMetadataRequest, opts ...grpc.CallOption) (*GetMetadataResponse, error) {
-	out := new(GetMetadataResponse)
-	err := c.cc.Invoke(ctx, LogStream_GetMetadata_FullMethodName, in, out, opts...)
+func (c *logStreamClient) GetLogMetadata(ctx context.Context, in *GetLogMetadataRequest, opts ...grpc.CallOption) (*GetLogMetadataResponse, error) {
+	out := new(GetLogMetadataResponse)
+	err := c.cc.Invoke(ctx, LogStream_GetLogMetadata_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *logStreamClient) ListLogMetadata(ctx context.Context, in *ListLogMetadataRequest, opts ...grpc.CallOption) (*ListLogMetadataResponse, error) {
+	out := new(ListLogMetadataResponse)
+	err := c.cc.Invoke(ctx, LogStream_ListLogMetadata_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -160,7 +171,8 @@ type LogStreamServer interface {
 	// 6. Client closes the channel. (optionally, the client can wait for server_exit_status)
 	StreamLogs(LogStream_StreamLogsServer) error
 	GetLogs(context.Context, *GetLogsRequest) (*GetLogsResponse, error)
-	GetMetadata(context.Context, *GetMetadataRequest) (*GetMetadataResponse, error)
+	GetLogMetadata(context.Context, *GetLogMetadataRequest) (*GetLogMetadataResponse, error)
+	ListLogMetadata(context.Context, *ListLogMetadataRequest) (*ListLogMetadataResponse, error)
 	// InitLogs can be used to set the status of a build before or after the core
 	// build task is run by the CLI. It's primarily meant to be used by the
 	// initialization process, but can also be used to surface errors that may not
@@ -184,8 +196,11 @@ func (UnimplementedLogStreamServer) StreamLogs(LogStream_StreamLogsServer) error
 func (UnimplementedLogStreamServer) GetLogs(context.Context, *GetLogsRequest) (*GetLogsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetLogs not implemented")
 }
-func (UnimplementedLogStreamServer) GetMetadata(context.Context, *GetMetadataRequest) (*GetMetadataResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetMetadata not implemented")
+func (UnimplementedLogStreamServer) GetLogMetadata(context.Context, *GetLogMetadataRequest) (*GetLogMetadataResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetLogMetadata not implemented")
+}
+func (UnimplementedLogStreamServer) ListLogMetadata(context.Context, *ListLogMetadataRequest) (*ListLogMetadataResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListLogMetadata not implemented")
 }
 func (UnimplementedLogStreamServer) InitLogs(context.Context, *InitLogsRequest) (*InitLogsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method InitLogs not implemented")
@@ -256,20 +271,38 @@ func _LogStream_GetLogs_Handler(srv interface{}, ctx context.Context, dec func(i
 	return interceptor(ctx, in, info, handler)
 }
 
-func _LogStream_GetMetadata_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetMetadataRequest)
+func _LogStream_GetLogMetadata_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetLogMetadataRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(LogStreamServer).GetMetadata(ctx, in)
+		return srv.(LogStreamServer).GetLogMetadata(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: LogStream_GetMetadata_FullMethodName,
+		FullMethod: LogStream_GetLogMetadata_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(LogStreamServer).GetMetadata(ctx, req.(*GetMetadataRequest))
+		return srv.(LogStreamServer).GetLogMetadata(ctx, req.(*GetLogMetadataRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _LogStream_ListLogMetadata_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListLogMetadataRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(LogStreamServer).ListLogMetadata(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: LogStream_ListLogMetadata_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(LogStreamServer).ListLogMetadata(ctx, req.(*ListLogMetadataRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -358,8 +391,12 @@ var LogStream_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _LogStream_GetLogs_Handler,
 		},
 		{
-			MethodName: "GetMetadata",
-			Handler:    _LogStream_GetMetadata_Handler,
+			MethodName: "GetLogMetadata",
+			Handler:    _LogStream_GetLogMetadata_Handler,
+		},
+		{
+			MethodName: "ListLogMetadata",
+			Handler:    _LogStream_ListLogMetadata_Handler,
 		},
 		{
 			MethodName: "InitLogs",
