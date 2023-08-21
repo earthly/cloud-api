@@ -156,7 +156,7 @@ func RegisterBillingHandlerServer(ctx context.Context, mux *runtime.ServeMux, se
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/api.public.billing.Billing/CreateSubscriptionLink", runtime.WithHTTPPathPattern("/api.public.billing.Billing/CreateSubscriptionLink"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/api.public.billing.Billing/CreateSubscriptionLink", runtime.WithHTTPPathPattern("/api/v0/billing/subscribe"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -242,7 +242,7 @@ func RegisterBillingHandlerClient(ctx context.Context, mux *runtime.ServeMux, cl
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/api.public.billing.Billing/CreateSubscriptionLink", runtime.WithHTTPPathPattern("/api.public.billing.Billing/CreateSubscriptionLink"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/api.public.billing.Billing/CreateSubscriptionLink", runtime.WithHTTPPathPattern("/api/v0/billing/subscribe"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -264,7 +264,7 @@ func RegisterBillingHandlerClient(ctx context.Context, mux *runtime.ServeMux, cl
 var (
 	pattern_Billing_GetBillingPlan_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"api", "v0", "billing", "plans", "org_name"}, ""))
 
-	pattern_Billing_CreateSubscriptionLink_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"api.public.billing.Billing", "CreateSubscriptionLink"}, ""))
+	pattern_Billing_CreateSubscriptionLink_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "v0", "billing", "subscribe"}, ""))
 )
 
 var (
