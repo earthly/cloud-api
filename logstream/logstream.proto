@@ -63,8 +63,10 @@ message GetLogsRequest {
 }
 
 message GetLogsResponse {
-  RunManifest manifest = 1;
-  repeated DeltaFormattedLog formatted_logs = 2;
+  oneof result {
+    RunManifest manifest = 1;
+    FormattedLogList logs = 2;
+  }
 }
 
 message GetLogMetadataRequest {
@@ -116,7 +118,7 @@ service LogStream {
   // 6. Client closes the channel. (optionally, the client can wait for server_exit_status)
   rpc StreamLogs(stream StreamLogRequest) returns (stream StreamLogResponse) {}
 
-  rpc GetLogs(GetLogsRequest) returns (GetLogsResponse) {}
+  rpc GetLogs(GetLogsRequest) returns (stream GetLogsResponse) {}
 
   rpc GetLogMetadata(GetLogMetadataRequest) returns (GetLogMetadataResponse) {
     option (google.api.http) = {
