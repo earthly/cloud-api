@@ -47,8 +47,10 @@ message FormattedLogList {
 }
 
 message GetLongTermResponse {
-  RunManifest manifest = 1;
-  repeated DeltaFormattedLog formatted_logs = 2;
+  oneof result {
+    RunManifest manifest = 1;
+    FormattedLogList logs = 2;
+  }
 }
 
 message InitLogsRequest {
@@ -152,7 +154,7 @@ service LogStream {
     };
   }
 
-  rpc GetLongTerm(GetLongTermRequest) returns (GetLongTermResponse) {
+  rpc GetLongTerm(GetLongTermRequest) returns (stream GetLongTermResponse) {
     option (google.api.http) = {
       get: "/api/v0/logstream/long-term/{build_id}"
     };
