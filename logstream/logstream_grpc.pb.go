@@ -53,7 +53,7 @@ type LogStreamClient interface {
 	// The user must already be authenticated.
 	GetFirebaseAuthToken(ctx context.Context, in *GetFirebaseAuthTokenRequest, opts ...grpc.CallOption) (*GetFirebaseAuthTokenResponse, error)
 	LongTermExists(ctx context.Context, in *LongTermExistsRequest, opts ...grpc.CallOption) (*LongTermExistsResponse, error)
-	GetLongTerm(ctx context.Context, in *GetLongTermRequest, opts ...grpc.CallOption) (*GetLongTermResponse, error)
+	GetLongTerm(ctx context.Context, in *GetLongTermRequest, opts ...grpc.CallOption) (LogStream_GetLongTermClient, error)
 }
 
 type logStreamClient struct {
@@ -172,13 +172,36 @@ func (c *logStreamClient) LongTermExists(ctx context.Context, in *LongTermExists
 	return out, nil
 }
 
-func (c *logStreamClient) GetLongTerm(ctx context.Context, in *GetLongTermRequest, opts ...grpc.CallOption) (*GetLongTermResponse, error) {
-	out := new(GetLongTermResponse)
-	err := c.cc.Invoke(ctx, LogStream_GetLongTerm_FullMethodName, in, out, opts...)
+func (c *logStreamClient) GetLongTerm(ctx context.Context, in *GetLongTermRequest, opts ...grpc.CallOption) (LogStream_GetLongTermClient, error) {
+	stream, err := c.cc.NewStream(ctx, &LogStream_ServiceDesc.Streams[2], LogStream_GetLongTerm_FullMethodName, opts...)
 	if err != nil {
 		return nil, err
 	}
-	return out, nil
+	x := &logStreamGetLongTermClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type LogStream_GetLongTermClient interface {
+	Recv() (*GetLongTermResponse, error)
+	grpc.ClientStream
+}
+
+type logStreamGetLongTermClient struct {
+	grpc.ClientStream
+}
+
+func (x *logStreamGetLongTermClient) Recv() (*GetLongTermResponse, error) {
+	m := new(GetLongTermResponse)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
 }
 
 // LogStreamServer is the server API for LogStream service.
@@ -205,7 +228,7 @@ type LogStreamServer interface {
 	// The user must already be authenticated.
 	GetFirebaseAuthToken(context.Context, *GetFirebaseAuthTokenRequest) (*GetFirebaseAuthTokenResponse, error)
 	LongTermExists(context.Context, *LongTermExistsRequest) (*LongTermExistsResponse, error)
-	GetLongTerm(context.Context, *GetLongTermRequest) (*GetLongTermResponse, error)
+	GetLongTerm(*GetLongTermRequest, LogStream_GetLongTermServer) error
 	mustEmbedUnimplementedLogStreamServer()
 }
 
@@ -234,8 +257,8 @@ func (UnimplementedLogStreamServer) GetFirebaseAuthToken(context.Context, *GetFi
 func (UnimplementedLogStreamServer) LongTermExists(context.Context, *LongTermExistsRequest) (*LongTermExistsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method LongTermExists not implemented")
 }
-func (UnimplementedLogStreamServer) GetLongTerm(context.Context, *GetLongTermRequest) (*GetLongTermResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetLongTerm not implemented")
+func (UnimplementedLogStreamServer) GetLongTerm(*GetLongTermRequest, LogStream_GetLongTermServer) error {
+	return status.Errorf(codes.Unimplemented, "method GetLongTerm not implemented")
 }
 func (UnimplementedLogStreamServer) mustEmbedUnimplementedLogStreamServer() {}
 
@@ -387,22 +410,25 @@ func _LogStream_LongTermExists_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
-func _LogStream_GetLongTerm_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetLongTermRequest)
-	if err := dec(in); err != nil {
-		return nil, err
+func _LogStream_GetLongTerm_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(GetLongTermRequest)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
 	}
-	if interceptor == nil {
-		return srv.(LogStreamServer).GetLongTerm(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: LogStream_GetLongTerm_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(LogStreamServer).GetLongTerm(ctx, req.(*GetLongTermRequest))
-	}
-	return interceptor(ctx, in, info, handler)
+	return srv.(LogStreamServer).GetLongTerm(m, &logStreamGetLongTermServer{stream})
+}
+
+type LogStream_GetLongTermServer interface {
+	Send(*GetLongTermResponse) error
+	grpc.ServerStream
+}
+
+type logStreamGetLongTermServer struct {
+	grpc.ServerStream
+}
+
+func (x *logStreamGetLongTermServer) Send(m *GetLongTermResponse) error {
+	return x.ServerStream.SendMsg(m)
 }
 
 // LogStream_ServiceDesc is the grpc.ServiceDesc for LogStream service.
@@ -432,10 +458,6 @@ var LogStream_ServiceDesc = grpc.ServiceDesc{
 			MethodName: "LongTermExists",
 			Handler:    _LogStream_LongTermExists_Handler,
 		},
-		{
-			MethodName: "GetLongTerm",
-			Handler:    _LogStream_GetLongTerm_Handler,
-		},
 	},
 	Streams: []grpc.StreamDesc{
 		{
@@ -447,6 +469,11 @@ var LogStream_ServiceDesc = grpc.ServiceDesc{
 		{
 			StreamName:    "GetLogs",
 			Handler:       _LogStream_GetLogs_Handler,
+			ServerStreams: true,
+		},
+		{
+			StreamName:    "GetLongTerm",
+			Handler:       _LogStream_GetLongTerm_Handler,
 			ServerStreams: true,
 		},
 	},
