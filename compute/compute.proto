@@ -290,15 +290,12 @@ message RegisterSatelliteRequest {
 }
 
 message RegisterSatelliteResponse {
-  bool registered = 1;
+  string registration_token = 1;
   bool checked_reachability = 2;
-  string registration_token = 3;
 }
 
 message DeregisterSatelliteRequest {
-  string org_id = 1;
-  string satellite_name = 2;
-  string registration_token = 3;
+  string registration_token = 1;
 }
 
 message DeregisterSatelliteResponse {}
