@@ -21,7 +21,6 @@ message RunManifest {
   map<string, TargetManifest> targets = 7;
   map<string, CommandManifest> commands = 13;
   string main_target_id = 8;
-  
   Failure failure = 9;
 
   // org_name is the name of the organization that owns this run.
@@ -62,6 +61,7 @@ message Failure {
   string command_id = 3;
   string error_message = 4;
   bytes output = 5;
+  bool quiet = 6; // Capture the error but don't render it.
 }
 
 message TargetManifest {
