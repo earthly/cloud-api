@@ -51,6 +51,14 @@ message DeltaManifest {
   oneof delta_manifest_oneof {
     RunManifest reset_all = 1;
     FieldsDelta fields = 2;
+    ResumeBuild resume = 3;
+  }
+
+  message ResumeBuild {
+    string build_id = 1;
+    string token = 2;
+    string org_name = 3;
+    string project_name = 4;
   }
 
   message FieldsDelta {
