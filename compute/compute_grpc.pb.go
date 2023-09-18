@@ -25,6 +25,9 @@ const (
 	Compute_DeleteSatellite_FullMethodName       = "/api.public.compute.Compute/DeleteSatellite"
 	Compute_GetSatellite_FullMethodName          = "/api.public.compute.Compute/GetSatellite"
 	Compute_ListSatellitesMetrics_FullMethodName = "/api.public.compute.Compute/ListSatellitesMetrics"
+	Compute_RegisterSatellite_FullMethodName     = "/api.public.compute.Compute/RegisterSatellite"
+	Compute_DeregisterSatellite_FullMethodName   = "/api.public.compute.Compute/DeregisterSatellite"
+	Compute_SatelliteHeartbeat_FullMethodName    = "/api.public.compute.Compute/SatelliteHeartbeat"
 	Compute_WakeSatellite_FullMethodName         = "/api.public.compute.Compute/WakeSatellite"
 	Compute_SleepSatellite_FullMethodName        = "/api.public.compute.Compute/SleepSatellite"
 	Compute_ReserveSatellite_FullMethodName      = "/api.public.compute.Compute/ReserveSatellite"
@@ -52,6 +55,19 @@ type ComputeClient interface {
 	// definitive historical record of build metrics, but instead a way to catch a glimpse into the current or recent
 	// state of the satellite.
 	ListSatellitesMetrics(ctx context.Context, in *ListSatellitesMetricsRequest, opts ...grpc.CallOption) (*ListSatellitesMetricsResponse, error)
+	// RegisterSatellite is called by a satellite once it is online and ready to accept builds.
+	// The registration contains the satellite's connection info.
+	// A registration token is returned, which must be passed-in to other endpoints related to registration,
+	// such as DeregisterSatellite and SatelliteHeartbeat.
+	RegisterSatellite(ctx context.Context, in *RegisterSatelliteRequest, opts ...grpc.CallOption) (*RegisterSatelliteResponse, error)
+	// DeregisterSatellite immediately removes the satellite from the organization.
+	DeregisterSatellite(ctx context.Context, in *DeregisterSatelliteRequest, opts ...grpc.CallOption) (*DeregisterSatelliteResponse, error)
+	// SatelliteHeartbeat must be called periodically while a satellite is online.
+	// The heartbeat request may also contain useful information about the satellite's state,
+	// such as its op-load, or (in the future) session history.
+	// If the compute service stops receiving heartbeats unexpectedly,
+	// the satellite is automatically deregistered.
+	SatelliteHeartbeat(ctx context.Context, in *SatelliteHeartbeatRequest, opts ...grpc.CallOption) (*SatelliteHeartbeatResponse, error)
 	// WakeSatellite wakes a satellite that is in a sleep state.
 	// The response returns a stream that sends updates as the satellite wakes up.
 	// For example, the stream may send the following statuses:
@@ -145,6 +161,33 @@ func (c *computeClient) GetSatellite(ctx context.Context, in *GetSatelliteReques
 func (c *computeClient) ListSatellitesMetrics(ctx context.Context, in *ListSatellitesMetricsRequest, opts ...grpc.CallOption) (*ListSatellitesMetricsResponse, error) {
 	out := new(ListSatellitesMetricsResponse)
 	err := c.cc.Invoke(ctx, Compute_ListSatellitesMetrics_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *computeClient) RegisterSatellite(ctx context.Context, in *RegisterSatelliteRequest, opts ...grpc.CallOption) (*RegisterSatelliteResponse, error) {
+	out := new(RegisterSatelliteResponse)
+	err := c.cc.Invoke(ctx, Compute_RegisterSatellite_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *computeClient) DeregisterSatellite(ctx context.Context, in *DeregisterSatelliteRequest, opts ...grpc.CallOption) (*DeregisterSatelliteResponse, error) {
+	out := new(DeregisterSatelliteResponse)
+	err := c.cc.Invoke(ctx, Compute_DeregisterSatellite_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *computeClient) SatelliteHeartbeat(ctx context.Context, in *SatelliteHeartbeatRequest, opts ...grpc.CallOption) (*SatelliteHeartbeatResponse, error) {
+	out := new(SatelliteHeartbeatResponse)
+	err := c.cc.Invoke(ctx, Compute_SatelliteHeartbeat_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -269,6 +312,19 @@ type ComputeServer interface {
 	// definitive historical record of build metrics, but instead a way to catch a glimpse into the current or recent
 	// state of the satellite.
 	ListSatellitesMetrics(context.Context, *ListSatellitesMetricsRequest) (*ListSatellitesMetricsResponse, error)
+	// RegisterSatellite is called by a satellite once it is online and ready to accept builds.
+	// The registration contains the satellite's connection info.
+	// A registration token is returned, which must be passed-in to other endpoints related to registration,
+	// such as DeregisterSatellite and SatelliteHeartbeat.
+	RegisterSatellite(context.Context, *RegisterSatelliteRequest) (*RegisterSatelliteResponse, error)
+	// DeregisterSatellite immediately removes the satellite from the organization.
+	DeregisterSatellite(context.Context, *DeregisterSatelliteRequest) (*DeregisterSatelliteResponse, error)
+	// SatelliteHeartbeat must be called periodically while a satellite is online.
+	// The heartbeat request may also contain useful information about the satellite's state,
+	// such as its op-load, or (in the future) session history.
+	// If the compute service stops receiving heartbeats unexpectedly,
+	// the satellite is automatically deregistered.
+	SatelliteHeartbeat(context.Context, *SatelliteHeartbeatRequest) (*SatelliteHeartbeatResponse, error)
 	// WakeSatellite wakes a satellite that is in a sleep state.
 	// The response returns a stream that sends updates as the satellite wakes up.
 	// For example, the stream may send the following statuses:
@@ -328,6 +384,15 @@ func (UnimplementedComputeServer) GetSatellite(context.Context, *GetSatelliteReq
 }
 func (UnimplementedComputeServer) ListSatellitesMetrics(context.Context, *ListSatellitesMetricsRequest) (*ListSatellitesMetricsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListSatellitesMetrics not implemented")
+}
+func (UnimplementedComputeServer) RegisterSatellite(context.Context, *RegisterSatelliteRequest) (*RegisterSatelliteResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RegisterSatellite not implemented")
+}
+func (UnimplementedComputeServer) DeregisterSatellite(context.Context, *DeregisterSatelliteRequest) (*DeregisterSatelliteResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeregisterSatellite not implemented")
+}
+func (UnimplementedComputeServer) SatelliteHeartbeat(context.Context, *SatelliteHeartbeatRequest) (*SatelliteHeartbeatResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SatelliteHeartbeat not implemented")
 }
 func (UnimplementedComputeServer) WakeSatellite(*WakeSatelliteRequest, Compute_WakeSatelliteServer) error {
 	return status.Errorf(codes.Unimplemented, "method WakeSatellite not implemented")
@@ -459,6 +524,60 @@ func _Compute_ListSatellitesMetrics_Handler(srv interface{}, ctx context.Context
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Compute_RegisterSatellite_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RegisterSatelliteRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ComputeServer).RegisterSatellite(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Compute_RegisterSatellite_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ComputeServer).RegisterSatellite(ctx, req.(*RegisterSatelliteRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Compute_DeregisterSatellite_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeregisterSatelliteRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ComputeServer).DeregisterSatellite(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Compute_DeregisterSatellite_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ComputeServer).DeregisterSatellite(ctx, req.(*DeregisterSatelliteRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Compute_SatelliteHeartbeat_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SatelliteHeartbeatRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ComputeServer).SatelliteHeartbeat(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Compute_SatelliteHeartbeat_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ComputeServer).SatelliteHeartbeat(ctx, req.(*SatelliteHeartbeatRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Compute_WakeSatellite_Handler(srv interface{}, stream grpc.ServerStream) error {
 	m := new(WakeSatelliteRequest)
 	if err := stream.RecvMsg(m); err != nil {
@@ -552,6 +671,18 @@ var Compute_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListSatellitesMetrics",
 			Handler:    _Compute_ListSatellitesMetrics_Handler,
+		},
+		{
+			MethodName: "RegisterSatellite",
+			Handler:    _Compute_RegisterSatellite_Handler,
+		},
+		{
+			MethodName: "DeregisterSatellite",
+			Handler:    _Compute_DeregisterSatellite_Handler,
+		},
+		{
+			MethodName: "SatelliteHeartbeat",
+			Handler:    _Compute_SatelliteHeartbeat_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{
