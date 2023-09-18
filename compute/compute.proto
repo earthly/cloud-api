@@ -53,6 +53,22 @@ service Compute {
     };
   }
 
+  // RegisterSatellite is called by a satellite once it is online and ready to accept builds.
+  // The registration contains the satellite's connection info.
+  // A registration token is returned, which must be passed-in to other endpoints related to registration,
+  // such as DeregisterSatellite and SatelliteHeartbeat.
+  rpc RegisterSatellite(RegisterSatelliteRequest) returns (RegisterSatelliteResponse) {}
+
+  // DeregisterSatellite immediately removes the satellite from the organization.
+  rpc DeregisterSatellite(DeregisterSatelliteRequest) returns (DeregisterSatelliteResponse) {}
+
+  // SatelliteHeartbeat must be called periodically while a satellite is online.
+  // The heartbeat request may also contain useful information about the satellite's state,
+  // such as its op-load, or (in the future) session history.
+  // If the compute service stops receiving heartbeats unexpectedly,
+  // the satellite is automatically deregistered.
+  rpc SatelliteHeartbeat(SatelliteHeartbeatRequest) returns (SatelliteHeartbeatResponse) {}
+
   // WakeSatellite wakes a satellite that is in a sleep state.
   // The response returns a stream that sends updates as the satellite wakes up.
   // For example, the stream may send the following statuses:
@@ -265,3 +281,28 @@ message Datapoint {
   google.protobuf.Timestamp time = 1; // this should be minute-truncated, unless its not a complete minute yet
   double value = 2;
 }
+
+message RegisterSatelliteRequest {
+  string org_id = 1;
+  string satellite_name = 2;
+  string satellite_host = 3;
+  int32 satellite_port = 4;
+}
+
+message RegisterSatelliteResponse {
+  string registration_token = 1;
+  bool checked_reachability = 2;
+}
+
+message DeregisterSatelliteRequest {
+  string registration_token = 1;
+}
+
+message DeregisterSatelliteResponse {}
+
+message SatelliteHeartbeatRequest {
+  string registration_token = 1;
+  int32 op_load = 2;
+}
+
+message SatelliteHeartbeatResponse {}
