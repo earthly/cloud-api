@@ -76,6 +76,9 @@ message DeltaManifest {
 message DeltaTargetManifest {
   string name = 1;
   string canonical_name = 2;
+  string git_url = 10;
+  string local_path = 11;
+  string tag = 12;
   repeated string override_args = 3;
   string initial_platform = 4;
   string final_platform = 8;
