@@ -83,6 +83,13 @@ message LogMetadata {
   string shard = 5;
   google.protobuf.Timestamp created_at = 6;
   Runner runner = 7;
+  string runner_name = 8;
+  RunStatus status = 9;
+  string target_name = 10;
+  string target_git_url = 11;
+  string target_path = 12;
+  string target_tag = 13;
+  google.protobuf.Timestamp ended_at = 14;
 }
 
 message GetLogMetadataResponse {
@@ -103,6 +110,8 @@ message ListLogMetadataRequest {
   Runner runner = 3;
   int32 limit = 4;
   int32 offset = 5;
+  string runner_name = 6;
+  RunStatus status = 7;
 }
 
 message ListLogMetadataResponse {
