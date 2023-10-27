@@ -75,6 +75,14 @@ message GetLogMetadataRequest {
   string build_id = 1;
 }
 
+message Target {
+  string name = 1;
+  string git_url = 2;
+  string local_path = 3;
+  string tag = 4;
+  string import_ref = 5;
+}
+
 message LogMetadata {
   string build_id = 1;
   string org_id = 2;
@@ -85,11 +93,8 @@ message LogMetadata {
   Runner runner = 7;
   string runner_name = 8;
   RunStatus status = 9;
-  string target_name = 10;
-  string target_git_url = 11;
-  string target_path = 12;
-  string target_tag = 13;
-  google.protobuf.Timestamp ended_at = 14;
+  google.protobuf.Timestamp ended_at = 10;
+  Target target = 11;
 }
 
 message GetLogMetadataResponse {
