@@ -53,6 +53,7 @@ enum FailureType {
   FAILURE_TYPE_NEEDS_PRIVILEGED = 8;
   FAILURE_TYPE_GIT = 9;
   FAILURE_TYPE_RATE_LIMITED = 10;
+  FAILURE_TYPE_INVALID_PARAM = 11;
 }
 
 message Failure {
@@ -67,6 +68,10 @@ message TargetManifest {
   string name = 1; // e.g. +build
   string canonical_name = 2; // e.g. github.com/foo/bar/buz:main+build
   repeated string override_args = 3;
+  string git_url = 10;
+  string local_path = 11;
+  string tag = 12;
+  string import_ref = 13;
   string initial_platform = 4;
   string final_platform = 8;
   // runner is the runner identifier that this target runs on. Possible formats:
