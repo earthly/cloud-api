@@ -117,6 +117,9 @@ message ListLogMetadataRequest {
   int32 offset = 5;
   string runner_name = 6;
   RunStatus status = 7;
+  string user_id = 8;
+  string target = 9;
+  repeated string exclude_user_ids = 10;
 }
 
 message ListLogMetadataResponse {
