@@ -287,6 +287,8 @@ message RegisterSatelliteRequest {
   string satellite_name = 2;
   string satellite_host = 3;
   int32 satellite_port = 4;
+  string platform = 5;
+  string version = 6;
 }
 
 message RegisterSatelliteResponse {
