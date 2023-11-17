@@ -194,6 +194,7 @@ message GetSatelliteResponse {
   google.protobuf.Duration cache_retention = 16;
   google.protobuf.Timestamp last_used = 17;
   SatelliteMetrics current_metrics = 18;
+  bool is_managed = 19;
 }
 
 message WakeSatelliteRequest {
