@@ -12,6 +12,7 @@ service Askv {
   rpc PrunePipeline(PrunePipelineRequest) returns (PrunePipelineResponse) {}
   rpc PruneProject(PruneProjectRequest) returns (PruneProjectResponse) {}
   rpc PruneOrg(PruneOrgRequest) returns (PruneOrgResponse) {}
+  rpc PruneTarget(PruneTargetRequest) returns (PruneTargetResponse) {}
 }
 
 message ExistsRequest {
@@ -32,8 +33,7 @@ message AddRequest {
   bytes hash = 4;
 }
 
-message AddResponse {
-}
+message AddResponse {}
 
 message PrunePipelineRequest {
   string org_name = 1;
@@ -41,20 +41,25 @@ message PrunePipelineRequest {
   string pipeline_name = 3;
 }
 
-message PrunePipelineResponse {
-}
+message PrunePipelineResponse {}
 
 message PruneProjectRequest {
   string org_name = 1;
   string project_name = 2;
 }
 
-message PruneProjectResponse {
-}
+message PruneProjectResponse {}
 
 message PruneOrgRequest {
   string org_name = 1;
 }
 
-message PruneOrgResponse {
+message PruneOrgResponse {}
+
+message PruneTargetRequest {
+  string org_name = 1;
+  string project_name = 2;
+  string target_name = 3;
 }
+
+message PruneTargetResponse {}
