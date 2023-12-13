@@ -9,16 +9,15 @@ import "google/protobuf/duration.proto";
 service Askv {
   rpc Exists(ExistsRequest) returns (ExistsResponse) {}
   rpc Add(AddRequest) returns (AddResponse) {}
-  rpc PruneProject(PruneProjectRequest) returns (PruneProjectResponse) {}
   rpc PruneOrg(PruneOrgRequest) returns (PruneOrgResponse) {}
   rpc PruneTarget(PruneTargetRequest) returns (PruneTargetResponse) {}
 }
 
 message ExistsRequest {
   string org_name = 1;
-  string project_name = 2;
   bytes hash = 4;
 
+  reserved 2; // project_name
   reserved 3; // pipeline_name
 }
 
@@ -28,22 +27,15 @@ message ExistsResponse {
 
 message AddRequest {
   string org_name = 1;
-  string project_name = 2;
   bytes hash = 4;
   string target_name = 5;
   string target_path = 6;
 
+  reserved 2; // project_name
   reserved 3; // pipeline_name
 }
 
 message AddResponse {}
-
-message PruneProjectRequest {
-  string org_name = 1;
-  string project_name = 2;
-}
-
-message PruneProjectResponse {}
 
 message PruneOrgRequest {
   string org_name = 1;
@@ -53,10 +45,11 @@ message PruneOrgResponse {}
 
 message PruneTargetRequest {
   string org_name = 1;
-  string project_name = 2;
   string target_name = 3;
   string target_path = 4;
   bool use_path_prefix = 5;
+
+  reserved 2; // project_name
 }
 
 message PruneTargetResponse {
