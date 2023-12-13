@@ -56,6 +56,9 @@ message PruneTargetRequest {
   string project_name = 2;
   string target_name = 3;
   string target_path = 4;
+  bool use_path_prefix = 5;
 }
 
-message PruneTargetResponse {}
+message PruneTargetResponse {
+  int32 count = 1;
+}
