@@ -56,7 +56,7 @@ message PruneTargetRequest {
   string project_name = 2;
   string target_name = 3;
   string target_path = 4;
-  bool deep = 5; // Use target path as a path prefix.
+  bool use_path_prefix = 5;
 }
 
 message PruneTargetResponse {
