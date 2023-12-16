@@ -54,6 +54,7 @@ enum FailureType {
   FAILURE_TYPE_GIT = 9;
   FAILURE_TYPE_RATE_LIMITED = 10;
   FAILURE_TYPE_INVALID_PARAM = 11;
+  FAILURE_TYPE_AUTO_SKIP = 12;
 }
 
 message Failure {
