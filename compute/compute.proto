@@ -195,15 +195,7 @@ message GetSatelliteResponse {
   google.protobuf.Timestamp last_used = 17;
   SatelliteMetrics current_metrics = 18;
   bool is_managed = 19;
-  message TLSCertificates {
-    bytes tls_ca = 1;
-    bytes tls_ca_key = 2;
-    bytes buildkit_tls_cert = 3;
-    bytes buildkit_tls_key = 4;
-    bytes tls_cert = 5;
-    bytes tls_key = 6;
-  }
-  TLSCertificates certificates = 20;
+  TLSCertificate certificate = 20;
 }
 
 message WakeSatelliteRequest {
@@ -292,6 +284,11 @@ message Datapoint {
   double value = 2;
 }
 
+message TLSCertificate {
+  bytes ca = 1;
+  bytes ca_key = 2;
+}
+
 message RegisterSatelliteRequest {
   string org_id = 1;
   string satellite_name = 2;
@@ -299,15 +296,7 @@ message RegisterSatelliteRequest {
   int32 satellite_port = 4;
   string platform = 5;
   string version = 6;
-  message TLSCertificates {
-    bytes tls_ca = 1;
-    bytes tls_ca_key = 2;
-    bytes buildkit_tls_cert = 3;
-    bytes buildkit_tls_key = 4;
-    bytes tls_cert = 5;
-    bytes tls_key = 6;
-  }
-  TLSCertificates certificates = 7;
+  TLSCertificate certificate = 7;
 }
 
 message RegisterSatelliteResponse {
