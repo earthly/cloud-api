@@ -19,11 +19,10 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	Askv_Exists_FullMethodName        = "/api.public.askv.Askv/Exists"
-	Askv_Add_FullMethodName           = "/api.public.askv.Askv/Add"
-	Askv_PrunePipeline_FullMethodName = "/api.public.askv.Askv/PrunePipeline"
-	Askv_PruneProject_FullMethodName  = "/api.public.askv.Askv/PruneProject"
-	Askv_PruneOrg_FullMethodName      = "/api.public.askv.Askv/PruneOrg"
+	Askv_Exists_FullMethodName      = "/api.public.askv.Askv/Exists"
+	Askv_Add_FullMethodName         = "/api.public.askv.Askv/Add"
+	Askv_PruneOrg_FullMethodName    = "/api.public.askv.Askv/PruneOrg"
+	Askv_PruneTarget_FullMethodName = "/api.public.askv.Askv/PruneTarget"
 )
 
 // AskvClient is the client API for Askv service.
@@ -32,9 +31,8 @@ const (
 type AskvClient interface {
 	Exists(ctx context.Context, in *ExistsRequest, opts ...grpc.CallOption) (*ExistsResponse, error)
 	Add(ctx context.Context, in *AddRequest, opts ...grpc.CallOption) (*AddResponse, error)
-	PrunePipeline(ctx context.Context, in *PrunePipelineRequest, opts ...grpc.CallOption) (*PrunePipelineResponse, error)
-	PruneProject(ctx context.Context, in *PruneProjectRequest, opts ...grpc.CallOption) (*PruneProjectResponse, error)
 	PruneOrg(ctx context.Context, in *PruneOrgRequest, opts ...grpc.CallOption) (*PruneOrgResponse, error)
+	PruneTarget(ctx context.Context, in *PruneTargetRequest, opts ...grpc.CallOption) (*PruneTargetResponse, error)
 }
 
 type askvClient struct {
@@ -63,27 +61,18 @@ func (c *askvClient) Add(ctx context.Context, in *AddRequest, opts ...grpc.CallO
 	return out, nil
 }
 
-func (c *askvClient) PrunePipeline(ctx context.Context, in *PrunePipelineRequest, opts ...grpc.CallOption) (*PrunePipelineResponse, error) {
-	out := new(PrunePipelineResponse)
-	err := c.cc.Invoke(ctx, Askv_PrunePipeline_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *askvClient) PruneProject(ctx context.Context, in *PruneProjectRequest, opts ...grpc.CallOption) (*PruneProjectResponse, error) {
-	out := new(PruneProjectResponse)
-	err := c.cc.Invoke(ctx, Askv_PruneProject_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 func (c *askvClient) PruneOrg(ctx context.Context, in *PruneOrgRequest, opts ...grpc.CallOption) (*PruneOrgResponse, error) {
 	out := new(PruneOrgResponse)
 	err := c.cc.Invoke(ctx, Askv_PruneOrg_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *askvClient) PruneTarget(ctx context.Context, in *PruneTargetRequest, opts ...grpc.CallOption) (*PruneTargetResponse, error) {
+	out := new(PruneTargetResponse)
+	err := c.cc.Invoke(ctx, Askv_PruneTarget_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -96,9 +85,8 @@ func (c *askvClient) PruneOrg(ctx context.Context, in *PruneOrgRequest, opts ...
 type AskvServer interface {
 	Exists(context.Context, *ExistsRequest) (*ExistsResponse, error)
 	Add(context.Context, *AddRequest) (*AddResponse, error)
-	PrunePipeline(context.Context, *PrunePipelineRequest) (*PrunePipelineResponse, error)
-	PruneProject(context.Context, *PruneProjectRequest) (*PruneProjectResponse, error)
 	PruneOrg(context.Context, *PruneOrgRequest) (*PruneOrgResponse, error)
+	PruneTarget(context.Context, *PruneTargetRequest) (*PruneTargetResponse, error)
 	mustEmbedUnimplementedAskvServer()
 }
 
@@ -112,14 +100,11 @@ func (UnimplementedAskvServer) Exists(context.Context, *ExistsRequest) (*ExistsR
 func (UnimplementedAskvServer) Add(context.Context, *AddRequest) (*AddResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Add not implemented")
 }
-func (UnimplementedAskvServer) PrunePipeline(context.Context, *PrunePipelineRequest) (*PrunePipelineResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method PrunePipeline not implemented")
-}
-func (UnimplementedAskvServer) PruneProject(context.Context, *PruneProjectRequest) (*PruneProjectResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method PruneProject not implemented")
-}
 func (UnimplementedAskvServer) PruneOrg(context.Context, *PruneOrgRequest) (*PruneOrgResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method PruneOrg not implemented")
+}
+func (UnimplementedAskvServer) PruneTarget(context.Context, *PruneTargetRequest) (*PruneTargetResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PruneTarget not implemented")
 }
 func (UnimplementedAskvServer) mustEmbedUnimplementedAskvServer() {}
 
@@ -170,42 +155,6 @@ func _Askv_Add_Handler(srv interface{}, ctx context.Context, dec func(interface{
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Askv_PrunePipeline_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(PrunePipelineRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(AskvServer).PrunePipeline(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Askv_PrunePipeline_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AskvServer).PrunePipeline(ctx, req.(*PrunePipelineRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Askv_PruneProject_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(PruneProjectRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(AskvServer).PruneProject(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Askv_PruneProject_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AskvServer).PruneProject(ctx, req.(*PruneProjectRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _Askv_PruneOrg_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(PruneOrgRequest)
 	if err := dec(in); err != nil {
@@ -220,6 +169,24 @@ func _Askv_PruneOrg_Handler(srv interface{}, ctx context.Context, dec func(inter
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(AskvServer).PruneOrg(ctx, req.(*PruneOrgRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Askv_PruneTarget_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PruneTargetRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AskvServer).PruneTarget(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Askv_PruneTarget_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AskvServer).PruneTarget(ctx, req.(*PruneTargetRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -240,16 +207,12 @@ var Askv_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Askv_Add_Handler,
 		},
 		{
-			MethodName: "PrunePipeline",
-			Handler:    _Askv_PrunePipeline_Handler,
-		},
-		{
-			MethodName: "PruneProject",
-			Handler:    _Askv_PruneProject_Handler,
-		},
-		{
 			MethodName: "PruneOrg",
 			Handler:    _Askv_PruneOrg_Handler,
+		},
+		{
+			MethodName: "PruneTarget",
+			Handler:    _Askv_PruneTarget_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
