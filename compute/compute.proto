@@ -287,6 +287,7 @@ message Datapoint {
 message TLSCertificate {
   bytes ca = 1;
   bytes ca_key = 2;
+  bytes root_ca = 3;
 }
 
 message RegisterSatelliteRequest {
