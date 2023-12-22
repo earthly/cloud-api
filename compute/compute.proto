@@ -225,7 +225,7 @@ message ReserveSatelliteRequest {
   google.protobuf.Duration update_interval = 5;
   string git_config_email = 6;
   message Metadata {
-   repeated string env_entry_name = 1;
+   repeated string env_entry_names = 1;
    string cli_version = 2;
   }
   Metadata metadata = 7;
