@@ -290,8 +290,8 @@ message Datapoint {
 }
 
 message TLSCertificate {
-  bytes ca = 1;
-  bytes ca_key = 2;
+  bytes client_ca = 1;
+  bytes client_ca_key = 2;
   bytes root_ca = 3;
 }
 

@@ -66,6 +66,9 @@ message BillingPlan {
     INSTANCE_TYPE_MEDIUM = 3;
     INSTANCE_TYPE_LARGE = 4;
     INSTANCE_TYPE_XLARGE = 5;
+    INSTANCE_TYPE_2XLARGE = 6;
+    INSTANCE_TYPE_3XLARGE = 7;
+    INSTANCE_TYPE_4XLARGE = 8;
   }
   repeated InstanceType allowed_instances = 6;
   enum ArchType {
