@@ -19,18 +19,17 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	Compute_LaunchSatellite_FullMethodName       = "/api.public.compute.Compute/LaunchSatellite"
-	Compute_ListSatellites_FullMethodName        = "/api.public.compute.Compute/ListSatellites"
-	Compute_UpdateSatellite_FullMethodName       = "/api.public.compute.Compute/UpdateSatellite"
-	Compute_DeleteSatellite_FullMethodName       = "/api.public.compute.Compute/DeleteSatellite"
-	Compute_GetSatellite_FullMethodName          = "/api.public.compute.Compute/GetSatellite"
-	Compute_ListSatellitesMetrics_FullMethodName = "/api.public.compute.Compute/ListSatellitesMetrics"
-	Compute_RegisterSatellite_FullMethodName     = "/api.public.compute.Compute/RegisterSatellite"
-	Compute_DeregisterSatellite_FullMethodName   = "/api.public.compute.Compute/DeregisterSatellite"
-	Compute_SatelliteHeartbeat_FullMethodName    = "/api.public.compute.Compute/SatelliteHeartbeat"
-	Compute_WakeSatellite_FullMethodName         = "/api.public.compute.Compute/WakeSatellite"
-	Compute_SleepSatellite_FullMethodName        = "/api.public.compute.Compute/SleepSatellite"
-	Compute_ReserveSatellite_FullMethodName      = "/api.public.compute.Compute/ReserveSatellite"
+	Compute_LaunchSatellite_FullMethodName     = "/api.public.compute.Compute/LaunchSatellite"
+	Compute_ListSatellites_FullMethodName      = "/api.public.compute.Compute/ListSatellites"
+	Compute_UpdateSatellite_FullMethodName     = "/api.public.compute.Compute/UpdateSatellite"
+	Compute_DeleteSatellite_FullMethodName     = "/api.public.compute.Compute/DeleteSatellite"
+	Compute_GetSatellite_FullMethodName        = "/api.public.compute.Compute/GetSatellite"
+	Compute_RegisterSatellite_FullMethodName   = "/api.public.compute.Compute/RegisterSatellite"
+	Compute_DeregisterSatellite_FullMethodName = "/api.public.compute.Compute/DeregisterSatellite"
+	Compute_SatelliteHeartbeat_FullMethodName  = "/api.public.compute.Compute/SatelliteHeartbeat"
+	Compute_WakeSatellite_FullMethodName       = "/api.public.compute.Compute/WakeSatellite"
+	Compute_SleepSatellite_FullMethodName      = "/api.public.compute.Compute/SleepSatellite"
+	Compute_ReserveSatellite_FullMethodName    = "/api.public.compute.Compute/ReserveSatellite"
 )
 
 // ComputeClient is the client API for Compute service.
@@ -51,10 +50,6 @@ type ComputeClient interface {
 	// GetSatellite retrieves the details of a particular Satellite instance.
 	// Mainly intended for use by Buildkit Proxy when establishing a new connection to an instance.
 	GetSatellite(ctx context.Context, in *GetSatelliteRequest, opts ...grpc.CallOption) (*GetSatelliteResponse, error)
-	// GetSatelliteMetrics retrieves the recent requested metrics for the given satellites. This is not meant to be a
-	// definitive historical record of build metrics, but instead a way to catch a glimpse into the current or recent
-	// state of the satellite.
-	ListSatellitesMetrics(ctx context.Context, in *ListSatellitesMetricsRequest, opts ...grpc.CallOption) (*ListSatellitesMetricsResponse, error)
 	// RegisterSatellite is called by a satellite once it is online and ready to accept builds.
 	// The registration contains the satellite's connection info.
 	// A registration token is returned, which must be passed-in to other endpoints related to registration,
@@ -152,15 +147,6 @@ func (c *computeClient) DeleteSatellite(ctx context.Context, in *DeleteSatellite
 func (c *computeClient) GetSatellite(ctx context.Context, in *GetSatelliteRequest, opts ...grpc.CallOption) (*GetSatelliteResponse, error) {
 	out := new(GetSatelliteResponse)
 	err := c.cc.Invoke(ctx, Compute_GetSatellite_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *computeClient) ListSatellitesMetrics(ctx context.Context, in *ListSatellitesMetricsRequest, opts ...grpc.CallOption) (*ListSatellitesMetricsResponse, error) {
-	out := new(ListSatellitesMetricsResponse)
-	err := c.cc.Invoke(ctx, Compute_ListSatellitesMetrics_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -308,10 +294,6 @@ type ComputeServer interface {
 	// GetSatellite retrieves the details of a particular Satellite instance.
 	// Mainly intended for use by Buildkit Proxy when establishing a new connection to an instance.
 	GetSatellite(context.Context, *GetSatelliteRequest) (*GetSatelliteResponse, error)
-	// GetSatelliteMetrics retrieves the recent requested metrics for the given satellites. This is not meant to be a
-	// definitive historical record of build metrics, but instead a way to catch a glimpse into the current or recent
-	// state of the satellite.
-	ListSatellitesMetrics(context.Context, *ListSatellitesMetricsRequest) (*ListSatellitesMetricsResponse, error)
 	// RegisterSatellite is called by a satellite once it is online and ready to accept builds.
 	// The registration contains the satellite's connection info.
 	// A registration token is returned, which must be passed-in to other endpoints related to registration,
@@ -381,9 +363,6 @@ func (UnimplementedComputeServer) DeleteSatellite(context.Context, *DeleteSatell
 }
 func (UnimplementedComputeServer) GetSatellite(context.Context, *GetSatelliteRequest) (*GetSatelliteResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetSatellite not implemented")
-}
-func (UnimplementedComputeServer) ListSatellitesMetrics(context.Context, *ListSatellitesMetricsRequest) (*ListSatellitesMetricsResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ListSatellitesMetrics not implemented")
 }
 func (UnimplementedComputeServer) RegisterSatellite(context.Context, *RegisterSatelliteRequest) (*RegisterSatelliteResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RegisterSatellite not implemented")
@@ -502,24 +481,6 @@ func _Compute_GetSatellite_Handler(srv interface{}, ctx context.Context, dec fun
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ComputeServer).GetSatellite(ctx, req.(*GetSatelliteRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Compute_ListSatellitesMetrics_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListSatellitesMetricsRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ComputeServer).ListSatellitesMetrics(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Compute_ListSatellitesMetrics_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ComputeServer).ListSatellitesMetrics(ctx, req.(*ListSatellitesMetricsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -667,10 +628,6 @@ var Compute_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetSatellite",
 			Handler:    _Compute_GetSatellite_Handler,
-		},
-		{
-			MethodName: "ListSatellitesMetrics",
-			Handler:    _Compute_ListSatellitesMetrics_Handler,
 		},
 		{
 			MethodName: "RegisterSatellite",
