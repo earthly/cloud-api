@@ -145,6 +145,7 @@ message ListSatellitesResponse {
     bool hidden = 7;
     google.protobuf.Duration cache_retention = 8;
     google.protobuf.Timestamp last_used = 9;
+    SatelliteSpecs specs = 10;
   }
   repeated SatelliteInstance instances = 1;
 }
