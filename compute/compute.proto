@@ -44,15 +44,6 @@ service Compute {
     };
   }
 
-  // GetSatelliteMetrics retrieves the recent requested metrics for the given satellites. This is not meant to be a
-  // definitive historical record of build metrics, but instead a way to catch a glimpse into the current or recent
-  // state of the satellite.
-  rpc ListSatellitesMetrics(ListSatellitesMetricsRequest) returns (ListSatellitesMetricsResponse) {
-    option (google.api.http) = {
-      get: "/api/v0/satellites-metrics"
-    };
-  }
-
   // RegisterSatellite is called by a satellite once it is online and ready to accept builds.
   // The registration contains the satellite's connection info.
   // A registration token is returned, which must be passed-in to other endpoints related to registration,
@@ -150,6 +141,16 @@ message ListSatellitesResponse {
   repeated SatelliteInstance instances = 1;
 }
 
+
+message SatelliteSpecs {
+  string platform = 1;
+  int32 vcpus = 2;
+  double memory_gib = 3;
+  double cache_size_gib = 4;
+  string size = 5;
+  int32 max_op_load = 6;
+}
+
 message UpdateSatelliteRequest {
   string org_id = 1;
   string name = 2;
@@ -194,7 +195,7 @@ message GetSatelliteResponse {
   bool hidden = 15;
   google.protobuf.Duration cache_retention = 16;
   google.protobuf.Timestamp last_used = 17;
-  SatelliteMetrics current_metrics = 18;
+  reserved 18; // old metrics field
   bool is_managed = 19;
   TLSCertificate certificate = 20;
 }
@@ -235,59 +236,6 @@ message ReserveSatelliteRequest {
 
 message ReserveSatelliteResponse {
   SatelliteStatus status = 1;
-}
-
-enum MetricType {
-  METRICTYPE_UNSPECIFIED = 0;
-  METRICTYPE_CPU_ONE_MIN_PCT = 1;
-  METRICTYPE_CPU_FIVE_MIN_PCT = 2;
-  METRICTYPE_CPU_FIFTEEN_MIN_PCT = 3;
-  METRICTYPE_MEMORY_USAGE_GIB = 4;
-  METRICTYPE_CACHE_USAGE_GIB = 5;
-  METRICTYPE_DISK_READ_MBPS = 6;
-  METRICTYPE_DISK_WRITE_MBPS = 7;
-  METRICTYPE_NETWORK_TX_MBPS = 8;
-  METRICTYPE_NETWORK_RX_MBPS = 9;
-  METRICTYPE_OP_LOAD = 10;
-}
-
-// Double? Or Single? Plural? Who knows we all gave up
-message ListSatellitesMetricsRequest {
-  string org_id = 1;
-  repeated string names = 2; // At least one required
-  uint32 history_minutes = 3;
-  repeated MetricType metrics = 4; // Empty means all metrics
-}
-
-message ListSatellitesMetricsResponse {
-  repeated SatelliteMetrics metrics = 1;
-}
-
-message SatelliteMetrics {
-  string name = 1;
-  repeated MetricSeries metrics = 2;
-  SatelliteSpecs specs = 3;
-  string error = 4; // Allow for partial success/failure
-  SatelliteStatus status = 5;
-}
-
-message SatelliteSpecs {
-  string platform = 1;
-  int32 vcpus = 2;
-  double memory_gib = 3;
-  double cache_size_gib = 4;
-  string size = 5;
-  int32 max_op_load = 6;
-}
-
-message MetricSeries {
-  MetricType type = 1;
-  repeated Datapoint data = 2;
-}
-
-message Datapoint {
-  google.protobuf.Timestamp time = 1; // this should be minute-truncated, unless its not a complete minute yet
-  double value = 2;
 }
 
 message TLSCertificate {
