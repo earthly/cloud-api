@@ -145,6 +145,7 @@ message ListSatellitesResponse {
     bool hidden = 7;
     google.protobuf.Duration cache_retention = 8;
     google.protobuf.Timestamp last_used = 9;
+    SatelliteSpecs specs = 10;
   }
   repeated SatelliteInstance instances = 1;
 }
@@ -195,6 +196,7 @@ message GetSatelliteResponse {
   google.protobuf.Timestamp last_used = 17;
   SatelliteMetrics current_metrics = 18;
   bool is_managed = 19;
+  TLSCertificate certificate = 20;
 }
 
 message WakeSatelliteRequest {
@@ -224,6 +226,11 @@ message ReserveSatelliteRequest {
   bool is_ci = 4;
   google.protobuf.Duration update_interval = 5;
   string git_config_email = 6;
+  message Metadata {
+   repeated string env_entry_names = 1;
+   string cli_version = 2;
+  }
+  Metadata metadata = 7;
 }
 
 message ReserveSatelliteResponse {
@@ -283,6 +290,12 @@ message Datapoint {
   double value = 2;
 }
 
+message TLSCertificate {
+  bytes client_ca = 1;
+  bytes client_ca_key = 2;
+  bytes root_ca = 3;
+}
+
 message RegisterSatelliteRequest {
   string org_id = 1;
   string satellite_name = 2;
@@ -290,6 +303,7 @@ message RegisterSatelliteRequest {
   int32 satellite_port = 4;
   string platform = 5;
   string version = 6;
+  TLSCertificate certificate = 7;
 }
 
 message RegisterSatelliteResponse {
