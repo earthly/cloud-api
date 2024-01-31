@@ -168,6 +168,9 @@ message UpdateSatelliteResponse {}
 message DeleteSatelliteRequest {
   string org_id = 1;
   string name = 2;
+  // Force the satellite removal, even if it's operational.
+  // Currently only applies to self-hosted satellites.
+  bool force = 3;
 }
 
 message DeleteSatelliteResponse{}
