@@ -70,6 +70,9 @@ message DeltaManifest {
     Failure failure = 4;
     map<string, DeltaTargetManifest> targets = 5;
     map<string, DeltaCommandManifest> commands = 7;
+    bool is_ci = 9;
+    string git_author = 10;
+    string git_config_email = 11;
   }
 }
 
