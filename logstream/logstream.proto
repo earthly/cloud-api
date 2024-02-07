@@ -95,6 +95,9 @@ message LogMetadata {
   RunStatus status = 9;
   google.protobuf.Timestamp ended_at = 10;
   Target target = 11;
+  bool is_ci = 12;
+  string git_author = 13;
+  string git_config_email = 14;
 }
 
 message GetLogMetadataResponse {
