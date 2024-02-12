@@ -23,6 +23,7 @@ message RunManifest {
   string main_target_id = 8;
   Failure failure = 9;
   string resume_token = 16;
+  bool is_ci = 17;
 
   // org_name is the name of the organization that owns this run.
   // May be empty for builds that don't have a PROJECT declaration.
@@ -39,6 +40,9 @@ message RunManifest {
   string org_id = 11;
   // The UUID of the project that owns this run.
   string project_id = 12;
+
+  string git_config_email = 18;
+  string git_author = 19;
 }
 
 enum FailureType {
@@ -54,6 +58,7 @@ enum FailureType {
   FAILURE_TYPE_GIT = 9;
   FAILURE_TYPE_RATE_LIMITED = 10;
   FAILURE_TYPE_INVALID_PARAM = 11;
+  FAILURE_TYPE_AUTO_SKIP = 12;
 }
 
 message Failure {
@@ -82,6 +87,7 @@ message TargetManifest {
   RunStatus status = 5;
   uint64 started_at_unix_nanos = 6;
   uint64 ended_at_unix_nanos = 7;
+  repeated string depends_on = 14;
 }
 
 message CommandManifest {
