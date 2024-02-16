@@ -116,4 +116,5 @@ message DeltaCommandManifest {
   string error_message = 14;
   bool has_source_location = 16;
   SourceLocation source_location = 15;
+  repeated CommandTarget depends_on = 22;
 }
