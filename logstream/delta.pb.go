@@ -536,25 +536,26 @@ type DeltaCommandManifest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Name               string          `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	TargetId           string          `protobuf:"bytes,17,opt,name=target_id,json=targetId,proto3" json:"target_id,omitempty"`
-	Category           string          `protobuf:"bytes,19,opt,name=category,proto3" json:"category,omitempty"`
-	Platform           string          `protobuf:"bytes,18,opt,name=platform,proto3" json:"platform,omitempty"`
-	Status             RunStatus       `protobuf:"varint,2,opt,name=status,proto3,enum=api.public.logstream.RunStatus" json:"status,omitempty"`
-	HasCached          bool            `protobuf:"varint,3,opt,name=has_cached,json=hasCached,proto3" json:"has_cached,omitempty"`
-	IsCached           bool            `protobuf:"varint,4,opt,name=is_cached,json=isCached,proto3" json:"is_cached,omitempty"`
-	HasLocal           bool            `protobuf:"varint,7,opt,name=has_local,json=hasLocal,proto3" json:"has_local,omitempty"`
-	IsLocal            bool            `protobuf:"varint,8,opt,name=is_local,json=isLocal,proto3" json:"is_local,omitempty"`
-	HasInteractive     bool            `protobuf:"varint,20,opt,name=has_interactive,json=hasInteractive,proto3" json:"has_interactive,omitempty"`
-	IsInteractive      bool            `protobuf:"varint,21,opt,name=is_interactive,json=isInteractive,proto3" json:"is_interactive,omitempty"`
-	StartedAtUnixNanos uint64          `protobuf:"varint,9,opt,name=started_at_unix_nanos,json=startedAtUnixNanos,proto3" json:"started_at_unix_nanos,omitempty"`
-	EndedAtUnixNanos   uint64          `protobuf:"varint,10,opt,name=ended_at_unix_nanos,json=endedAtUnixNanos,proto3" json:"ended_at_unix_nanos,omitempty"`
-	HasHasProgress     bool            `protobuf:"varint,11,opt,name=has_has_progress,json=hasHasProgress,proto3" json:"has_has_progress,omitempty"`
-	HasProgress        bool            `protobuf:"varint,12,opt,name=has_progress,json=hasProgress,proto3" json:"has_progress,omitempty"`
-	Progress           int32           `protobuf:"varint,13,opt,name=progress,proto3" json:"progress,omitempty"`
-	ErrorMessage       string          `protobuf:"bytes,14,opt,name=error_message,json=errorMessage,proto3" json:"error_message,omitempty"`
-	HasSourceLocation  bool            `protobuf:"varint,16,opt,name=has_source_location,json=hasSourceLocation,proto3" json:"has_source_location,omitempty"`
-	SourceLocation     *SourceLocation `protobuf:"bytes,15,opt,name=source_location,json=sourceLocation,proto3" json:"source_location,omitempty"`
+	Name               string           `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	TargetId           string           `protobuf:"bytes,17,opt,name=target_id,json=targetId,proto3" json:"target_id,omitempty"`
+	Category           string           `protobuf:"bytes,19,opt,name=category,proto3" json:"category,omitempty"`
+	Platform           string           `protobuf:"bytes,18,opt,name=platform,proto3" json:"platform,omitempty"`
+	Status             RunStatus        `protobuf:"varint,2,opt,name=status,proto3,enum=api.public.logstream.RunStatus" json:"status,omitempty"`
+	HasCached          bool             `protobuf:"varint,3,opt,name=has_cached,json=hasCached,proto3" json:"has_cached,omitempty"`
+	IsCached           bool             `protobuf:"varint,4,opt,name=is_cached,json=isCached,proto3" json:"is_cached,omitempty"`
+	HasLocal           bool             `protobuf:"varint,7,opt,name=has_local,json=hasLocal,proto3" json:"has_local,omitempty"`
+	IsLocal            bool             `protobuf:"varint,8,opt,name=is_local,json=isLocal,proto3" json:"is_local,omitempty"`
+	HasInteractive     bool             `protobuf:"varint,20,opt,name=has_interactive,json=hasInteractive,proto3" json:"has_interactive,omitempty"`
+	IsInteractive      bool             `protobuf:"varint,21,opt,name=is_interactive,json=isInteractive,proto3" json:"is_interactive,omitempty"`
+	StartedAtUnixNanos uint64           `protobuf:"varint,9,opt,name=started_at_unix_nanos,json=startedAtUnixNanos,proto3" json:"started_at_unix_nanos,omitempty"`
+	EndedAtUnixNanos   uint64           `protobuf:"varint,10,opt,name=ended_at_unix_nanos,json=endedAtUnixNanos,proto3" json:"ended_at_unix_nanos,omitempty"`
+	HasHasProgress     bool             `protobuf:"varint,11,opt,name=has_has_progress,json=hasHasProgress,proto3" json:"has_has_progress,omitempty"`
+	HasProgress        bool             `protobuf:"varint,12,opt,name=has_progress,json=hasProgress,proto3" json:"has_progress,omitempty"`
+	Progress           int32            `protobuf:"varint,13,opt,name=progress,proto3" json:"progress,omitempty"`
+	ErrorMessage       string           `protobuf:"bytes,14,opt,name=error_message,json=errorMessage,proto3" json:"error_message,omitempty"`
+	HasSourceLocation  bool             `protobuf:"varint,16,opt,name=has_source_location,json=hasSourceLocation,proto3" json:"has_source_location,omitempty"`
+	SourceLocation     *SourceLocation  `protobuf:"bytes,15,opt,name=source_location,json=sourceLocation,proto3" json:"source_location,omitempty"`
+	DependsOn          []*CommandTarget `protobuf:"bytes,22,rep,name=depends_on,json=dependsOn,proto3" json:"depends_on,omitempty"`
 }
 
 func (x *DeltaCommandManifest) Reset() {
@@ -718,6 +719,13 @@ func (x *DeltaCommandManifest) GetHasSourceLocation() bool {
 func (x *DeltaCommandManifest) GetSourceLocation() *SourceLocation {
 	if x != nil {
 		return x.SourceLocation
+	}
+	return nil
+}
+
+func (x *DeltaCommandManifest) GetDependsOn() []*CommandTarget {
+	if x != nil {
+		return x.DependsOn
 	}
 	return nil
 }
@@ -1067,7 +1075,7 @@ var file_delta_proto_rawDesc = []byte{
 	0x28, 0x04, 0x52, 0x10, 0x65, 0x6e, 0x64, 0x65, 0x64, 0x41, 0x74, 0x55, 0x6e, 0x69, 0x78, 0x4e,
 	0x61, 0x6e, 0x6f, 0x73, 0x12, 0x1d, 0x0a, 0x0a, 0x64, 0x65, 0x70, 0x65, 0x6e, 0x64, 0x73, 0x5f,
 	0x6f, 0x6e, 0x18, 0x0e, 0x20, 0x03, 0x28, 0x09, 0x52, 0x09, 0x64, 0x65, 0x70, 0x65, 0x6e, 0x64,
-	0x73, 0x4f, 0x6e, 0x22, 0x8a, 0x06, 0x0a, 0x14, 0x44, 0x65, 0x6c, 0x74, 0x61, 0x43, 0x6f, 0x6d,
+	0x73, 0x4f, 0x6e, 0x22, 0xce, 0x06, 0x0a, 0x14, 0x44, 0x65, 0x6c, 0x74, 0x61, 0x43, 0x6f, 0x6d,
 	0x6d, 0x61, 0x6e, 0x64, 0x4d, 0x61, 0x6e, 0x69, 0x66, 0x65, 0x73, 0x74, 0x12, 0x12, 0x0a, 0x04,
 	0x6e, 0x61, 0x6d, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6e, 0x61, 0x6d, 0x65,
 	0x12, 0x1b, 0x0a, 0x09, 0x74, 0x61, 0x72, 0x67, 0x65, 0x74, 0x5f, 0x69, 0x64, 0x18, 0x11, 0x20,
@@ -1114,10 +1122,14 @@ var file_delta_proto_rawDesc = []byte{
 	0x69, 0x2e, 0x70, 0x75, 0x62, 0x6c, 0x69, 0x63, 0x2e, 0x6c, 0x6f, 0x67, 0x73, 0x74, 0x72, 0x65,
 	0x61, 0x6d, 0x2e, 0x53, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x4c, 0x6f, 0x63, 0x61, 0x74, 0x69, 0x6f,
 	0x6e, 0x52, 0x0e, 0x73, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x4c, 0x6f, 0x63, 0x61, 0x74, 0x69, 0x6f,
-	0x6e, 0x4a, 0x04, 0x08, 0x05, 0x10, 0x06, 0x4a, 0x04, 0x08, 0x06, 0x10, 0x07, 0x52, 0x07, 0x69,
-	0x73, 0x5f, 0x70, 0x75, 0x73, 0x68, 0x52, 0x08, 0x68, 0x61, 0x73, 0x5f, 0x70, 0x75, 0x73, 0x68,
-	0x42, 0x0d, 0x5a, 0x0b, 0x2e, 0x2f, 0x6c, 0x6f, 0x67, 0x73, 0x74, 0x72, 0x65, 0x61, 0x6d, 0x62,
-	0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x6e, 0x12, 0x42, 0x0a, 0x0a, 0x64, 0x65, 0x70, 0x65, 0x6e, 0x64, 0x73, 0x5f, 0x6f, 0x6e, 0x18,
+	0x16, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x23, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x70, 0x75, 0x62, 0x6c,
+	0x69, 0x63, 0x2e, 0x6c, 0x6f, 0x67, 0x73, 0x74, 0x72, 0x65, 0x61, 0x6d, 0x2e, 0x43, 0x6f, 0x6d,
+	0x6d, 0x61, 0x6e, 0x64, 0x54, 0x61, 0x72, 0x67, 0x65, 0x74, 0x52, 0x09, 0x64, 0x65, 0x70, 0x65,
+	0x6e, 0x64, 0x73, 0x4f, 0x6e, 0x4a, 0x04, 0x08, 0x05, 0x10, 0x06, 0x4a, 0x04, 0x08, 0x06, 0x10,
+	0x07, 0x52, 0x07, 0x69, 0x73, 0x5f, 0x70, 0x75, 0x73, 0x68, 0x52, 0x08, 0x68, 0x61, 0x73, 0x5f,
+	0x70, 0x75, 0x73, 0x68, 0x42, 0x0d, 0x5a, 0x0b, 0x2e, 0x2f, 0x6c, 0x6f, 0x67, 0x73, 0x74, 0x72,
+	0x65, 0x61, 0x6d, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -1147,7 +1159,8 @@ var file_delta_proto_goTypes = []interface{}{
 	(*RunManifest)(nil),               // 10: api.public.logstream.RunManifest
 	(RunStatus)(0),                    // 11: api.public.logstream.RunStatus
 	(*SourceLocation)(nil),            // 12: api.public.logstream.SourceLocation
-	(*Failure)(nil),                   // 13: api.public.logstream.Failure
+	(*CommandTarget)(nil),             // 13: api.public.logstream.CommandTarget
+	(*Failure)(nil),                   // 14: api.public.logstream.Failure
 }
 var file_delta_proto_depIdxs = []int32{
 	3,  // 0: api.public.logstream.Delta.delta_manifest:type_name -> api.public.logstream.DeltaManifest
@@ -1159,17 +1172,18 @@ var file_delta_proto_depIdxs = []int32{
 	11, // 6: api.public.logstream.DeltaTargetManifest.status:type_name -> api.public.logstream.RunStatus
 	11, // 7: api.public.logstream.DeltaCommandManifest.status:type_name -> api.public.logstream.RunStatus
 	12, // 8: api.public.logstream.DeltaCommandManifest.source_location:type_name -> api.public.logstream.SourceLocation
-	11, // 9: api.public.logstream.DeltaManifest.FieldsDelta.status:type_name -> api.public.logstream.RunStatus
-	13, // 10: api.public.logstream.DeltaManifest.FieldsDelta.failure:type_name -> api.public.logstream.Failure
-	8,  // 11: api.public.logstream.DeltaManifest.FieldsDelta.targets:type_name -> api.public.logstream.DeltaManifest.FieldsDelta.TargetsEntry
-	9,  // 12: api.public.logstream.DeltaManifest.FieldsDelta.commands:type_name -> api.public.logstream.DeltaManifest.FieldsDelta.CommandsEntry
-	4,  // 13: api.public.logstream.DeltaManifest.FieldsDelta.TargetsEntry.value:type_name -> api.public.logstream.DeltaTargetManifest
-	5,  // 14: api.public.logstream.DeltaManifest.FieldsDelta.CommandsEntry.value:type_name -> api.public.logstream.DeltaCommandManifest
-	15, // [15:15] is the sub-list for method output_type
-	15, // [15:15] is the sub-list for method input_type
-	15, // [15:15] is the sub-list for extension type_name
-	15, // [15:15] is the sub-list for extension extendee
-	0,  // [0:15] is the sub-list for field type_name
+	13, // 9: api.public.logstream.DeltaCommandManifest.depends_on:type_name -> api.public.logstream.CommandTarget
+	11, // 10: api.public.logstream.DeltaManifest.FieldsDelta.status:type_name -> api.public.logstream.RunStatus
+	14, // 11: api.public.logstream.DeltaManifest.FieldsDelta.failure:type_name -> api.public.logstream.Failure
+	8,  // 12: api.public.logstream.DeltaManifest.FieldsDelta.targets:type_name -> api.public.logstream.DeltaManifest.FieldsDelta.TargetsEntry
+	9,  // 13: api.public.logstream.DeltaManifest.FieldsDelta.commands:type_name -> api.public.logstream.DeltaManifest.FieldsDelta.CommandsEntry
+	4,  // 14: api.public.logstream.DeltaManifest.FieldsDelta.TargetsEntry.value:type_name -> api.public.logstream.DeltaTargetManifest
+	5,  // 15: api.public.logstream.DeltaManifest.FieldsDelta.CommandsEntry.value:type_name -> api.public.logstream.DeltaCommandManifest
+	16, // [16:16] is the sub-list for method output_type
+	16, // [16:16] is the sub-list for method input_type
+	16, // [16:16] is the sub-list for extension type_name
+	16, // [16:16] is the sub-list for extension extendee
+	0,  // [0:16] is the sub-list for field type_name
 }
 
 func init() { file_delta_proto_init() }

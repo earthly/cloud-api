@@ -90,6 +90,11 @@ message TargetManifest {
   repeated string depends_on = 14;
 }
 
+message CommandTarget {
+  string target_id = 1;
+  string referenced_name = 2;
+}
+
 message CommandManifest {
   reserved 4;
   reserved "is_push";
@@ -116,6 +121,10 @@ message CommandManifest {
   // if the error is transient.
   string error_message = 10;
   SourceLocation source_location = 11;
+
+  // depends_on contains any targets that have been referenced by this command
+  // and the target name they were referenced with.
+  repeated CommandTarget depends_on = 16;
 }
 
 message SourceLocation {
