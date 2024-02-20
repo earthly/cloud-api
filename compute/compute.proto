@@ -97,11 +97,6 @@ service Compute {
   rpc GetGithubJob(GetGithubJobRequest) returns (GetGithubJobResponse) {}
 }
 
-message GetGithubJobRequest{
-  string org_id = 1;
-  // Org name is required
-}
-
 message SetGithubTokenRequest{
   // Earthly org id
   string org_id = 1;
@@ -118,6 +113,9 @@ message SetGithubTokenRequest{
 }
 
 message SetGithubTokenResponse {
+}
+
+message GetGithubJobRequest{
   // Earthly org id
   string org_id = 1;
   string satellite_name = 2;
