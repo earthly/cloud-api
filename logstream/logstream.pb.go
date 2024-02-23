@@ -1273,6 +1273,219 @@ func (x *ListLogMetadataResponse) GetMetadata() []*LogMetadata {
 	return nil
 }
 
+type ListBuildMetricsRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	OrgId               string `protobuf:"bytes,1,opt,name=org_id,json=orgId,proto3" json:"org_id,omitempty"`
+	CanonicalTargetName string `protobuf:"bytes,2,opt,name=canonical_target_name,json=canonicalTargetName,proto3" json:"canonical_target_name,omitempty"`
+}
+
+func (x *ListBuildMetricsRequest) Reset() {
+	*x = ListBuildMetricsRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_logstream_proto_msgTypes[19]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ListBuildMetricsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListBuildMetricsRequest) ProtoMessage() {}
+
+func (x *ListBuildMetricsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_logstream_proto_msgTypes[19]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListBuildMetricsRequest.ProtoReflect.Descriptor instead.
+func (*ListBuildMetricsRequest) Descriptor() ([]byte, []int) {
+	return file_logstream_proto_rawDescGZIP(), []int{19}
+}
+
+func (x *ListBuildMetricsRequest) GetOrgId() string {
+	if x != nil {
+		return x.OrgId
+	}
+	return ""
+}
+
+func (x *ListBuildMetricsRequest) GetCanonicalTargetName() string {
+	if x != nil {
+		return x.CanonicalTargetName
+	}
+	return ""
+}
+
+type BuildMetrics struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	CanonicalTargetName string                 `protobuf:"bytes,1,opt,name=canonical_target_name,json=canonicalTargetName,proto3" json:"canonical_target_name,omitempty"`
+	BuildId             string                 `protobuf:"bytes,2,opt,name=build_id,json=buildId,proto3" json:"build_id,omitempty"`
+	OrgId               string                 `protobuf:"bytes,3,opt,name=org_id,json=orgId,proto3" json:"org_id,omitempty"`
+	CreatedAt           *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	TotalTargets        int32                  `protobuf:"varint,5,opt,name=total_targets,json=totalTargets,proto3" json:"total_targets,omitempty"`
+	TotalCommands       int32                  `protobuf:"varint,6,opt,name=total_commands,json=totalCommands,proto3" json:"total_commands,omitempty"`
+	CachedCommands      int32                  `protobuf:"varint,7,opt,name=cached_commands,json=cachedCommands,proto3" json:"cached_commands,omitempty"`
+	CacheRatio          float32                `protobuf:"fixed32,8,opt,name=cache_ratio,json=cacheRatio,proto3" json:"cache_ratio,omitempty"`
+	TotalTimeSecs       int32                  `protobuf:"varint,9,opt,name=total_time_secs,json=totalTimeSecs,proto3" json:"total_time_secs,omitempty"`
+}
+
+func (x *BuildMetrics) Reset() {
+	*x = BuildMetrics{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_logstream_proto_msgTypes[20]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *BuildMetrics) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*BuildMetrics) ProtoMessage() {}
+
+func (x *BuildMetrics) ProtoReflect() protoreflect.Message {
+	mi := &file_logstream_proto_msgTypes[20]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use BuildMetrics.ProtoReflect.Descriptor instead.
+func (*BuildMetrics) Descriptor() ([]byte, []int) {
+	return file_logstream_proto_rawDescGZIP(), []int{20}
+}
+
+func (x *BuildMetrics) GetCanonicalTargetName() string {
+	if x != nil {
+		return x.CanonicalTargetName
+	}
+	return ""
+}
+
+func (x *BuildMetrics) GetBuildId() string {
+	if x != nil {
+		return x.BuildId
+	}
+	return ""
+}
+
+func (x *BuildMetrics) GetOrgId() string {
+	if x != nil {
+		return x.OrgId
+	}
+	return ""
+}
+
+func (x *BuildMetrics) GetCreatedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.CreatedAt
+	}
+	return nil
+}
+
+func (x *BuildMetrics) GetTotalTargets() int32 {
+	if x != nil {
+		return x.TotalTargets
+	}
+	return 0
+}
+
+func (x *BuildMetrics) GetTotalCommands() int32 {
+	if x != nil {
+		return x.TotalCommands
+	}
+	return 0
+}
+
+func (x *BuildMetrics) GetCachedCommands() int32 {
+	if x != nil {
+		return x.CachedCommands
+	}
+	return 0
+}
+
+func (x *BuildMetrics) GetCacheRatio() float32 {
+	if x != nil {
+		return x.CacheRatio
+	}
+	return 0
+}
+
+func (x *BuildMetrics) GetTotalTimeSecs() int32 {
+	if x != nil {
+		return x.TotalTimeSecs
+	}
+	return 0
+}
+
+type ListBuildMetricsResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Metrics []*BuildMetrics `protobuf:"bytes,1,rep,name=metrics,proto3" json:"metrics,omitempty"`
+}
+
+func (x *ListBuildMetricsResponse) Reset() {
+	*x = ListBuildMetricsResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_logstream_proto_msgTypes[21]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ListBuildMetricsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListBuildMetricsResponse) ProtoMessage() {}
+
+func (x *ListBuildMetricsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_logstream_proto_msgTypes[21]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListBuildMetricsResponse.ProtoReflect.Descriptor instead.
+func (*ListBuildMetricsResponse) Descriptor() ([]byte, []int) {
+	return file_logstream_proto_rawDescGZIP(), []int{21}
+}
+
+func (x *ListBuildMetricsResponse) GetMetrics() []*BuildMetrics {
+	if x != nil {
+		return x.Metrics
+	}
+	return nil
+}
+
 var File_logstream_proto protoreflect.FileDescriptor
 
 var file_logstream_proto_rawDesc = []byte{
@@ -1432,12 +1645,47 @@ var file_logstream_proto_rawDesc = []byte{
 	0x74, 0x61, 0x18, 0x02, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x21, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x70,
 	0x75, 0x62, 0x6c, 0x69, 0x63, 0x2e, 0x6c, 0x6f, 0x67, 0x73, 0x74, 0x72, 0x65, 0x61, 0x6d, 0x2e,
 	0x4c, 0x6f, 0x67, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0x52, 0x08, 0x6d, 0x65, 0x74,
-	0x61, 0x64, 0x61, 0x74, 0x61, 0x2a, 0x50, 0x0a, 0x06, 0x52, 0x75, 0x6e, 0x6e, 0x65, 0x72, 0x12,
+	0x61, 0x64, 0x61, 0x74, 0x61, 0x22, 0x64, 0x0a, 0x17, 0x4c, 0x69, 0x73, 0x74, 0x42, 0x75, 0x69,
+	0x6c, 0x64, 0x4d, 0x65, 0x74, 0x72, 0x69, 0x63, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
+	0x12, 0x15, 0x0a, 0x06, 0x6f, 0x72, 0x67, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09,
+	0x52, 0x05, 0x6f, 0x72, 0x67, 0x49, 0x64, 0x12, 0x32, 0x0a, 0x15, 0x63, 0x61, 0x6e, 0x6f, 0x6e,
+	0x69, 0x63, 0x61, 0x6c, 0x5f, 0x74, 0x61, 0x72, 0x67, 0x65, 0x74, 0x5f, 0x6e, 0x61, 0x6d, 0x65,
+	0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x13, 0x63, 0x61, 0x6e, 0x6f, 0x6e, 0x69, 0x63, 0x61,
+	0x6c, 0x54, 0x61, 0x72, 0x67, 0x65, 0x74, 0x4e, 0x61, 0x6d, 0x65, 0x22, 0xed, 0x02, 0x0a, 0x0c,
+	0x42, 0x75, 0x69, 0x6c, 0x64, 0x4d, 0x65, 0x74, 0x72, 0x69, 0x63, 0x73, 0x12, 0x32, 0x0a, 0x15,
+	0x63, 0x61, 0x6e, 0x6f, 0x6e, 0x69, 0x63, 0x61, 0x6c, 0x5f, 0x74, 0x61, 0x72, 0x67, 0x65, 0x74,
+	0x5f, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x13, 0x63, 0x61, 0x6e,
+	0x6f, 0x6e, 0x69, 0x63, 0x61, 0x6c, 0x54, 0x61, 0x72, 0x67, 0x65, 0x74, 0x4e, 0x61, 0x6d, 0x65,
+	0x12, 0x19, 0x0a, 0x08, 0x62, 0x75, 0x69, 0x6c, 0x64, 0x5f, 0x69, 0x64, 0x18, 0x02, 0x20, 0x01,
+	0x28, 0x09, 0x52, 0x07, 0x62, 0x75, 0x69, 0x6c, 0x64, 0x49, 0x64, 0x12, 0x15, 0x0a, 0x06, 0x6f,
+	0x72, 0x67, 0x5f, 0x69, 0x64, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x6f, 0x72, 0x67,
+	0x49, 0x64, 0x12, 0x39, 0x0a, 0x0a, 0x63, 0x72, 0x65, 0x61, 0x74, 0x65, 0x64, 0x5f, 0x61, 0x74,
+	0x18, 0x04, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1a, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e,
+	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x54, 0x69, 0x6d, 0x65, 0x73, 0x74, 0x61,
+	0x6d, 0x70, 0x52, 0x09, 0x63, 0x72, 0x65, 0x61, 0x74, 0x65, 0x64, 0x41, 0x74, 0x12, 0x23, 0x0a,
+	0x0d, 0x74, 0x6f, 0x74, 0x61, 0x6c, 0x5f, 0x74, 0x61, 0x72, 0x67, 0x65, 0x74, 0x73, 0x18, 0x05,
+	0x20, 0x01, 0x28, 0x05, 0x52, 0x0c, 0x74, 0x6f, 0x74, 0x61, 0x6c, 0x54, 0x61, 0x72, 0x67, 0x65,
+	0x74, 0x73, 0x12, 0x25, 0x0a, 0x0e, 0x74, 0x6f, 0x74, 0x61, 0x6c, 0x5f, 0x63, 0x6f, 0x6d, 0x6d,
+	0x61, 0x6e, 0x64, 0x73, 0x18, 0x06, 0x20, 0x01, 0x28, 0x05, 0x52, 0x0d, 0x74, 0x6f, 0x74, 0x61,
+	0x6c, 0x43, 0x6f, 0x6d, 0x6d, 0x61, 0x6e, 0x64, 0x73, 0x12, 0x27, 0x0a, 0x0f, 0x63, 0x61, 0x63,
+	0x68, 0x65, 0x64, 0x5f, 0x63, 0x6f, 0x6d, 0x6d, 0x61, 0x6e, 0x64, 0x73, 0x18, 0x07, 0x20, 0x01,
+	0x28, 0x05, 0x52, 0x0e, 0x63, 0x61, 0x63, 0x68, 0x65, 0x64, 0x43, 0x6f, 0x6d, 0x6d, 0x61, 0x6e,
+	0x64, 0x73, 0x12, 0x1f, 0x0a, 0x0b, 0x63, 0x61, 0x63, 0x68, 0x65, 0x5f, 0x72, 0x61, 0x74, 0x69,
+	0x6f, 0x18, 0x08, 0x20, 0x01, 0x28, 0x02, 0x52, 0x0a, 0x63, 0x61, 0x63, 0x68, 0x65, 0x52, 0x61,
+	0x74, 0x69, 0x6f, 0x12, 0x26, 0x0a, 0x0f, 0x74, 0x6f, 0x74, 0x61, 0x6c, 0x5f, 0x74, 0x69, 0x6d,
+	0x65, 0x5f, 0x73, 0x65, 0x63, 0x73, 0x18, 0x09, 0x20, 0x01, 0x28, 0x05, 0x52, 0x0d, 0x74, 0x6f,
+	0x74, 0x61, 0x6c, 0x54, 0x69, 0x6d, 0x65, 0x53, 0x65, 0x63, 0x73, 0x22, 0x58, 0x0a, 0x18, 0x4c,
+	0x69, 0x73, 0x74, 0x42, 0x75, 0x69, 0x6c, 0x64, 0x4d, 0x65, 0x74, 0x72, 0x69, 0x63, 0x73, 0x52,
+	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x3c, 0x0a, 0x07, 0x6d, 0x65, 0x74, 0x72, 0x69,
+	0x63, 0x73, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x22, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x70,
+	0x75, 0x62, 0x6c, 0x69, 0x63, 0x2e, 0x6c, 0x6f, 0x67, 0x73, 0x74, 0x72, 0x65, 0x61, 0x6d, 0x2e,
+	0x42, 0x75, 0x69, 0x6c, 0x64, 0x4d, 0x65, 0x74, 0x72, 0x69, 0x63, 0x73, 0x52, 0x07, 0x6d, 0x65,
+	0x74, 0x72, 0x69, 0x63, 0x73, 0x2a, 0x50, 0x0a, 0x06, 0x52, 0x75, 0x6e, 0x6e, 0x65, 0x72, 0x12,
 	0x0f, 0x0a, 0x0b, 0x55, 0x4e, 0x53, 0x50, 0x45, 0x43, 0x49, 0x46, 0x49, 0x45, 0x44, 0x10, 0x00,
 	0x12, 0x09, 0x0a, 0x05, 0x4c, 0x4f, 0x43, 0x41, 0x4c, 0x10, 0x01, 0x12, 0x0d, 0x0a, 0x09, 0x53,
 	0x41, 0x54, 0x45, 0x4c, 0x4c, 0x49, 0x54, 0x45, 0x10, 0x02, 0x12, 0x06, 0x0a, 0x02, 0x43, 0x49,
 	0x10, 0x03, 0x12, 0x13, 0x0a, 0x0f, 0x52, 0x45, 0x4d, 0x4f, 0x54, 0x45, 0x5f, 0x42, 0x55, 0x49,
-	0x4c, 0x44, 0x4b, 0x49, 0x54, 0x10, 0x04, 0x32, 0xc6, 0x08, 0x0a, 0x09, 0x4c, 0x6f, 0x67, 0x53,
+	0x4c, 0x44, 0x4b, 0x49, 0x54, 0x10, 0x04, 0x32, 0xdd, 0x09, 0x0a, 0x09, 0x4c, 0x6f, 0x67, 0x53,
 	0x74, 0x72, 0x65, 0x61, 0x6d, 0x12, 0x63, 0x0a, 0x0a, 0x53, 0x74, 0x72, 0x65, 0x61, 0x6d, 0x4c,
 	0x6f, 0x67, 0x73, 0x12, 0x26, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x70, 0x75, 0x62, 0x6c, 0x69, 0x63,
 	0x2e, 0x6c, 0x6f, 0x67, 0x73, 0x74, 0x72, 0x65, 0x61, 0x6d, 0x2e, 0x53, 0x74, 0x72, 0x65, 0x61,
@@ -1506,8 +1754,17 @@ var file_logstream_proto_rawDesc = []byte{
 	0x82, 0xd3, 0xe4, 0x93, 0x02, 0x28, 0x12, 0x26, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x76, 0x30, 0x2f,
 	0x6c, 0x6f, 0x67, 0x73, 0x74, 0x72, 0x65, 0x61, 0x6d, 0x2f, 0x6c, 0x6f, 0x6e, 0x67, 0x2d, 0x74,
 	0x65, 0x72, 0x6d, 0x2f, 0x7b, 0x62, 0x75, 0x69, 0x6c, 0x64, 0x5f, 0x69, 0x64, 0x7d, 0x30, 0x01,
-	0x42, 0x0d, 0x5a, 0x0b, 0x2e, 0x2f, 0x6c, 0x6f, 0x67, 0x73, 0x74, 0x72, 0x65, 0x61, 0x6d, 0x62,
-	0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x12, 0x94, 0x01, 0x0a, 0x10, 0x4c, 0x69, 0x73, 0x74, 0x42, 0x75, 0x69, 0x6c, 0x64, 0x4d, 0x65,
+	0x74, 0x72, 0x69, 0x63, 0x73, 0x12, 0x2d, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x70, 0x75, 0x62, 0x6c,
+	0x69, 0x63, 0x2e, 0x6c, 0x6f, 0x67, 0x73, 0x74, 0x72, 0x65, 0x61, 0x6d, 0x2e, 0x4c, 0x69, 0x73,
+	0x74, 0x42, 0x75, 0x69, 0x6c, 0x64, 0x4d, 0x65, 0x74, 0x72, 0x69, 0x63, 0x73, 0x52, 0x65, 0x71,
+	0x75, 0x65, 0x73, 0x74, 0x1a, 0x2e, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x70, 0x75, 0x62, 0x6c, 0x69,
+	0x63, 0x2e, 0x6c, 0x6f, 0x67, 0x73, 0x74, 0x72, 0x65, 0x61, 0x6d, 0x2e, 0x4c, 0x69, 0x73, 0x74,
+	0x42, 0x75, 0x69, 0x6c, 0x64, 0x4d, 0x65, 0x74, 0x72, 0x69, 0x63, 0x73, 0x52, 0x65, 0x73, 0x70,
+	0x6f, 0x6e, 0x73, 0x65, 0x22, 0x21, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x1b, 0x12, 0x19, 0x2f, 0x61,
+	0x70, 0x69, 0x2f, 0x76, 0x30, 0x2f, 0x6c, 0x6f, 0x67, 0x73, 0x74, 0x72, 0x65, 0x61, 0x6d, 0x2f,
+	0x6d, 0x65, 0x74, 0x72, 0x69, 0x63, 0x73, 0x42, 0x0d, 0x5a, 0x0b, 0x2e, 0x2f, 0x6c, 0x6f, 0x67,
+	0x73, 0x74, 0x72, 0x65, 0x61, 0x6d, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -1523,7 +1780,7 @@ func file_logstream_proto_rawDescGZIP() []byte {
 }
 
 var file_logstream_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_logstream_proto_msgTypes = make([]protoimpl.MessageInfo, 19)
+var file_logstream_proto_msgTypes = make([]protoimpl.MessageInfo, 22)
 var file_logstream_proto_goTypes = []interface{}{
 	(Runner)(0),                          // 0: api.public.logstream.Runner
 	(*StreamLogRequest)(nil),             // 1: api.public.logstream.StreamLogRequest
@@ -1545,51 +1802,58 @@ var file_logstream_proto_goTypes = []interface{}{
 	(*GetLogMetadataResponse)(nil),       // 17: api.public.logstream.GetLogMetadataResponse
 	(*ListLogMetadataRequest)(nil),       // 18: api.public.logstream.ListLogMetadataRequest
 	(*ListLogMetadataResponse)(nil),      // 19: api.public.logstream.ListLogMetadataResponse
-	(*Delta)(nil),                        // 20: api.public.logstream.Delta
-	(*DeltaFormattedLog)(nil),            // 21: api.public.logstream.DeltaFormattedLog
-	(*RunManifest)(nil),                  // 22: api.public.logstream.RunManifest
-	(*timestamppb.Timestamp)(nil),        // 23: google.protobuf.Timestamp
-	(RunStatus)(0),                       // 24: api.public.logstream.RunStatus
+	(*ListBuildMetricsRequest)(nil),      // 20: api.public.logstream.ListBuildMetricsRequest
+	(*BuildMetrics)(nil),                 // 21: api.public.logstream.BuildMetrics
+	(*ListBuildMetricsResponse)(nil),     // 22: api.public.logstream.ListBuildMetricsResponse
+	(*Delta)(nil),                        // 23: api.public.logstream.Delta
+	(*DeltaFormattedLog)(nil),            // 24: api.public.logstream.DeltaFormattedLog
+	(*RunManifest)(nil),                  // 25: api.public.logstream.RunManifest
+	(*timestamppb.Timestamp)(nil),        // 26: google.protobuf.Timestamp
+	(RunStatus)(0),                       // 27: api.public.logstream.RunStatus
 }
 var file_logstream_proto_depIdxs = []int32{
-	20, // 0: api.public.logstream.StreamLogRequest.deltas:type_name -> api.public.logstream.Delta
-	21, // 1: api.public.logstream.FormattedLogList.logs:type_name -> api.public.logstream.DeltaFormattedLog
-	22, // 2: api.public.logstream.GetLongTermResponse.manifest:type_name -> api.public.logstream.RunManifest
+	23, // 0: api.public.logstream.StreamLogRequest.deltas:type_name -> api.public.logstream.Delta
+	24, // 1: api.public.logstream.FormattedLogList.logs:type_name -> api.public.logstream.DeltaFormattedLog
+	25, // 2: api.public.logstream.GetLongTermResponse.manifest:type_name -> api.public.logstream.RunManifest
 	8,  // 3: api.public.logstream.GetLongTermResponse.logs:type_name -> api.public.logstream.FormattedLogList
-	22, // 4: api.public.logstream.InitLogsRequest.manifest:type_name -> api.public.logstream.RunManifest
-	21, // 5: api.public.logstream.InitLogsRequest.formatted_logs:type_name -> api.public.logstream.DeltaFormattedLog
-	22, // 6: api.public.logstream.GetLogsResponse.manifest:type_name -> api.public.logstream.RunManifest
+	25, // 4: api.public.logstream.InitLogsRequest.manifest:type_name -> api.public.logstream.RunManifest
+	24, // 5: api.public.logstream.InitLogsRequest.formatted_logs:type_name -> api.public.logstream.DeltaFormattedLog
+	25, // 6: api.public.logstream.GetLogsResponse.manifest:type_name -> api.public.logstream.RunManifest
 	8,  // 7: api.public.logstream.GetLogsResponse.logs:type_name -> api.public.logstream.FormattedLogList
-	23, // 8: api.public.logstream.LogMetadata.created_at:type_name -> google.protobuf.Timestamp
+	26, // 8: api.public.logstream.LogMetadata.created_at:type_name -> google.protobuf.Timestamp
 	0,  // 9: api.public.logstream.LogMetadata.runner:type_name -> api.public.logstream.Runner
-	24, // 10: api.public.logstream.LogMetadata.status:type_name -> api.public.logstream.RunStatus
-	23, // 11: api.public.logstream.LogMetadata.ended_at:type_name -> google.protobuf.Timestamp
+	27, // 10: api.public.logstream.LogMetadata.status:type_name -> api.public.logstream.RunStatus
+	26, // 11: api.public.logstream.LogMetadata.ended_at:type_name -> google.protobuf.Timestamp
 	15, // 12: api.public.logstream.LogMetadata.target:type_name -> api.public.logstream.Target
 	16, // 13: api.public.logstream.GetLogMetadataResponse.metadata:type_name -> api.public.logstream.LogMetadata
 	0,  // 14: api.public.logstream.ListLogMetadataRequest.runner:type_name -> api.public.logstream.Runner
-	24, // 15: api.public.logstream.ListLogMetadataRequest.status:type_name -> api.public.logstream.RunStatus
+	27, // 15: api.public.logstream.ListLogMetadataRequest.status:type_name -> api.public.logstream.RunStatus
 	16, // 16: api.public.logstream.ListLogMetadataResponse.metadata:type_name -> api.public.logstream.LogMetadata
-	1,  // 17: api.public.logstream.LogStream.StreamLogs:input_type -> api.public.logstream.StreamLogRequest
-	12, // 18: api.public.logstream.LogStream.GetLogs:input_type -> api.public.logstream.GetLogsRequest
-	14, // 19: api.public.logstream.LogStream.GetLogMetadata:input_type -> api.public.logstream.GetLogMetadataRequest
-	18, // 20: api.public.logstream.LogStream.ListLogMetadata:input_type -> api.public.logstream.ListLogMetadataRequest
-	10, // 21: api.public.logstream.LogStream.InitLogs:input_type -> api.public.logstream.InitLogsRequest
-	3,  // 22: api.public.logstream.LogStream.GetFirebaseAuthToken:input_type -> api.public.logstream.GetFirebaseAuthTokenRequest
-	5,  // 23: api.public.logstream.LogStream.LongTermExists:input_type -> api.public.logstream.LongTermExistsRequest
-	7,  // 24: api.public.logstream.LogStream.GetLongTerm:input_type -> api.public.logstream.GetLongTermRequest
-	2,  // 25: api.public.logstream.LogStream.StreamLogs:output_type -> api.public.logstream.StreamLogResponse
-	13, // 26: api.public.logstream.LogStream.GetLogs:output_type -> api.public.logstream.GetLogsResponse
-	17, // 27: api.public.logstream.LogStream.GetLogMetadata:output_type -> api.public.logstream.GetLogMetadataResponse
-	19, // 28: api.public.logstream.LogStream.ListLogMetadata:output_type -> api.public.logstream.ListLogMetadataResponse
-	11, // 29: api.public.logstream.LogStream.InitLogs:output_type -> api.public.logstream.InitLogsResponse
-	4,  // 30: api.public.logstream.LogStream.GetFirebaseAuthToken:output_type -> api.public.logstream.GetFirebaseAuthTokenResponse
-	6,  // 31: api.public.logstream.LogStream.LongTermExists:output_type -> api.public.logstream.LongTermExistsResponse
-	9,  // 32: api.public.logstream.LogStream.GetLongTerm:output_type -> api.public.logstream.GetLongTermResponse
-	25, // [25:33] is the sub-list for method output_type
-	17, // [17:25] is the sub-list for method input_type
-	17, // [17:17] is the sub-list for extension type_name
-	17, // [17:17] is the sub-list for extension extendee
-	0,  // [0:17] is the sub-list for field type_name
+	26, // 17: api.public.logstream.BuildMetrics.created_at:type_name -> google.protobuf.Timestamp
+	21, // 18: api.public.logstream.ListBuildMetricsResponse.metrics:type_name -> api.public.logstream.BuildMetrics
+	1,  // 19: api.public.logstream.LogStream.StreamLogs:input_type -> api.public.logstream.StreamLogRequest
+	12, // 20: api.public.logstream.LogStream.GetLogs:input_type -> api.public.logstream.GetLogsRequest
+	14, // 21: api.public.logstream.LogStream.GetLogMetadata:input_type -> api.public.logstream.GetLogMetadataRequest
+	18, // 22: api.public.logstream.LogStream.ListLogMetadata:input_type -> api.public.logstream.ListLogMetadataRequest
+	10, // 23: api.public.logstream.LogStream.InitLogs:input_type -> api.public.logstream.InitLogsRequest
+	3,  // 24: api.public.logstream.LogStream.GetFirebaseAuthToken:input_type -> api.public.logstream.GetFirebaseAuthTokenRequest
+	5,  // 25: api.public.logstream.LogStream.LongTermExists:input_type -> api.public.logstream.LongTermExistsRequest
+	7,  // 26: api.public.logstream.LogStream.GetLongTerm:input_type -> api.public.logstream.GetLongTermRequest
+	20, // 27: api.public.logstream.LogStream.ListBuildMetrics:input_type -> api.public.logstream.ListBuildMetricsRequest
+	2,  // 28: api.public.logstream.LogStream.StreamLogs:output_type -> api.public.logstream.StreamLogResponse
+	13, // 29: api.public.logstream.LogStream.GetLogs:output_type -> api.public.logstream.GetLogsResponse
+	17, // 30: api.public.logstream.LogStream.GetLogMetadata:output_type -> api.public.logstream.GetLogMetadataResponse
+	19, // 31: api.public.logstream.LogStream.ListLogMetadata:output_type -> api.public.logstream.ListLogMetadataResponse
+	11, // 32: api.public.logstream.LogStream.InitLogs:output_type -> api.public.logstream.InitLogsResponse
+	4,  // 33: api.public.logstream.LogStream.GetFirebaseAuthToken:output_type -> api.public.logstream.GetFirebaseAuthTokenResponse
+	6,  // 34: api.public.logstream.LogStream.LongTermExists:output_type -> api.public.logstream.LongTermExistsResponse
+	9,  // 35: api.public.logstream.LogStream.GetLongTerm:output_type -> api.public.logstream.GetLongTermResponse
+	22, // 36: api.public.logstream.LogStream.ListBuildMetrics:output_type -> api.public.logstream.ListBuildMetricsResponse
+	28, // [28:37] is the sub-list for method output_type
+	19, // [19:28] is the sub-list for method input_type
+	19, // [19:19] is the sub-list for extension type_name
+	19, // [19:19] is the sub-list for extension extendee
+	0,  // [0:19] is the sub-list for field type_name
 }
 
 func init() { file_logstream_proto_init() }
@@ -1828,6 +2092,42 @@ func file_logstream_proto_init() {
 				return nil
 			}
 		}
+		file_logstream_proto_msgTypes[19].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*ListBuildMetricsRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_logstream_proto_msgTypes[20].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*BuildMetrics); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_logstream_proto_msgTypes[21].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*ListBuildMetricsResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
 	}
 	file_logstream_proto_msgTypes[8].OneofWrappers = []interface{}{
 		(*GetLongTermResponse_Manifest)(nil),
@@ -1843,7 +2143,7 @@ func file_logstream_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_logstream_proto_rawDesc,
 			NumEnums:      1,
-			NumMessages:   19,
+			NumMessages:   22,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
