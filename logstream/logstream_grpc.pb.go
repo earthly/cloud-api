@@ -27,6 +27,7 @@ const (
 	LogStream_GetFirebaseAuthToken_FullMethodName = "/api.public.logstream.LogStream/GetFirebaseAuthToken"
 	LogStream_LongTermExists_FullMethodName       = "/api.public.logstream.LogStream/LongTermExists"
 	LogStream_GetLongTerm_FullMethodName          = "/api.public.logstream.LogStream/GetLongTerm"
+	LogStream_ListBuildMetrics_FullMethodName     = "/api.public.logstream.LogStream/ListBuildMetrics"
 )
 
 // LogStreamClient is the client API for LogStream service.
@@ -54,6 +55,7 @@ type LogStreamClient interface {
 	GetFirebaseAuthToken(ctx context.Context, in *GetFirebaseAuthTokenRequest, opts ...grpc.CallOption) (*GetFirebaseAuthTokenResponse, error)
 	LongTermExists(ctx context.Context, in *LongTermExistsRequest, opts ...grpc.CallOption) (*LongTermExistsResponse, error)
 	GetLongTerm(ctx context.Context, in *GetLongTermRequest, opts ...grpc.CallOption) (LogStream_GetLongTermClient, error)
+	ListBuildMetrics(ctx context.Context, in *ListBuildMetricsRequest, opts ...grpc.CallOption) (*ListBuildMetricsResponse, error)
 }
 
 type logStreamClient struct {
@@ -204,6 +206,15 @@ func (x *logStreamGetLongTermClient) Recv() (*GetLongTermResponse, error) {
 	return m, nil
 }
 
+func (c *logStreamClient) ListBuildMetrics(ctx context.Context, in *ListBuildMetricsRequest, opts ...grpc.CallOption) (*ListBuildMetricsResponse, error) {
+	out := new(ListBuildMetricsResponse)
+	err := c.cc.Invoke(ctx, LogStream_ListBuildMetrics_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // LogStreamServer is the server API for LogStream service.
 // All implementations must embed UnimplementedLogStreamServer
 // for forward compatibility
@@ -229,6 +240,7 @@ type LogStreamServer interface {
 	GetFirebaseAuthToken(context.Context, *GetFirebaseAuthTokenRequest) (*GetFirebaseAuthTokenResponse, error)
 	LongTermExists(context.Context, *LongTermExistsRequest) (*LongTermExistsResponse, error)
 	GetLongTerm(*GetLongTermRequest, LogStream_GetLongTermServer) error
+	ListBuildMetrics(context.Context, *ListBuildMetricsRequest) (*ListBuildMetricsResponse, error)
 	mustEmbedUnimplementedLogStreamServer()
 }
 
@@ -259,6 +271,9 @@ func (UnimplementedLogStreamServer) LongTermExists(context.Context, *LongTermExi
 }
 func (UnimplementedLogStreamServer) GetLongTerm(*GetLongTermRequest, LogStream_GetLongTermServer) error {
 	return status.Errorf(codes.Unimplemented, "method GetLongTerm not implemented")
+}
+func (UnimplementedLogStreamServer) ListBuildMetrics(context.Context, *ListBuildMetricsRequest) (*ListBuildMetricsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListBuildMetrics not implemented")
 }
 func (UnimplementedLogStreamServer) mustEmbedUnimplementedLogStreamServer() {}
 
@@ -431,6 +446,24 @@ func (x *logStreamGetLongTermServer) Send(m *GetLongTermResponse) error {
 	return x.ServerStream.SendMsg(m)
 }
 
+func _LogStream_ListBuildMetrics_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListBuildMetricsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(LogStreamServer).ListBuildMetrics(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: LogStream_ListBuildMetrics_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(LogStreamServer).ListBuildMetrics(ctx, req.(*ListBuildMetricsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // LogStream_ServiceDesc is the grpc.ServiceDesc for LogStream service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -457,6 +490,10 @@ var LogStream_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "LongTermExists",
 			Handler:    _LogStream_LongTermExists_Handler,
+		},
+		{
+			MethodName: "ListBuildMetrics",
+			Handler:    _LogStream_ListBuildMetrics_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{
