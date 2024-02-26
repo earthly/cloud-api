@@ -114,4 +114,6 @@ message BillingPlan {
   bool static_originating_ip_address = 19;
   // Default size to launch new instances when none is specified by the user
   InstanceType default_instance_type = 20;
+  // Max seconds spent executing a single RUN (exec op)
+  int32 max_seconds_per_exec = 21;
 }
