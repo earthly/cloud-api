@@ -202,6 +202,7 @@ message BuildMetrics {
   int32 cached_commands = 7;
   float cache_ratio = 8;
   int32 total_time_secs = 9;
+  RunStatus status = 10;
 }
 
 message ListBuildMetricsResponse {
