@@ -313,9 +313,17 @@ message DeregisterSatelliteRequest {
 
 message DeregisterSatelliteResponse {}
 
+message BuildkitSession {
+  string session_id = 1;
+  google.protobuf.Timestamp started_at = 2;
+  google.protobuf.Timestamp ended_at = 3;
+}
+
 message SatelliteHeartbeatRequest {
   string registration_token = 1;
   int32 op_load = 2;
+  google.protobuf.Duration duration_idle = 3;
+  repeated BuildkitSession session_history = 4;
 }
 
 message SatelliteHeartbeatResponse {}
