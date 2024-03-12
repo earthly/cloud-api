@@ -30,6 +30,8 @@ const (
 	Compute_WakeSatellite_FullMethodName       = "/api.public.compute.Compute/WakeSatellite"
 	Compute_SleepSatellite_FullMethodName      = "/api.public.compute.Compute/SleepSatellite"
 	Compute_ReserveSatellite_FullMethodName    = "/api.public.compute.Compute/ReserveSatellite"
+	Compute_SetGithubToken_FullMethodName      = "/api.public.compute.Compute/SetGithubToken"
+	Compute_GetGithubJob_FullMethodName        = "/api.public.compute.Compute/GetGithubJob"
 )
 
 // ComputeClient is the client API for Compute service.
@@ -98,6 +100,10 @@ type ComputeClient interface {
 	//
 	//	STOPPING -> ... -> STARTING -> ... -> OPERATIONAL -> EOF
 	ReserveSatellite(ctx context.Context, in *ReserveSatelliteRequest, opts ...grpc.CallOption) (Compute_ReserveSatelliteClient, error)
+	// SetGithubTokenRequest sets the configuration to enable triggering satellite builds from GHA (GitHub Actions).
+	SetGithubToken(ctx context.Context, in *SetGithubTokenRequest, opts ...grpc.CallOption) (*SetGithubTokenResponse, error)
+	// GetGithubJob lets satellites retrieve the GHA job information and run a JIT runner
+	GetGithubJob(ctx context.Context, in *GetGithubJobRequest, opts ...grpc.CallOption) (*GetGithubJobResponse, error)
 }
 
 type computeClient struct {
@@ -276,6 +282,24 @@ func (x *computeReserveSatelliteClient) Recv() (*ReserveSatelliteResponse, error
 	return m, nil
 }
 
+func (c *computeClient) SetGithubToken(ctx context.Context, in *SetGithubTokenRequest, opts ...grpc.CallOption) (*SetGithubTokenResponse, error) {
+	out := new(SetGithubTokenResponse)
+	err := c.cc.Invoke(ctx, Compute_SetGithubToken_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *computeClient) GetGithubJob(ctx context.Context, in *GetGithubJobRequest, opts ...grpc.CallOption) (*GetGithubJobResponse, error) {
+	out := new(GetGithubJobResponse)
+	err := c.cc.Invoke(ctx, Compute_GetGithubJob_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ComputeServer is the server API for Compute service.
 // All implementations must embed UnimplementedComputeServer
 // for forward compatibility
@@ -342,6 +366,10 @@ type ComputeServer interface {
 	//
 	//	STOPPING -> ... -> STARTING -> ... -> OPERATIONAL -> EOF
 	ReserveSatellite(*ReserveSatelliteRequest, Compute_ReserveSatelliteServer) error
+	// SetGithubTokenRequest sets the configuration to enable triggering satellite builds from GHA (GitHub Actions).
+	SetGithubToken(context.Context, *SetGithubTokenRequest) (*SetGithubTokenResponse, error)
+	// GetGithubJob lets satellites retrieve the GHA job information and run a JIT runner
+	GetGithubJob(context.Context, *GetGithubJobRequest) (*GetGithubJobResponse, error)
 	mustEmbedUnimplementedComputeServer()
 }
 
@@ -381,6 +409,12 @@ func (UnimplementedComputeServer) SleepSatellite(*SleepSatelliteRequest, Compute
 }
 func (UnimplementedComputeServer) ReserveSatellite(*ReserveSatelliteRequest, Compute_ReserveSatelliteServer) error {
 	return status.Errorf(codes.Unimplemented, "method ReserveSatellite not implemented")
+}
+func (UnimplementedComputeServer) SetGithubToken(context.Context, *SetGithubTokenRequest) (*SetGithubTokenResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetGithubToken not implemented")
+}
+func (UnimplementedComputeServer) GetGithubJob(context.Context, *GetGithubJobRequest) (*GetGithubJobResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetGithubJob not implemented")
 }
 func (UnimplementedComputeServer) mustEmbedUnimplementedComputeServer() {}
 
@@ -602,6 +636,42 @@ func (x *computeReserveSatelliteServer) Send(m *ReserveSatelliteResponse) error 
 	return x.ServerStream.SendMsg(m)
 }
 
+func _Compute_SetGithubToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SetGithubTokenRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ComputeServer).SetGithubToken(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Compute_SetGithubToken_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ComputeServer).SetGithubToken(ctx, req.(*SetGithubTokenRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Compute_GetGithubJob_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetGithubJobRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ComputeServer).GetGithubJob(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Compute_GetGithubJob_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ComputeServer).GetGithubJob(ctx, req.(*GetGithubJobRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Compute_ServiceDesc is the grpc.ServiceDesc for Compute service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -640,6 +710,14 @@ var Compute_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SatelliteHeartbeat",
 			Handler:    _Compute_SatelliteHeartbeat_Handler,
+		},
+		{
+			MethodName: "SetGithubToken",
+			Handler:    _Compute_SetGithubToken_Handler,
+		},
+		{
+			MethodName: "GetGithubJob",
+			Handler:    _Compute_GetGithubJob_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{
