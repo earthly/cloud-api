@@ -93,8 +93,10 @@ service Compute {
       body: "*"
     };
   }
-  // GetGithubJob lets satellites retrieve the GHA job information and run a JIT runner
-  rpc GetGithubJob(GetGithubJobRequest) returns (GetGithubJobResponse) {}
+  // PickGithubJobs lets satellites retrieve the GHA job information and run a JIT runner
+  // Jobs returned are marked as picked, and won't be returned in another request (unless the same idempotence_key is passed)
+  // for a limited period of time.
+  rpc PickGithubJobs(PickGithubJobsRequest) returns (stream PickGithubJobsResponse) {}
 }
 
 message SetGithubTokenRequest{
@@ -115,22 +117,22 @@ message SetGithubTokenRequest{
 message SetGithubTokenResponse {
 }
 
-message GetGithubJobRequest{
+message PickGithubJobsRequest{
   // Earthly org id
   string org_id = 1;
   string satellite_name = 2;
-  // Start from this id, not-included (optional)
-  int64 gh_job_id = 3;
+  // makes the operation retryable
+  string idempotence_key = 3;
 }
 
-message GetGithubJobResponse {
+message PickGithubJobsResponse {
   message Job {
     int64 gh_job_id = 1;
     string jit_configuration = 2;
     string pre_script_message = 3;
     int32 pre_script_exit_code = 4;
   }
-  repeated Job jobs = 1;
+  Job job = 1;
 }
 
 
