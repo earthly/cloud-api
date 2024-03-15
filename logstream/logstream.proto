@@ -155,6 +155,7 @@ message LogMetadata {
   bool is_ci = 12;
   string git_author = 13;
   string git_config_email = 14;
+  string git_username = 15;
 }
 
 message GetLogMetadataResponse {
