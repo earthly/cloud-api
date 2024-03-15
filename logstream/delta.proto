@@ -73,6 +73,7 @@ message DeltaManifest {
     bool is_ci = 9;
     string git_author = 10;
     string git_config_email = 11;
+    string git_username = 12;
   }
 }
 
