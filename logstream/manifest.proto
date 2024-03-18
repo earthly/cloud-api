@@ -43,7 +43,6 @@ message RunManifest {
 
   string git_config_email = 18;
   string git_author = 19;
-  string git_username = 20;
 }
 
 enum FailureType {
