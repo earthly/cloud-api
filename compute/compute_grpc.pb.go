@@ -31,7 +31,7 @@ const (
 	Compute_SleepSatellite_FullMethodName      = "/api.public.compute.Compute/SleepSatellite"
 	Compute_ReserveSatellite_FullMethodName    = "/api.public.compute.Compute/ReserveSatellite"
 	Compute_SetGithubToken_FullMethodName      = "/api.public.compute.Compute/SetGithubToken"
-	Compute_PickGithubJobs_FullMethodName      = "/api.public.compute.Compute/PickGithubJobs"
+	Compute_PickGithubJob_FullMethodName       = "/api.public.compute.Compute/PickGithubJob"
 )
 
 // ComputeClient is the client API for Compute service.
@@ -103,9 +103,8 @@ type ComputeClient interface {
 	// SetGithubTokenRequest sets the configuration to enable triggering satellite builds from GHA (GitHub Actions).
 	SetGithubToken(ctx context.Context, in *SetGithubTokenRequest, opts ...grpc.CallOption) (*SetGithubTokenResponse, error)
 	// PickGithubJobs lets satellites retrieve the GHA job information and run a JIT runner
-	// Jobs returned are marked as picked, and won't be returned in another request (unless the same idempotence_key is passed)
-	// for a limited period of time.
-	PickGithubJobs(ctx context.Context, in *PickGithubJobsRequest, opts ...grpc.CallOption) (Compute_PickGithubJobsClient, error)
+	// Jobs returned are marked as picked, and won't be returned in another request for a limited period of time.
+	PickGithubJob(ctx context.Context, in *PickGithubJobRequest, opts ...grpc.CallOption) (*PickGithubJobResponse, error)
 }
 
 type computeClient struct {
@@ -293,36 +292,13 @@ func (c *computeClient) SetGithubToken(ctx context.Context, in *SetGithubTokenRe
 	return out, nil
 }
 
-func (c *computeClient) PickGithubJobs(ctx context.Context, in *PickGithubJobsRequest, opts ...grpc.CallOption) (Compute_PickGithubJobsClient, error) {
-	stream, err := c.cc.NewStream(ctx, &Compute_ServiceDesc.Streams[3], Compute_PickGithubJobs_FullMethodName, opts...)
+func (c *computeClient) PickGithubJob(ctx context.Context, in *PickGithubJobRequest, opts ...grpc.CallOption) (*PickGithubJobResponse, error) {
+	out := new(PickGithubJobResponse)
+	err := c.cc.Invoke(ctx, Compute_PickGithubJob_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &computePickGithubJobsClient{stream}
-	if err := x.ClientStream.SendMsg(in); err != nil {
-		return nil, err
-	}
-	if err := x.ClientStream.CloseSend(); err != nil {
-		return nil, err
-	}
-	return x, nil
-}
-
-type Compute_PickGithubJobsClient interface {
-	Recv() (*PickGithubJobsResponse, error)
-	grpc.ClientStream
-}
-
-type computePickGithubJobsClient struct {
-	grpc.ClientStream
-}
-
-func (x *computePickGithubJobsClient) Recv() (*PickGithubJobsResponse, error) {
-	m := new(PickGithubJobsResponse)
-	if err := x.ClientStream.RecvMsg(m); err != nil {
-		return nil, err
-	}
-	return m, nil
+	return out, nil
 }
 
 // ComputeServer is the server API for Compute service.
@@ -394,9 +370,8 @@ type ComputeServer interface {
 	// SetGithubTokenRequest sets the configuration to enable triggering satellite builds from GHA (GitHub Actions).
 	SetGithubToken(context.Context, *SetGithubTokenRequest) (*SetGithubTokenResponse, error)
 	// PickGithubJobs lets satellites retrieve the GHA job information and run a JIT runner
-	// Jobs returned are marked as picked, and won't be returned in another request (unless the same idempotence_key is passed)
-	// for a limited period of time.
-	PickGithubJobs(*PickGithubJobsRequest, Compute_PickGithubJobsServer) error
+	// Jobs returned are marked as picked, and won't be returned in another request for a limited period of time.
+	PickGithubJob(context.Context, *PickGithubJobRequest) (*PickGithubJobResponse, error)
 	mustEmbedUnimplementedComputeServer()
 }
 
@@ -440,8 +415,8 @@ func (UnimplementedComputeServer) ReserveSatellite(*ReserveSatelliteRequest, Com
 func (UnimplementedComputeServer) SetGithubToken(context.Context, *SetGithubTokenRequest) (*SetGithubTokenResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SetGithubToken not implemented")
 }
-func (UnimplementedComputeServer) PickGithubJobs(*PickGithubJobsRequest, Compute_PickGithubJobsServer) error {
-	return status.Errorf(codes.Unimplemented, "method PickGithubJobs not implemented")
+func (UnimplementedComputeServer) PickGithubJob(context.Context, *PickGithubJobRequest) (*PickGithubJobResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PickGithubJob not implemented")
 }
 func (UnimplementedComputeServer) mustEmbedUnimplementedComputeServer() {}
 
@@ -681,25 +656,22 @@ func _Compute_SetGithubToken_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Compute_PickGithubJobs_Handler(srv interface{}, stream grpc.ServerStream) error {
-	m := new(PickGithubJobsRequest)
-	if err := stream.RecvMsg(m); err != nil {
-		return err
+func _Compute_PickGithubJob_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PickGithubJobRequest)
+	if err := dec(in); err != nil {
+		return nil, err
 	}
-	return srv.(ComputeServer).PickGithubJobs(m, &computePickGithubJobsServer{stream})
-}
-
-type Compute_PickGithubJobsServer interface {
-	Send(*PickGithubJobsResponse) error
-	grpc.ServerStream
-}
-
-type computePickGithubJobsServer struct {
-	grpc.ServerStream
-}
-
-func (x *computePickGithubJobsServer) Send(m *PickGithubJobsResponse) error {
-	return x.ServerStream.SendMsg(m)
+	if interceptor == nil {
+		return srv.(ComputeServer).PickGithubJob(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Compute_PickGithubJob_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ComputeServer).PickGithubJob(ctx, req.(*PickGithubJobRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 // Compute_ServiceDesc is the grpc.ServiceDesc for Compute service.
@@ -745,6 +717,10 @@ var Compute_ServiceDesc = grpc.ServiceDesc{
 			MethodName: "SetGithubToken",
 			Handler:    _Compute_SetGithubToken_Handler,
 		},
+		{
+			MethodName: "PickGithubJob",
+			Handler:    _Compute_PickGithubJob_Handler,
+		},
 	},
 	Streams: []grpc.StreamDesc{
 		{
@@ -760,11 +736,6 @@ var Compute_ServiceDesc = grpc.ServiceDesc{
 		{
 			StreamName:    "ReserveSatellite",
 			Handler:       _Compute_ReserveSatellite_Handler,
-			ServerStreams: true,
-		},
-		{
-			StreamName:    "PickGithubJobs",
-			Handler:       _Compute_PickGithubJobs_Handler,
 			ServerStreams: true,
 		},
 	},
