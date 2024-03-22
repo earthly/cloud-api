@@ -95,7 +95,7 @@ service Compute {
   }
   // PickGithubJobs lets satellites retrieve the GHA job information and run a JIT runner
   // Jobs returned are marked as picked, and won't be returned in another request for a limited period of time.
-  rpc PickGithubJob(PickGithubJobRequest) returns (PickGithubJobResponse) {}
+  rpc PickGithubJobs(PickGithubJobsRequest) returns (stream PickGithubJobsResponse) {}
 }
 
 message SetGithubTokenRequest{
@@ -116,13 +116,13 @@ message SetGithubTokenRequest{
 message SetGithubTokenResponse {
 }
 
-message PickGithubJobRequest{
+message PickGithubJobsRequest{
   // Earthly org id
   string org_id = 1;
   string satellite_name = 2;
 }
 
-message PickGithubJobResponse {
+message PickGithubJobsResponse {
   message Job {
     int64 gh_job_id = 1;
     string jit_configuration = 2;
