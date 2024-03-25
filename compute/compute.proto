@@ -86,7 +86,52 @@ service Compute {
   // When the satellite is actively being put to sleep and needs to finish that process first:
   //   STOPPING -> ... -> STARTING -> ... -> OPERATIONAL -> EOF
   rpc ReserveSatellite(ReserveSatelliteRequest) returns (stream ReserveSatelliteResponse) {}
+  // SetGithubTokenRequest sets the configuration to enable triggering satellite builds from GHA (GitHub Actions).
+  rpc SetGithubToken(SetGithubTokenRequest) returns (SetGithubTokenResponse) {
+    option (google.api.http) = {
+      post: "/api/v0/github/token"
+      body: "*"
+    };
+  }
+  // PickGithubJobs lets satellites retrieve the GHA job information and run a JIT runner
+  // Jobs returned are marked as picked, and won't be returned in another request for a limited period of time.
+  rpc PickGithubJobs(PickGithubJobsRequest) returns (stream PickGithubJobsResponse) {}
 }
+
+message SetGithubTokenRequest{
+  // Earthly org id
+  string org_id = 1;
+  // Org name is required
+  string github_org_name = 2;
+  // Repo name is optional. Leave it empty to set an org-wide token
+  string github_repo_name = 3;
+  // https://github.com/settings/tokens. The token is required to have permissions to:
+  // - Register a repo/org -scoped webhook to retrieve GHA job status events
+  // - Create a JIT GHA self hosted runner associated to the org/repo
+  //   - https://docs.github.com/en/rest/actions/self-hosted-runners?apiVersion=2022-11-28#create-configuration-for-a-just-in-time-runner-for-an-organization
+  //   - https://docs.github.com/en/rest/actions/self-hosted-runners?apiVersion=2022-11-28#create-configuration-for-a-just-in-time-runner-for-a-repository
+  string github_token = 4;
+}
+
+message SetGithubTokenResponse {
+}
+
+message PickGithubJobsRequest{
+  // Earthly org id
+  string org_id = 1;
+  string satellite_name = 2;
+}
+
+message PickGithubJobsResponse {
+  message Job {
+    int64 gh_job_id = 1;
+    string jit_configuration = 2;
+    string pre_script_message = 3;
+    int32 pre_script_exit_code = 4;
+  }
+  Job job = 1;
+}
+
 
 message LaunchSatelliteRequest {
   string org_id = 1;
@@ -267,9 +312,17 @@ message DeregisterSatelliteRequest {
 
 message DeregisterSatelliteResponse {}
 
+message BuildkitSession {
+  string session_id = 1;
+  google.protobuf.Timestamp started_at = 2;
+  google.protobuf.Timestamp ended_at = 3;
+}
+
 message SatelliteHeartbeatRequest {
   string registration_token = 1;
   int32 op_load = 2;
+  google.protobuf.Duration duration_idle = 3;
+  repeated BuildkitSession session_history = 4;
 }
 
 message SatelliteHeartbeatResponse {}
