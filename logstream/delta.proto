@@ -45,6 +45,7 @@ message DeltaFormattedLog {
   // information embedded, including target prefixes, ansi escape codes for
   // colors, etc.
   bytes data = 3;
+  string command_id = 4;
 }
 
 message DeltaManifest {
