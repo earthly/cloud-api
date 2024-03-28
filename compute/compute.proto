@@ -300,6 +300,7 @@ message RegisterSatelliteRequest {
   string platform = 5;
   string version = 6;
   TLSCertificate certificate = 7;
+  string registration_token = 8; // Optional registration token, when re-registering
 }
 
 message RegisterSatelliteResponse {
