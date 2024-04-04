@@ -138,9 +138,9 @@ message ListCloudRequest {
 
 message ListCloudResponse {
   message CloudInstallation {
-    string cloudName = 1;
-    int32 numSatellites = 2;
-    bool isDefault = 3;
+    string cloud_name = 1;
+    int32 num_satellites = 2;
+    bool is_default = 3;
     CloudStatus status = 4;
   }
   repeated CloudInstallation clouds = 1;
@@ -149,7 +149,7 @@ message ListCloudResponse {
 message ConfigureCloudRequest {
   string org_id = 1;
   string name = 2;
-  bool setDefault = 3;
+  bool set_default = 3;
 }
 
 enum CloudStatus {
@@ -207,7 +207,7 @@ message LaunchSatelliteRequest {
   string version = 6; // Which version data to use when launching satellite
   string maintenance_window_start = 7; // when can we auto-update your satellite
   bool maintenance_weekends_only = 8; // Auto-updates only run on weekends
-  string cloudName = 9; // Which cloud installation to use, empty means default
+  string cloud_name = 9; // Which cloud installation to use, empty means default
 }
 
 enum SatelliteStatus {
@@ -248,7 +248,7 @@ message ListSatellitesResponse {
     google.protobuf.Duration cache_retention = 8;
     google.protobuf.Timestamp last_used = 9;
     SatelliteSpecs specs = 10;
-    string cloudName = 11;
+    string cloud_name = 11;
   }
   repeated SatelliteInstance instances = 1;
 }
@@ -313,8 +313,8 @@ message GetSatelliteResponse {
   reserved 18; // old metrics field
   bool is_managed = 19;
   TLSCertificate certificate = 20;
-  string cloudName = 21;
-  string satelliteAddress = 22;
+  string cloud_name = 21;
+  string satellite_address = 22;
 }
 
 message WakeSatelliteRequest {
