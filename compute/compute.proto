@@ -207,7 +207,7 @@ message LaunchSatelliteRequest {
   string version = 6; // Which version data to use when launching satellite
   string maintenance_window_start = 7; // when can we auto-update your satellite
   bool maintenance_weekends_only = 8; // Auto-updates only run on weekends
-  string cloudName = 9; // Which cloud installation to use
+  string cloudName = 9; // Which cloud installation to use, empty means default
 }
 
 enum SatelliteStatus {
@@ -314,6 +314,7 @@ message GetSatelliteResponse {
   bool is_managed = 19;
   TLSCertificate certificate = 20;
   string cloudName = 21;
+  string satelliteAddress = 22;
 }
 
 message WakeSatelliteRequest {
