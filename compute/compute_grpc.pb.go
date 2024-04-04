@@ -32,6 +32,9 @@ const (
 	Compute_ReserveSatellite_FullMethodName    = "/api.public.compute.Compute/ReserveSatellite"
 	Compute_SetGithubToken_FullMethodName      = "/api.public.compute.Compute/SetGithubToken"
 	Compute_PickGithubJobs_FullMethodName      = "/api.public.compute.Compute/PickGithubJobs"
+	Compute_ConfigureCloud_FullMethodName      = "/api.public.compute.Compute/ConfigureCloud"
+	Compute_ListCloud_FullMethodName           = "/api.public.compute.Compute/ListCloud"
+	Compute_DeleteCloud_FullMethodName         = "/api.public.compute.Compute/DeleteCloud"
 )
 
 // ComputeClient is the client API for Compute service.
@@ -105,6 +108,14 @@ type ComputeClient interface {
 	// PickGithubJobs lets satellites retrieve the GHA job information and run a JIT runner
 	// Jobs returned are marked as picked, and won't be returned in another request for a limited period of time.
 	PickGithubJobs(ctx context.Context, in *PickGithubJobsRequest, opts ...grpc.CallOption) (Compute_PickGithubJobsClient, error)
+	// ConfigureCloud sets up (or re-does the setup) for the cloud with the given name. The setup validates we can access
+	// the other account, and that the other account has all the pieces we need to manage satellites in it. Not a stream
+	// because it should be a couple rather quick API calls on our end.
+	ConfigureCloud(ctx context.Context, in *ConfigureCloudRequest, opts ...grpc.CallOption) (*ConfigureCloudResponse, error)
+	// ListCloud lists all the clouds available. Listing the clouds also checks the status of each cloud.
+	ListCloud(ctx context.Context, in *ListCloudRequest, opts ...grpc.CallOption) (*ListCloudResponse, error)
+	// DeleteCloud removes the named cloud, as long as it has no satellites in it. Not a stream because it should be quick.
+	DeleteCloud(ctx context.Context, in *DeleteCloudRequest, opts ...grpc.CallOption) (*DeleteCloudResponse, error)
 }
 
 type computeClient struct {
@@ -324,6 +335,33 @@ func (x *computePickGithubJobsClient) Recv() (*PickGithubJobsResponse, error) {
 	return m, nil
 }
 
+func (c *computeClient) ConfigureCloud(ctx context.Context, in *ConfigureCloudRequest, opts ...grpc.CallOption) (*ConfigureCloudResponse, error) {
+	out := new(ConfigureCloudResponse)
+	err := c.cc.Invoke(ctx, Compute_ConfigureCloud_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *computeClient) ListCloud(ctx context.Context, in *ListCloudRequest, opts ...grpc.CallOption) (*ListCloudResponse, error) {
+	out := new(ListCloudResponse)
+	err := c.cc.Invoke(ctx, Compute_ListCloud_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *computeClient) DeleteCloud(ctx context.Context, in *DeleteCloudRequest, opts ...grpc.CallOption) (*DeleteCloudResponse, error) {
+	out := new(DeleteCloudResponse)
+	err := c.cc.Invoke(ctx, Compute_DeleteCloud_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ComputeServer is the server API for Compute service.
 // All implementations must embed UnimplementedComputeServer
 // for forward compatibility
@@ -395,6 +433,14 @@ type ComputeServer interface {
 	// PickGithubJobs lets satellites retrieve the GHA job information and run a JIT runner
 	// Jobs returned are marked as picked, and won't be returned in another request for a limited period of time.
 	PickGithubJobs(*PickGithubJobsRequest, Compute_PickGithubJobsServer) error
+	// ConfigureCloud sets up (or re-does the setup) for the cloud with the given name. The setup validates we can access
+	// the other account, and that the other account has all the pieces we need to manage satellites in it. Not a stream
+	// because it should be a couple rather quick API calls on our end.
+	ConfigureCloud(context.Context, *ConfigureCloudRequest) (*ConfigureCloudResponse, error)
+	// ListCloud lists all the clouds available. Listing the clouds also checks the status of each cloud.
+	ListCloud(context.Context, *ListCloudRequest) (*ListCloudResponse, error)
+	// DeleteCloud removes the named cloud, as long as it has no satellites in it. Not a stream because it should be quick.
+	DeleteCloud(context.Context, *DeleteCloudRequest) (*DeleteCloudResponse, error)
 	mustEmbedUnimplementedComputeServer()
 }
 
@@ -440,6 +486,15 @@ func (UnimplementedComputeServer) SetGithubToken(context.Context, *SetGithubToke
 }
 func (UnimplementedComputeServer) PickGithubJobs(*PickGithubJobsRequest, Compute_PickGithubJobsServer) error {
 	return status.Errorf(codes.Unimplemented, "method PickGithubJobs not implemented")
+}
+func (UnimplementedComputeServer) ConfigureCloud(context.Context, *ConfigureCloudRequest) (*ConfigureCloudResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ConfigureCloud not implemented")
+}
+func (UnimplementedComputeServer) ListCloud(context.Context, *ListCloudRequest) (*ListCloudResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListCloud not implemented")
+}
+func (UnimplementedComputeServer) DeleteCloud(context.Context, *DeleteCloudRequest) (*DeleteCloudResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteCloud not implemented")
 }
 func (UnimplementedComputeServer) mustEmbedUnimplementedComputeServer() {}
 
@@ -700,6 +755,60 @@ func (x *computePickGithubJobsServer) Send(m *PickGithubJobsResponse) error {
 	return x.ServerStream.SendMsg(m)
 }
 
+func _Compute_ConfigureCloud_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ConfigureCloudRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ComputeServer).ConfigureCloud(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Compute_ConfigureCloud_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ComputeServer).ConfigureCloud(ctx, req.(*ConfigureCloudRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Compute_ListCloud_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListCloudRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ComputeServer).ListCloud(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Compute_ListCloud_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ComputeServer).ListCloud(ctx, req.(*ListCloudRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Compute_DeleteCloud_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteCloudRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ComputeServer).DeleteCloud(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Compute_DeleteCloud_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ComputeServer).DeleteCloud(ctx, req.(*DeleteCloudRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Compute_ServiceDesc is the grpc.ServiceDesc for Compute service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -742,6 +851,18 @@ var Compute_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SetGithubToken",
 			Handler:    _Compute_SetGithubToken_Handler,
+		},
+		{
+			MethodName: "ConfigureCloud",
+			Handler:    _Compute_ConfigureCloud_Handler,
+		},
+		{
+			MethodName: "ListCloud",
+			Handler:    _Compute_ListCloud_Handler,
+		},
+		{
+			MethodName: "DeleteCloud",
+			Handler:    _Compute_DeleteCloud_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{
