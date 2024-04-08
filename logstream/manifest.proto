@@ -67,6 +67,7 @@ message Failure {
   string command_id = 3;
   string error_message = 4;
   bytes output = 5;
+  string help_message = 6;
 }
 
 message TargetManifest {
