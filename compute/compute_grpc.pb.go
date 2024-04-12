@@ -33,7 +33,7 @@ const (
 	Compute_SetGithubToken_FullMethodName      = "/api.public.compute.Compute/SetGithubToken"
 	Compute_PickGithubJobs_FullMethodName      = "/api.public.compute.Compute/PickGithubJobs"
 	Compute_ConfigureCloud_FullMethodName      = "/api.public.compute.Compute/ConfigureCloud"
-	Compute_ListCloud_FullMethodName           = "/api.public.compute.Compute/ListCloud"
+	Compute_ListClouds_FullMethodName          = "/api.public.compute.Compute/ListClouds"
 	Compute_DeleteCloud_FullMethodName         = "/api.public.compute.Compute/DeleteCloud"
 )
 
@@ -112,8 +112,8 @@ type ComputeClient interface {
 	// the other account, and that the other account has all the pieces we need to manage satellites in it. Not a stream
 	// because it should be a couple rather quick API calls on our end.
 	ConfigureCloud(ctx context.Context, in *ConfigureCloudRequest, opts ...grpc.CallOption) (*ConfigureCloudResponse, error)
-	// ListCloud lists all the clouds available. Listing the clouds also checks the status of each cloud.
-	ListCloud(ctx context.Context, in *ListCloudRequest, opts ...grpc.CallOption) (*ListCloudResponse, error)
+	// ListClouds lists all the clouds available. Listing the clouds also checks the status of each cloud.
+	ListClouds(ctx context.Context, in *ListCloudsRequest, opts ...grpc.CallOption) (*ListCloudsResponse, error)
 	// DeleteCloud removes the named cloud, as long as it has no satellites in it. Not a stream because it should be quick.
 	DeleteCloud(ctx context.Context, in *DeleteCloudRequest, opts ...grpc.CallOption) (*DeleteCloudResponse, error)
 }
@@ -344,9 +344,9 @@ func (c *computeClient) ConfigureCloud(ctx context.Context, in *ConfigureCloudRe
 	return out, nil
 }
 
-func (c *computeClient) ListCloud(ctx context.Context, in *ListCloudRequest, opts ...grpc.CallOption) (*ListCloudResponse, error) {
-	out := new(ListCloudResponse)
-	err := c.cc.Invoke(ctx, Compute_ListCloud_FullMethodName, in, out, opts...)
+func (c *computeClient) ListClouds(ctx context.Context, in *ListCloudsRequest, opts ...grpc.CallOption) (*ListCloudsResponse, error) {
+	out := new(ListCloudsResponse)
+	err := c.cc.Invoke(ctx, Compute_ListClouds_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -437,8 +437,8 @@ type ComputeServer interface {
 	// the other account, and that the other account has all the pieces we need to manage satellites in it. Not a stream
 	// because it should be a couple rather quick API calls on our end.
 	ConfigureCloud(context.Context, *ConfigureCloudRequest) (*ConfigureCloudResponse, error)
-	// ListCloud lists all the clouds available. Listing the clouds also checks the status of each cloud.
-	ListCloud(context.Context, *ListCloudRequest) (*ListCloudResponse, error)
+	// ListClouds lists all the clouds available. Listing the clouds also checks the status of each cloud.
+	ListClouds(context.Context, *ListCloudsRequest) (*ListCloudsResponse, error)
 	// DeleteCloud removes the named cloud, as long as it has no satellites in it. Not a stream because it should be quick.
 	DeleteCloud(context.Context, *DeleteCloudRequest) (*DeleteCloudResponse, error)
 	mustEmbedUnimplementedComputeServer()
@@ -490,8 +490,8 @@ func (UnimplementedComputeServer) PickGithubJobs(*PickGithubJobsRequest, Compute
 func (UnimplementedComputeServer) ConfigureCloud(context.Context, *ConfigureCloudRequest) (*ConfigureCloudResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ConfigureCloud not implemented")
 }
-func (UnimplementedComputeServer) ListCloud(context.Context, *ListCloudRequest) (*ListCloudResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ListCloud not implemented")
+func (UnimplementedComputeServer) ListClouds(context.Context, *ListCloudsRequest) (*ListCloudsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListClouds not implemented")
 }
 func (UnimplementedComputeServer) DeleteCloud(context.Context, *DeleteCloudRequest) (*DeleteCloudResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteCloud not implemented")
@@ -773,20 +773,20 @@ func _Compute_ConfigureCloud_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Compute_ListCloud_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListCloudRequest)
+func _Compute_ListClouds_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListCloudsRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ComputeServer).ListCloud(ctx, in)
+		return srv.(ComputeServer).ListClouds(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Compute_ListCloud_FullMethodName,
+		FullMethod: Compute_ListClouds_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ComputeServer).ListCloud(ctx, req.(*ListCloudRequest))
+		return srv.(ComputeServer).ListClouds(ctx, req.(*ListCloudsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -857,8 +857,8 @@ var Compute_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Compute_ConfigureCloud_Handler,
 		},
 		{
-			MethodName: "ListCloud",
-			Handler:    _Compute_ListCloud_Handler,
+			MethodName: "ListClouds",
+			Handler:    _Compute_ListClouds_Handler,
 		},
 		{
 			MethodName: "DeleteCloud",

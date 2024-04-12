@@ -107,8 +107,8 @@ service Compute {
     };
   }
 
-  // ListCloud lists all the clouds available. Listing the clouds also checks the status of each cloud.
-  rpc ListCloud(ListCloudRequest) returns (ListCloudResponse) {
+  // ListClouds lists all the clouds available. Listing the clouds also checks the status of each cloud.
+  rpc ListClouds(ListCloudsRequest) returns (ListCloudsResponse) {
     option (google.api.http) = {
       get: "/api/v0/clouds"
     };
@@ -132,11 +132,11 @@ message DeleteCloudRequest{
 message DeleteCloudResponse {}
 
 
-message ListCloudRequest {
+message ListCloudsRequest {
   string org_id = 1;
 }
 
-message ListCloudResponse {
+message ListCloudsResponse {
   message CloudInstallation {
     string cloud_name = 1;
     int32 num_satellites = 2;
