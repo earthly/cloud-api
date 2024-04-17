@@ -580,37 +580,37 @@ func local_request_Compute_ConfigureCloud_0(ctx context.Context, marshaler runti
 }
 
 var (
-	filter_Compute_ListCloud_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
+	filter_Compute_ListClouds_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
 )
 
-func request_Compute_ListCloud_0(ctx context.Context, marshaler runtime.Marshaler, client ComputeClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq ListCloudRequest
+func request_Compute_ListClouds_0(ctx context.Context, marshaler runtime.Marshaler, client ComputeClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListCloudsRequest
 	var metadata runtime.ServerMetadata
 
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_Compute_ListCloud_0); err != nil {
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_Compute_ListClouds_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
-	msg, err := client.ListCloud(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	msg, err := client.ListClouds(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
 }
 
-func local_request_Compute_ListCloud_0(ctx context.Context, marshaler runtime.Marshaler, server ComputeServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq ListCloudRequest
+func local_request_Compute_ListClouds_0(ctx context.Context, marshaler runtime.Marshaler, server ComputeServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListCloudsRequest
 	var metadata runtime.ServerMetadata
 
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_Compute_ListCloud_0); err != nil {
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_Compute_ListClouds_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
-	msg, err := server.ListCloud(ctx, &protoReq)
+	msg, err := server.ListClouds(ctx, &protoReq)
 	return msg, metadata, err
 
 }
@@ -969,7 +969,7 @@ func RegisterComputeHandlerServer(ctx context.Context, mux *runtime.ServeMux, se
 
 	})
 
-	mux.Handle("GET", pattern_Compute_ListCloud_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_Compute_ListClouds_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -977,12 +977,12 @@ func RegisterComputeHandlerServer(ctx context.Context, mux *runtime.ServeMux, se
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/api.public.compute.Compute/ListCloud", runtime.WithHTTPPathPattern("/api/v0/clouds"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/api.public.compute.Compute/ListClouds", runtime.WithHTTPPathPattern("/api/v0/clouds"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_Compute_ListCloud_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_Compute_ListClouds_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
@@ -990,7 +990,7 @@ func RegisterComputeHandlerServer(ctx context.Context, mux *runtime.ServeMux, se
 			return
 		}
 
-		forward_Compute_ListCloud_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_Compute_ListClouds_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -1368,25 +1368,25 @@ func RegisterComputeHandlerClient(ctx context.Context, mux *runtime.ServeMux, cl
 
 	})
 
-	mux.Handle("GET", pattern_Compute_ListCloud_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_Compute_ListClouds_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/api.public.compute.Compute/ListCloud", runtime.WithHTTPPathPattern("/api/v0/clouds"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/api.public.compute.Compute/ListClouds", runtime.WithHTTPPathPattern("/api/v0/clouds"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_Compute_ListCloud_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_Compute_ListClouds_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_Compute_ListCloud_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_Compute_ListClouds_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -1444,7 +1444,7 @@ var (
 
 	pattern_Compute_ConfigureCloud_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v0", "clouds"}, ""))
 
-	pattern_Compute_ListCloud_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v0", "clouds"}, ""))
+	pattern_Compute_ListClouds_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v0", "clouds"}, ""))
 
 	pattern_Compute_DeleteCloud_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"api", "v0", "clouds", "name"}, ""))
 )
@@ -1478,7 +1478,7 @@ var (
 
 	forward_Compute_ConfigureCloud_0 = runtime.ForwardResponseMessage
 
-	forward_Compute_ListCloud_0 = runtime.ForwardResponseMessage
+	forward_Compute_ListClouds_0 = runtime.ForwardResponseMessage
 
 	forward_Compute_DeleteCloud_0 = runtime.ForwardResponseMessage
 )
