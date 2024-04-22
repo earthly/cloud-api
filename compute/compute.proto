@@ -86,6 +86,7 @@ service Compute {
   // When the satellite is actively being put to sleep and needs to finish that process first:
   //   STOPPING -> ... -> STARTING -> ... -> OPERATIONAL -> EOF
   rpc ReserveSatellite(ReserveSatelliteRequest) returns (stream ReserveSatelliteResponse) {}
+
   // SetGithubTokenRequest sets the configuration to enable triggering satellite builds from GHA (GitHub Actions).
   rpc SetGithubToken(SetGithubTokenRequest) returns (SetGithubTokenResponse) {
     option (google.api.http) = {
@@ -93,6 +94,7 @@ service Compute {
       body: "*"
     };
   }
+
   // PickGithubJobs lets satellites retrieve the GHA job information and run a JIT runner
   // Jobs returned are marked as picked, and won't be returned in another request for a limited period of time.
   rpc PickGithubJobs(PickGithubJobsRequest) returns (stream PickGithubJobsResponse) {}
@@ -193,6 +195,7 @@ message PickGithubJobsResponse {
     string jit_configuration = 2;
     string pre_script_message = 3;
     int32 pre_script_exit_code = 4;
+    repeated string cache_folders = 5;
   }
   Job job = 1;
 }
