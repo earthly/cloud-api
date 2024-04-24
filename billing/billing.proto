@@ -117,7 +117,7 @@ message BillingPlan {
   // Max seconds spent executing a single RUN (exec op)
   int32 max_seconds_per_exec = 21;
   // Whether this org can use SH satellites
-  bool self_hosted_enabled = 22;
+  bool self_hosted_disabled = 22;
   // Whether this org has enabled the GHA-Satellites integration
-  bool gha_enabled_enabled = 23;
+  bool gha_disabled = 23;
 }
