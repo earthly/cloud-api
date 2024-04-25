@@ -567,7 +567,7 @@ type BillingPlan struct {
 	MaxSecondsPerExec int32 `protobuf:"varint,21,opt,name=max_seconds_per_exec,json=maxSecondsPerExec,proto3" json:"max_seconds_per_exec,omitempty"`
 	// Whether this org can use SH satellites
 	SelfHostedDisabled bool `protobuf:"varint,22,opt,name=self_hosted_disabled,json=selfHostedDisabled,proto3" json:"self_hosted_disabled,omitempty"`
-	// Whether this org has enabled the GHA-Satellites integration
+	// Whether this org can use GHA-Satellites integration
 	GhaDisabled bool `protobuf:"varint,23,opt,name=gha_disabled,json=ghaDisabled,proto3" json:"gha_disabled,omitempty"`
 }
 
