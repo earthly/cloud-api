@@ -20,6 +20,7 @@ message RunManifest {
   RunStatus status = 6;
   map<string, TargetManifest> targets = 7;
   map<string, CommandManifest> commands = 13;
+  map<string, ImageManifest> images = 20;
   string main_target_id = 8;
   Failure failure = 9;
   string resume_token = 16;
@@ -126,6 +127,13 @@ message CommandManifest {
   // depends_on contains any targets that have been referenced by this command
   // and the target name they were referenced with.
   repeated CommandTarget depends_on = 16;
+}
+
+message ImageManifest {
+  string image_name = 1;
+  string tag = 2;
+  string digest = 3;
+  string platform = 4;
 }
 
 message SourceLocation {
