@@ -97,6 +97,13 @@ message CommandTarget {
   string referenced_name = 2;
 }
 
+message CommandImage {
+  string image_name = 1;
+  string tag = 2;
+  string digest = 3;
+  string platform = 4;
+}
+
 message CommandManifest {
   reserved 4;
   reserved "is_push";
@@ -131,9 +138,9 @@ message CommandManifest {
 
 message ImageManifest {
   string image_name = 1;
-  string tag = 2;
+  repeated string tags = 2;
   string digest = 3;
-  string platform = 4;
+  repeated string platforms = 4;
 }
 
 message SourceLocation {
