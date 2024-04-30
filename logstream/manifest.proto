@@ -2,6 +2,8 @@ syntax = "proto3";
 package api.public.logstream;
 option go_package = "./logstream";
 
+import "google/protobuf/struct.proto";
+
 enum RunStatus {
   RUN_STATUS_UNKNOWN = 0;
   RUN_STATUS_NOT_STARTED = 1;
@@ -102,6 +104,7 @@ message CommandImage {
   string tag = 2;
   string digest = 3;
   string platform = 4;
+  google.protobuf.Struct vulnerabilities = 5;
 }
 
 message CommandManifest {
@@ -141,6 +144,7 @@ message ImageManifest {
   repeated string tags = 2;
   string digest = 3;
   repeated string platforms = 4;
+  google.protobuf.Struct vulnerabilities = 5;
 }
 
 message SourceLocation {
