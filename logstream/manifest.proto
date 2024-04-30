@@ -105,6 +105,7 @@ message CommandImage {
   string digest = 3;
   string platform = 4;
   google.protobuf.Struct vulnerabilities = 5;
+  repeated string spdx = 6;
 }
 
 message CommandManifest {
