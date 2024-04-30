@@ -119,5 +119,5 @@ message DeltaCommandManifest {
   SourceLocation source_location = 15;
   repeated CommandTarget depends_on = 22;
   repeated CommandImage images = 23;
+  string spdx = 24;
 }
-

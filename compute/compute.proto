@@ -152,6 +152,13 @@ message ConfigureCloudRequest {
   string org_id = 1;
   string name = 2;
   bool set_default = 3;
+  string ssh_key_name = 4;
+  string compute_role_arn = 5;
+  string account_id = 6;
+  repeated string allowed_subnet_ids = 7;
+  string security_group_id = 8;
+  string region = 9;
+  string instance_profile_arn = 10;
 }
 
 enum CloudStatus {
@@ -163,6 +170,7 @@ enum CloudStatus {
 
 message ConfigureCloudResponse {
   CloudStatus status = 1;
+  string message = 2;
 }
 
 message SetGithubTokenRequest{
