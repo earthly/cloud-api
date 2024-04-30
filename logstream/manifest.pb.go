@@ -762,9 +762,9 @@ type CommandManifest struct {
 	EndedAtUnixNanos   uint64    `protobuf:"varint,7,opt,name=ended_at_unix_nanos,json=endedAtUnixNanos,proto3" json:"ended_at_unix_nanos,omitempty"`
 	HasProgress        bool      `protobuf:"varint,8,opt,name=has_progress,json=hasProgress,proto3" json:"has_progress,omitempty"`
 	Progress           int32     `protobuf:"varint,9,opt,name=progress,proto3" json:"progress,omitempty"`
-	// error_message is a string representation of an error related to this command.
-	// The presence of an error here might not mean that the command has failed,
-	// if the error is transient.
+	// error_message is a string representation of an error related to this
+	// command. The presence of an error here might not mean that the command has
+	// failed, if the error is transient.
 	ErrorMessage   string          `protobuf:"bytes,10,opt,name=error_message,json=errorMessage,proto3" json:"error_message,omitempty"`
 	SourceLocation *SourceLocation `protobuf:"bytes,11,opt,name=source_location,json=sourceLocation,proto3" json:"source_location,omitempty"`
 	// depends_on contains any targets that have been referenced by this command
