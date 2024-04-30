@@ -138,6 +138,8 @@ message CommandManifest {
   // depends_on contains any targets that have been referenced by this command
   // and the target name they were referenced with.
   repeated CommandTarget depends_on = 16;
+
+  repeated string spdx = 17;
 }
 
 message ImageManifest {
