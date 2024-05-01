@@ -2,6 +2,7 @@ syntax = "proto3";
 package api.public.logstream;
 option go_package = "./logstream";
 
+import "google/protobuf/struct.proto";
 import "manifest.proto";
 
 message Delta {
@@ -118,4 +119,6 @@ message DeltaCommandManifest {
   bool has_source_location = 16;
   SourceLocation source_location = 15;
   repeated CommandTarget depends_on = 22;
+  repeated CommandImage images = 23;
+  google.protobuf.Struct spdx = 24;
 }
