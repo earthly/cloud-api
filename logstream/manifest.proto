@@ -146,7 +146,6 @@ message ImageManifest {
   repeated string tags = 2;
   string digest = 3;
   repeated string platforms = 4;
-  google.protobuf.Struct spdx = 17;
   google.protobuf.Struct vulnerabilities = 5;
 }
 
