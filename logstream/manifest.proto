@@ -2,6 +2,8 @@ syntax = "proto3";
 package api.public.logstream;
 option go_package = "./logstream";
 
+import "google/protobuf/struct.proto";
+
 enum RunStatus {
   RUN_STATUS_UNKNOWN = 0;
   RUN_STATUS_NOT_STARTED = 1;
@@ -20,6 +22,7 @@ message RunManifest {
   RunStatus status = 6;
   map<string, TargetManifest> targets = 7;
   map<string, CommandManifest> commands = 13;
+  map<string, ImageManifest> images = 20;
   string main_target_id = 8;
   Failure failure = 9;
   string resume_token = 16;
@@ -71,7 +74,7 @@ message Failure {
 }
 
 message TargetManifest {
-  string name = 1; // e.g. +build
+  string name = 1;           // e.g. +build
   string canonical_name = 2; // e.g. github.com/foo/bar/buz:main+build
   repeated string override_args = 3;
   string git_url = 10;
@@ -96,6 +99,14 @@ message CommandTarget {
   string referenced_name = 2;
 }
 
+message CommandImage {
+  string image_name = 1;
+  string tag = 2;
+  string digest = 3;
+  string platform = 4;
+  google.protobuf.Struct vulnerabilities = 5;
+}
+
 message CommandManifest {
   reserved 4;
   reserved "is_push";
@@ -117,15 +128,26 @@ message CommandManifest {
   uint64 ended_at_unix_nanos = 7;
   bool has_progress = 8;
   int32 progress = 9;
-  // error_message is a string representation of an error related to this command.
-  // The presence of an error here might not mean that the command has failed,
-  // if the error is transient.
+  // error_message is a string representation of an error related to this
+  // command. The presence of an error here might not mean that the command has
+  // failed, if the error is transient.
   string error_message = 10;
   SourceLocation source_location = 11;
 
   // depends_on contains any targets that have been referenced by this command
   // and the target name they were referenced with.
   repeated CommandTarget depends_on = 16;
+  google.protobuf.Struct spdx = 17;
+  ImageManifest image = 18;
+}
+
+message ImageManifest {
+  string image_name = 1;
+  repeated string tags = 2;
+  string digest = 3;
+  repeated string platforms = 4;
+  google.protobuf.Struct spdx = 17;
+  google.protobuf.Struct vulnerabilities = 5;
 }
 
 message SourceLocation {
