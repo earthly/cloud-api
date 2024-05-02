@@ -204,7 +204,7 @@ message PickGithubJobsResponse {
     string pre_script_message = 3;
     int32 pre_script_exit_code = 4;
     repeated string cache_folders = 5;
-    string orgName = 6;
+    string org_name = 6;
   }
   Job job = 1;
 }
