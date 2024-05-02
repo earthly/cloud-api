@@ -119,6 +119,6 @@ message DeltaCommandManifest {
   bool has_source_location = 16;
   SourceLocation source_location = 15;
   repeated CommandTarget depends_on = 22;
-  repeated CommandImage images = 23;
+  CommandImage image = 23;
   google.protobuf.Struct spdx = 24;
 }
