@@ -3,11 +3,15 @@ package api.public.logs;
 option go_package =  "./logs";
 
 message UploadLogBundleResponse {
+  // buf:lint:ignore FIELD_LOWER_SNAKE_CASE
   string logID = 1;
+  // buf:lint:ignore FIELD_LOWER_SNAKE_CASE
   string manifestURL = 2;
+  // buf:lint:ignore FIELD_LOWER_SNAKE_CASE
   string viewURL = 3;
 }
 
 message ListAvaliableLogsResponse {
+  // buf:lint:ignore FIELD_LOWER_SNAKE_CASE
   repeated string logIDs = 1;
 }

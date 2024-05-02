@@ -5,6 +5,7 @@ option go_package = "./pipelines";
 import "google/api/annotations.proto";
 import "google/protobuf/timestamp.proto";
 
+// buf:lint:ignore SERVICE_SUFFIX
 service Pipelines {
   // ManualBuild manually triggers a Pipeline build with the
   // provided Targets, Args and Secrets. The new build_id is returned.
@@ -186,6 +187,7 @@ service Pipelines {
 }
 
 message GetOrgLimitsRequest {
+  // buf:lint:ignore FIELD_LOWER_SNAKE_CASE
   string orgName = 1;
 }
 
@@ -379,6 +381,7 @@ message ListProjectReposResponse {
   repeated ProjectRepo repos = 1;
 }
 
+// buf:lint:ignore ENUM_ZERO_VALUE_SUFFIX
 enum TriggerType {
   TRIGGER_TYPE_UNSPECIFIED = 0;
   TRIGGER_TYPE_MANUAL = 1;
@@ -408,12 +411,14 @@ message RemotePipeline {
   bool is_push = 9;
 }
 
+// buf:lint:ignore ENUM_VALUE_PREFIX
 enum PipelineStatus {
   STATUS_UNKNOWN = 0;
   STATUS_OK = 1;
   STATUS_ERROR = 2;
 }
 
+// buf:lint:ignore ENUM_VALUE_PREFIX
 enum PipelineErrorCode {
   ERROR_UNKNOWN = 0;
   ERROR_NONE = 1;
@@ -443,6 +448,7 @@ message Pipeline {
   reserved 7; // old 'enabled' field
 }
 
+// buf:lint:ignore ENUM_VALUE_PREFIX
 enum ParsingErrorCode {
   // Shouldn't be used
   PARSING_ERROR_UNKNOWN = 0;
@@ -523,6 +529,7 @@ message RemovePipelineRequest {
 
 message RemovePipelineResponse {}
 
+// buf:lint:ignore ENUM_ZERO_VALUE_SUFFIX
 enum RunStatus {
   RUN_STATUS_UNSPECIFIED = 0;
   RUN_STATUS_PENDING = 1;
@@ -607,12 +614,14 @@ message ListSyncStatusesRequest {
   string project_name = 4;
 }
 
+// buf:lint:ignore ENUM_VALUE_PREFIX
 enum SyncStatusType {
   SYNC_STATUS_UNKNOWN = 0;
   SYNC_STATUS_OK = 1;
   SYNC_STATUS_ERROR = 2;
 }
 
+// buf:lint:ignore ENUM_VALUE_PREFIX
 enum SyncErrorCode {
   SYNC_ERROR_UNKNOWN = 0;
   SYNC_ERROR_NONE = 1;

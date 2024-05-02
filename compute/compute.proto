@@ -6,6 +6,7 @@ import "google/api/annotations.proto";
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/duration.proto";
 
+// buf:lint:ignore SERVICE_SUFFIX
 service Compute {
   // LaunchSatellite starts a new Earthly Satellite instance on the latest version.
   // The instance can be used by users to build their local, Cloud, or 3rd-party CI builds.
