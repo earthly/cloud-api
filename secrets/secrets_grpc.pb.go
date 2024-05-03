@@ -19,91 +19,91 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	Secrets_GetAWSCredentials_FullMethodName = "/api.public.secrets.Secrets/GetAWSCredentials"
+	SecretsService_GetAWSCredentials_FullMethodName = "/api.public.secrets.SecretsService/GetAWSCredentials"
 )
 
-// SecretsClient is the client API for Secrets service.
+// SecretsServiceClient is the client API for SecretsService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type SecretsClient interface {
+type SecretsServiceClient interface {
 	// generates and returns a temporary aws session token for the given role_arn
 	GetAWSCredentials(ctx context.Context, in *GetAWSCredentialsRequest, opts ...grpc.CallOption) (*GetAWSCredentialsResponse, error)
 }
 
-type secretsClient struct {
+type secretsServiceClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewSecretsClient(cc grpc.ClientConnInterface) SecretsClient {
-	return &secretsClient{cc}
+func NewSecretsServiceClient(cc grpc.ClientConnInterface) SecretsServiceClient {
+	return &secretsServiceClient{cc}
 }
 
-func (c *secretsClient) GetAWSCredentials(ctx context.Context, in *GetAWSCredentialsRequest, opts ...grpc.CallOption) (*GetAWSCredentialsResponse, error) {
+func (c *secretsServiceClient) GetAWSCredentials(ctx context.Context, in *GetAWSCredentialsRequest, opts ...grpc.CallOption) (*GetAWSCredentialsResponse, error) {
 	out := new(GetAWSCredentialsResponse)
-	err := c.cc.Invoke(ctx, Secrets_GetAWSCredentials_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, SecretsService_GetAWSCredentials_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// SecretsServer is the server API for Secrets service.
-// All implementations must embed UnimplementedSecretsServer
+// SecretsServiceServer is the server API for SecretsService service.
+// All implementations must embed UnimplementedSecretsServiceServer
 // for forward compatibility
-type SecretsServer interface {
+type SecretsServiceServer interface {
 	// generates and returns a temporary aws session token for the given role_arn
 	GetAWSCredentials(context.Context, *GetAWSCredentialsRequest) (*GetAWSCredentialsResponse, error)
-	mustEmbedUnimplementedSecretsServer()
+	mustEmbedUnimplementedSecretsServiceServer()
 }
 
-// UnimplementedSecretsServer must be embedded to have forward compatible implementations.
-type UnimplementedSecretsServer struct {
+// UnimplementedSecretsServiceServer must be embedded to have forward compatible implementations.
+type UnimplementedSecretsServiceServer struct {
 }
 
-func (UnimplementedSecretsServer) GetAWSCredentials(context.Context, *GetAWSCredentialsRequest) (*GetAWSCredentialsResponse, error) {
+func (UnimplementedSecretsServiceServer) GetAWSCredentials(context.Context, *GetAWSCredentialsRequest) (*GetAWSCredentialsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAWSCredentials not implemented")
 }
-func (UnimplementedSecretsServer) mustEmbedUnimplementedSecretsServer() {}
+func (UnimplementedSecretsServiceServer) mustEmbedUnimplementedSecretsServiceServer() {}
 
-// UnsafeSecretsServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to SecretsServer will
+// UnsafeSecretsServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to SecretsServiceServer will
 // result in compilation errors.
-type UnsafeSecretsServer interface {
-	mustEmbedUnimplementedSecretsServer()
+type UnsafeSecretsServiceServer interface {
+	mustEmbedUnimplementedSecretsServiceServer()
 }
 
-func RegisterSecretsServer(s grpc.ServiceRegistrar, srv SecretsServer) {
-	s.RegisterService(&Secrets_ServiceDesc, srv)
+func RegisterSecretsServiceServer(s grpc.ServiceRegistrar, srv SecretsServiceServer) {
+	s.RegisterService(&SecretsService_ServiceDesc, srv)
 }
 
-func _Secrets_GetAWSCredentials_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _SecretsService_GetAWSCredentials_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetAWSCredentialsRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(SecretsServer).GetAWSCredentials(ctx, in)
+		return srv.(SecretsServiceServer).GetAWSCredentials(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Secrets_GetAWSCredentials_FullMethodName,
+		FullMethod: SecretsService_GetAWSCredentials_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SecretsServer).GetAWSCredentials(ctx, req.(*GetAWSCredentialsRequest))
+		return srv.(SecretsServiceServer).GetAWSCredentials(ctx, req.(*GetAWSCredentialsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// Secrets_ServiceDesc is the grpc.ServiceDesc for Secrets service.
+// SecretsService_ServiceDesc is the grpc.ServiceDesc for SecretsService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var Secrets_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "api.public.secrets.Secrets",
-	HandlerType: (*SecretsServer)(nil),
+var SecretsService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "api.public.secrets.SecretsService",
+	HandlerType: (*SecretsServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "GetAWSCredentials",
-			Handler:    _Secrets_GetAWSCredentials_Handler,
+			Handler:    _SecretsService_GetAWSCredentials_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
