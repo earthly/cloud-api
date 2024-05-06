@@ -153,7 +153,7 @@ message ListCloudsResponse {
     string cloud_name = 1;
     int32 num_satellites = 2;
     bool is_default = 3;
-    CloudStatus status = 4;
+    CloudStatusWithContext status_with_context = 4;
   }
   repeated CloudInstallation clouds = 1;
 }
@@ -179,8 +179,7 @@ enum CloudStatus {
 }
 
 message ConfigureCloudResponse {
-  CloudStatus status = 1;
-  string message = 2;
+  CloudStatusWithContext status_with_context = 1;
 }
 
 message UseCloudRequest {
@@ -189,6 +188,10 @@ message UseCloudRequest {
 }
 
 message UseCloudResponse {
+  CloudStatusWithContext status_with_context = 1;
+}
+
+message CloudStatusWithContext {
   CloudStatus status = 1;
   string message = 2;
 }
@@ -377,8 +380,8 @@ message ReserveSatelliteRequest {
   google.protobuf.Duration update_interval = 5;
   string git_config_email = 6;
   message Metadata {
-   repeated string env_entry_names = 1;
-   string cli_version = 2;
+    repeated string env_entry_names = 1;
+    string cli_version = 2;
   }
   Metadata metadata = 7;
 }
