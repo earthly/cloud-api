@@ -5,6 +5,7 @@ option go_package = "./billing";
 import "google/api/annotations.proto";
 import "google/protobuf/timestamp.proto";
 
+// buf:lint:ignore SERVICE_SUFFIX
 service Billing {
   rpc GetBillingPlan(GetBillingPlanRequest) returns (GetBillingPlanResponse) {
     option (google.api.http) = {
@@ -21,6 +22,7 @@ service Billing {
 
 message CreateSubscriptionLinkRequest {
   string org_name = 1;
+  // buf:lint:ignore ENUM_VALUE_PREFIX
   enum Type {
     PAYMENT_UNKNOWN = 0;
     PAYMENT_FREE_TIER_VALIDATION = 4;
@@ -116,4 +118,8 @@ message BillingPlan {
   InstanceType default_instance_type = 20;
   // Max seconds spent executing a single RUN (exec op)
   int32 max_seconds_per_exec = 21;
+  // Whether this org can use SH satellites
+  bool self_hosted_disabled = 22;
+  // Whether this org can use GHA-Satellites integration
+  bool gha_disabled = 23;
 }

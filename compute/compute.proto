@@ -6,6 +6,7 @@ import "google/api/annotations.proto";
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/duration.proto";
 
+// buf:lint:ignore SERVICE_SUFFIX
 service Compute {
   // LaunchSatellite starts a new Earthly Satellite instance on the latest version.
   // The instance can be used by users to build their local, Cloud, or 3rd-party CI builds.
@@ -86,6 +87,7 @@ service Compute {
   // When the satellite is actively being put to sleep and needs to finish that process first:
   //   STOPPING -> ... -> STARTING -> ... -> OPERATIONAL -> EOF
   rpc ReserveSatellite(ReserveSatelliteRequest) returns (stream ReserveSatelliteResponse) {}
+
   // SetGithubTokenRequest sets the configuration to enable triggering satellite builds from GHA (GitHub Actions).
   rpc SetGithubToken(SetGithubTokenRequest) returns (SetGithubTokenResponse) {
     option (google.api.http) = {
@@ -93,8 +95,83 @@ service Compute {
       body: "*"
     };
   }
-  // GetGithubJob lets satellites retrieve the GHA job information and run a JIT runner
-  rpc GetGithubJob(GetGithubJobRequest) returns (GetGithubJobResponse) {}
+
+  // PickGithubJobs lets satellites retrieve the GHA job information and run a JIT runner
+  // Jobs returned are marked as picked, and won't be returned in another request for a limited period of time.
+  rpc PickGithubJobs(PickGithubJobsRequest) returns (stream PickGithubJobsResponse) {}
+
+  // ConfigureCloud sets up (or re-does the setup) for the cloud with the given name. The setup validates we can access
+  // the other account, and that the other account has all the pieces we need to manage satellites in it. Not a stream
+  // because it should be a couple rather quick API calls on our end.
+  rpc ConfigureCloud(ConfigureCloudRequest) returns (ConfigureCloudResponse) {
+    option (google.api.http) = {
+      post: "/api/v0/clouds"
+      body: "*"
+    };
+  }
+
+  // ListClouds lists all the clouds available. Listing the clouds also checks the status of each cloud.
+  rpc ListClouds(ListCloudsRequest) returns (ListCloudsResponse) {
+    option (google.api.http) = {
+      get: "/api/v0/clouds"
+    };
+  }
+
+  // DeleteCloud removes the named cloud, as long as it has no satellites in it. Not a stream because it should be quick.
+  rpc DeleteCloud(DeleteCloudRequest) returns (DeleteCloudResponse) {
+    option (google.api.http) = {
+      delete: "/api/v0/clouds/{name}"
+    };
+  }
+}
+
+
+message DeleteCloudRequest{
+  string org_id = 1;
+  string name = 2;
+  // no force option like satellites; because it would need to delete all satellites within the cloud first.
+  // API should just deny if there are satellites.
+}
+message DeleteCloudResponse {}
+
+
+message ListCloudsRequest {
+  string org_id = 1;
+}
+
+message ListCloudsResponse {
+  message CloudInstallation {
+    string cloud_name = 1;
+    int32 num_satellites = 2;
+    bool is_default = 3;
+    CloudStatus status = 4;
+  }
+  repeated CloudInstallation clouds = 1;
+}
+
+message ConfigureCloudRequest {
+  string org_id = 1;
+  string name = 2;
+  bool set_default = 3;
+  string ssh_key_name = 4;
+  string compute_role_arn = 5;
+  string account_id = 6;
+  repeated string allowed_subnet_ids = 7;
+  string security_group_id = 8;
+  string region = 9;
+  string instance_profile_arn = 10;
+}
+
+enum CloudStatus {
+  CLOUD_STATUS_UNKNOWN = 0; // Preserve the 0 value
+  CLOUD_STATUS_PROBLEM = 1; // There is a problem with this cloud configuration
+  CLOUD_STATUS_ACCOUNT_CONNECTED = 2; // We can assume a role in the account and start configuration
+  CLOUD_STATUS_ACCOUNT_ACTIVE = 3; // We have all the parts we need from the account to create a cloud configuration
+}
+
+message ConfigureCloudResponse {
+  CloudStatus status = 1;
+  string message = 2;
 }
 
 message SetGithubTokenRequest{
@@ -115,22 +192,22 @@ message SetGithubTokenRequest{
 message SetGithubTokenResponse {
 }
 
-message GetGithubJobRequest{
+message PickGithubJobsRequest{
   // Earthly org id
   string org_id = 1;
   string satellite_name = 2;
-  // Start from this id, not-included (optional)
-  int64 gh_job_id = 3;
 }
 
-message GetGithubJobResponse {
+message PickGithubJobsResponse {
   message Job {
     int64 gh_job_id = 1;
     string jit_configuration = 2;
     string pre_script_message = 3;
     int32 pre_script_exit_code = 4;
+    repeated string cache_folders = 5;
+    string org_name = 6;
   }
-  repeated Job jobs = 1;
+  Job job = 1;
 }
 
 
@@ -143,6 +220,7 @@ message LaunchSatelliteRequest {
   string version = 6; // Which version data to use when launching satellite
   string maintenance_window_start = 7; // when can we auto-update your satellite
   bool maintenance_weekends_only = 8; // Auto-updates only run on weekends
+  string cloud_name = 9; // Which cloud installation to use, empty means default
 }
 
 enum SatelliteStatus {
@@ -183,6 +261,7 @@ message ListSatellitesResponse {
     google.protobuf.Duration cache_retention = 8;
     google.protobuf.Timestamp last_used = 9;
     SatelliteSpecs specs = 10;
+    string cloud_name = 11;
   }
   repeated SatelliteInstance instances = 1;
 }
@@ -247,6 +326,8 @@ message GetSatelliteResponse {
   reserved 18; // old metrics field
   bool is_managed = 19;
   TLSCertificate certificate = 20;
+  string cloud_name = 21;
+  string satellite_address = 22;
 }
 
 message WakeSatelliteRequest {
@@ -301,6 +382,7 @@ message RegisterSatelliteRequest {
   string platform = 5;
   string version = 6;
   TLSCertificate certificate = 7;
+  string registration_token = 8; // Optional registration token, when re-registering
 }
 
 message RegisterSatelliteResponse {
