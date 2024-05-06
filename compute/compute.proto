@@ -110,6 +110,15 @@ service Compute {
     };
   }
 
+  // UseCloud sets the cloud with the given name as default, assuming it passes validation.
+  rpc UseCloud(UseCloudRequest) returns (UseCloudResponse) {
+    option (google.api.http) = {
+      post: "/api/v0/clouds/{name}"
+      body: "*"
+    };
+  }
+
+
   // ListClouds lists all the clouds available. Listing the clouds also checks the status of each cloud.
   rpc ListClouds(ListCloudsRequest) returns (ListCloudsResponse) {
     option (google.api.http) = {
@@ -173,6 +182,13 @@ message ConfigureCloudResponse {
   CloudStatus status = 1;
   string message = 2;
 }
+
+message UseCloudRequest {
+  string org_id = 1;
+  string name = 2;
+}
+
+message UseCloudResponse {}
 
 message SetGithubTokenRequest{
   // Earthly org id
