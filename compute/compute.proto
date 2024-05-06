@@ -118,6 +118,7 @@ service Compute {
     };
   }
 
+
   // ListClouds lists all the clouds available. Listing the clouds also checks the status of each cloud.
   rpc ListClouds(ListCloudsRequest) returns (ListCloudsResponse) {
     option (google.api.http) = {
