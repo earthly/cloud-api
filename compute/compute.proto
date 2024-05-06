@@ -188,7 +188,10 @@ message UseCloudRequest {
   string name = 2;
 }
 
-message UseCloudResponse {}
+message UseCloudResponse {
+  CloudStatus status = 1;
+  string message = 2;
+}
 
 message SetGithubTokenRequest{
   // Earthly org id
