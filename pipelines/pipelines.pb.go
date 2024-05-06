@@ -89,6 +89,7 @@ func (SatelliteStatus) EnumDescriptor() ([]byte, []int) {
 	return file_pipelines_proto_rawDescGZIP(), []int{0}
 }
 
+// buf:lint:ignore ENUM_ZERO_VALUE_SUFFIX
 type TriggerType int32
 
 const (
@@ -141,6 +142,7 @@ func (TriggerType) EnumDescriptor() ([]byte, []int) {
 	return file_pipelines_proto_rawDescGZIP(), []int{1}
 }
 
+// buf:lint:ignore ENUM_VALUE_PREFIX
 type PipelineStatus int32
 
 const (
@@ -190,6 +192,7 @@ func (PipelineStatus) EnumDescriptor() ([]byte, []int) {
 	return file_pipelines_proto_rawDescGZIP(), []int{2}
 }
 
+// buf:lint:ignore ENUM_VALUE_PREFIX
 type PipelineErrorCode int32
 
 const (
@@ -245,6 +248,7 @@ func (PipelineErrorCode) EnumDescriptor() ([]byte, []int) {
 	return file_pipelines_proto_rawDescGZIP(), []int{3}
 }
 
+// buf:lint:ignore ENUM_VALUE_PREFIX
 type ParsingErrorCode int32
 
 const (
@@ -301,6 +305,7 @@ func (ParsingErrorCode) EnumDescriptor() ([]byte, []int) {
 	return file_pipelines_proto_rawDescGZIP(), []int{4}
 }
 
+// buf:lint:ignore ENUM_ZERO_VALUE_SUFFIX
 type RunStatus int32
 
 const (
@@ -356,6 +361,7 @@ func (RunStatus) EnumDescriptor() ([]byte, []int) {
 	return file_pipelines_proto_rawDescGZIP(), []int{5}
 }
 
+// buf:lint:ignore ENUM_VALUE_PREFIX
 type SyncStatusType int32
 
 const (
@@ -405,6 +411,7 @@ func (SyncStatusType) EnumDescriptor() ([]byte, []int) {
 	return file_pipelines_proto_rawDescGZIP(), []int{6}
 }
 
+// buf:lint:ignore ENUM_VALUE_PREFIX
 type SyncErrorCode int32
 
 const (
@@ -465,6 +472,7 @@ type GetOrgLimitsRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
+	// buf:lint:ignore FIELD_LOWER_SNAKE_CASE
 	OrgName string `protobuf:"bytes,1,opt,name=orgName,proto3" json:"orgName,omitempty"`
 }
 

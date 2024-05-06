@@ -2,8 +2,7 @@ syntax = "proto3";
 package api.public.analytics;
 option go_package = "./analytics";
 
-import "google/protobuf/timestamp.proto";
-
+// buf:lint:ignore SERVICE_SUFFIX
 service Analytics {
   rpc SendAnalytics(SendAnalyticsRequest) returns (SendAnalyticsResponse) {}
 }

@@ -2,6 +2,7 @@ syntax = "proto3";
 package api.public.runner;
 option go_package = "./runner";
 
+// buf:lint:ignore SERVICE_SUFFIX
 service Runner {
   // Build starts a build on a satellite.
   rpc Build(BuildRequest) returns (BuildResponse) {}
