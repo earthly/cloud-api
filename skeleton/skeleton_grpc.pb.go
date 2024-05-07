@@ -19,89 +19,89 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	Skeleton_DoIt_FullMethodName = "/api.public.skeleton.Skeleton/DoIt"
+	SkeletonService_DoIt_FullMethodName = "/api.public.skeleton.v1.SkeletonService/DoIt"
 )
 
-// SkeletonClient is the client API for Skeleton service.
+// SkeletonServiceClient is the client API for SkeletonService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type SkeletonClient interface {
+type SkeletonServiceClient interface {
 	DoIt(ctx context.Context, in *DoItRequest, opts ...grpc.CallOption) (*DoItResponse, error)
 }
 
-type skeletonClient struct {
+type skeletonServiceClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewSkeletonClient(cc grpc.ClientConnInterface) SkeletonClient {
-	return &skeletonClient{cc}
+func NewSkeletonServiceClient(cc grpc.ClientConnInterface) SkeletonServiceClient {
+	return &skeletonServiceClient{cc}
 }
 
-func (c *skeletonClient) DoIt(ctx context.Context, in *DoItRequest, opts ...grpc.CallOption) (*DoItResponse, error) {
+func (c *skeletonServiceClient) DoIt(ctx context.Context, in *DoItRequest, opts ...grpc.CallOption) (*DoItResponse, error) {
 	out := new(DoItResponse)
-	err := c.cc.Invoke(ctx, Skeleton_DoIt_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, SkeletonService_DoIt_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// SkeletonServer is the server API for Skeleton service.
-// All implementations must embed UnimplementedSkeletonServer
+// SkeletonServiceServer is the server API for SkeletonService service.
+// All implementations must embed UnimplementedSkeletonServiceServer
 // for forward compatibility
-type SkeletonServer interface {
+type SkeletonServiceServer interface {
 	DoIt(context.Context, *DoItRequest) (*DoItResponse, error)
-	mustEmbedUnimplementedSkeletonServer()
+	mustEmbedUnimplementedSkeletonServiceServer()
 }
 
-// UnimplementedSkeletonServer must be embedded to have forward compatible implementations.
-type UnimplementedSkeletonServer struct {
+// UnimplementedSkeletonServiceServer must be embedded to have forward compatible implementations.
+type UnimplementedSkeletonServiceServer struct {
 }
 
-func (UnimplementedSkeletonServer) DoIt(context.Context, *DoItRequest) (*DoItResponse, error) {
+func (UnimplementedSkeletonServiceServer) DoIt(context.Context, *DoItRequest) (*DoItResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DoIt not implemented")
 }
-func (UnimplementedSkeletonServer) mustEmbedUnimplementedSkeletonServer() {}
+func (UnimplementedSkeletonServiceServer) mustEmbedUnimplementedSkeletonServiceServer() {}
 
-// UnsafeSkeletonServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to SkeletonServer will
+// UnsafeSkeletonServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to SkeletonServiceServer will
 // result in compilation errors.
-type UnsafeSkeletonServer interface {
-	mustEmbedUnimplementedSkeletonServer()
+type UnsafeSkeletonServiceServer interface {
+	mustEmbedUnimplementedSkeletonServiceServer()
 }
 
-func RegisterSkeletonServer(s grpc.ServiceRegistrar, srv SkeletonServer) {
-	s.RegisterService(&Skeleton_ServiceDesc, srv)
+func RegisterSkeletonServiceServer(s grpc.ServiceRegistrar, srv SkeletonServiceServer) {
+	s.RegisterService(&SkeletonService_ServiceDesc, srv)
 }
 
-func _Skeleton_DoIt_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _SkeletonService_DoIt_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(DoItRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(SkeletonServer).DoIt(ctx, in)
+		return srv.(SkeletonServiceServer).DoIt(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Skeleton_DoIt_FullMethodName,
+		FullMethod: SkeletonService_DoIt_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SkeletonServer).DoIt(ctx, req.(*DoItRequest))
+		return srv.(SkeletonServiceServer).DoIt(ctx, req.(*DoItRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// Skeleton_ServiceDesc is the grpc.ServiceDesc for Skeleton service.
+// SkeletonService_ServiceDesc is the grpc.ServiceDesc for SkeletonService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var Skeleton_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "api.public.skeleton.Skeleton",
-	HandlerType: (*SkeletonServer)(nil),
+var SkeletonService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "api.public.skeleton.v1.SkeletonService",
+	HandlerType: (*SkeletonServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "DoIt",
-			Handler:    _Skeleton_DoIt_Handler,
+			Handler:    _SkeletonService_DoIt_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

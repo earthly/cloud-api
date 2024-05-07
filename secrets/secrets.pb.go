@@ -22,6 +22,8 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// buf:lint:ignore ENUM_ZERO_VALUE_SUFFIX
+// buf:lint:ignore ENUM_VALUE_PREFIX
 type OrgType int32
 
 const (
@@ -68,6 +70,7 @@ func (OrgType) EnumDescriptor() ([]byte, []int) {
 	return file_secrets_proto_rawDescGZIP(), []int{0}
 }
 
+// buf:lint:ignore ENUM_VALUE_PREFIX
 type BillingPlanTier int32
 
 const (
@@ -132,6 +135,7 @@ func (BillingPlanTier) EnumDescriptor() ([]byte, []int) {
 	return file_secrets_proto_rawDescGZIP(), []int{1}
 }
 
+// buf:lint:ignore ENUM_VALUE_PREFIX
 type EmailType int32
 
 const (
@@ -186,13 +190,18 @@ type CreateAccountRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Email                 string `protobuf:"bytes,1,opt,name=email,proto3" json:"email,omitempty"`
-	VerificationToken     string `protobuf:"bytes,2,opt,name=verificationToken,proto3" json:"verificationToken,omitempty"`
-	Password              string `protobuf:"bytes,3,opt,name=password,proto3" json:"password,omitempty"`
-	PublicKey             string `protobuf:"bytes,4,opt,name=publicKey,proto3" json:"publicKey,omitempty"`
-	AcceptTermsConditions bool   `protobuf:"varint,5,opt,name=acceptTermsConditions,proto3" json:"acceptTermsConditions,omitempty"`
-	AcceptPrivacyPolicy   bool   `protobuf:"varint,6,opt,name=acceptPrivacyPolicy,proto3" json:"acceptPrivacyPolicy,omitempty"`
-	DisplayName           string `protobuf:"bytes,7,opt,name=displayName,proto3" json:"displayName,omitempty"`
+	Email string `protobuf:"bytes,1,opt,name=email,proto3" json:"email,omitempty"`
+	// buf:lint:ignore FIELD_LOWER_SNAKE_CASE
+	VerificationToken string `protobuf:"bytes,2,opt,name=verificationToken,proto3" json:"verificationToken,omitempty"`
+	Password          string `protobuf:"bytes,3,opt,name=password,proto3" json:"password,omitempty"`
+	// buf:lint:ignore FIELD_LOWER_SNAKE_CASE
+	PublicKey string `protobuf:"bytes,4,opt,name=publicKey,proto3" json:"publicKey,omitempty"`
+	// buf:lint:ignore FIELD_LOWER_SNAKE_CASE
+	AcceptTermsConditions bool `protobuf:"varint,5,opt,name=acceptTermsConditions,proto3" json:"acceptTermsConditions,omitempty"`
+	// buf:lint:ignore FIELD_LOWER_SNAKE_CASE
+	AcceptPrivacyPolicy bool `protobuf:"varint,6,opt,name=acceptPrivacyPolicy,proto3" json:"acceptPrivacyPolicy,omitempty"`
+	// buf:lint:ignore FIELD_LOWER_SNAKE_CASE
+	DisplayName string `protobuf:"bytes,7,opt,name=displayName,proto3" json:"displayName,omitempty"`
 }
 
 func (x *CreateAccountRequest) Reset() {
@@ -328,7 +337,8 @@ type ResetPasswordRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Email             string `protobuf:"bytes,1,opt,name=email,proto3" json:"email,omitempty"`
+	Email string `protobuf:"bytes,1,opt,name=email,proto3" json:"email,omitempty"`
+	// buf:lint:ignore FIELD_LOWER_SNAKE_CASE
 	VerificationToken string `protobuf:"bytes,2,opt,name=verificationToken,proto3" json:"verificationToken,omitempty"`
 	Password          string `protobuf:"bytes,3,opt,name=password,proto3" json:"password,omitempty"`
 }
@@ -864,8 +874,9 @@ type PingResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Message           string               `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
-	Email             string               `protobuf:"bytes,2,opt,name=email,proto3" json:"email,omitempty"`
+	Message string `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
+	Email   string `protobuf:"bytes,2,opt,name=email,proto3" json:"email,omitempty"`
+	// buf:lint:ignore FIELD_LOWER_SNAKE_CASE
 	WriteAccess       bool                 `protobuf:"varint,3,opt,name=writeAccess,proto3" json:"writeAccess,omitempty"`
 	ConnectedAccounts []*ConnectedAccounts `protobuf:"bytes,4,rep,name=connected_accounts,json=connectedAccounts,proto3" json:"connected_accounts,omitempty"`
 }

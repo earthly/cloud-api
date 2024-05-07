@@ -5,6 +5,7 @@ option go_package = "./billing";
 import "google/api/annotations.proto";
 import "google/protobuf/timestamp.proto";
 
+// buf:lint:ignore SERVICE_SUFFIX
 service Billing {
   rpc GetBillingPlan(GetBillingPlanRequest) returns (GetBillingPlanResponse) {
     option (google.api.http) = {
@@ -21,6 +22,7 @@ service Billing {
 
 message CreateSubscriptionLinkRequest {
   string org_name = 1;
+  // buf:lint:ignore ENUM_VALUE_PREFIX
   enum Type {
     PAYMENT_UNKNOWN = 0;
     PAYMENT_FREE_TIER_VALIDATION = 4;

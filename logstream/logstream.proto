@@ -8,6 +8,7 @@ import "google/protobuf/timestamp.proto";
 import "manifest.proto";
 import "delta.proto";
 
+// buf:lint:ignore SERVICE_SUFFIX
 service LogStream {
   // StreamLogs streams logs to the server. Stream protocol:
   // 1. The client opens the channel.
@@ -16,6 +17,8 @@ service LogStream {
   // 4. The final stream message from the client is an eof=true message.
   // 5. Server responds with eof_ack=true.
   // 6. Client closes the channel. (optionally, the client can wait for server_exit_status)
+  // buf:lint:ignore RPC_REQUEST_STANDARD_NAME
+  // buf:lint:ignore RPC_RESPONSE_STANDARD_NAME
   rpc StreamLogs(stream StreamLogRequest) returns (stream StreamLogResponse) {}
 
   rpc GetLogs(GetLogsRequest) returns (stream GetLogsResponse) {}
@@ -161,6 +164,8 @@ message GetLogMetadataResponse {
   LogMetadata metadata = 1;
 }
 
+// buf:lint:ignore ENUM_VALUE_PREFIX
+// buf:lint:ignore ENUM_ZERO_VALUE_SUFFIX
 enum Runner {
   UNSPECIFIED = 0;
   LOCAL = 1;

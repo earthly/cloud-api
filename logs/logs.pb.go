@@ -25,9 +25,12 @@ type UploadLogBundleResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	LogID       string `protobuf:"bytes,1,opt,name=logID,proto3" json:"logID,omitempty"`
+	// buf:lint:ignore FIELD_LOWER_SNAKE_CASE
+	LogID string `protobuf:"bytes,1,opt,name=logID,proto3" json:"logID,omitempty"`
+	// buf:lint:ignore FIELD_LOWER_SNAKE_CASE
 	ManifestURL string `protobuf:"bytes,2,opt,name=manifestURL,proto3" json:"manifestURL,omitempty"`
-	ViewURL     string `protobuf:"bytes,3,opt,name=viewURL,proto3" json:"viewURL,omitempty"`
+	// buf:lint:ignore FIELD_LOWER_SNAKE_CASE
+	ViewURL string `protobuf:"bytes,3,opt,name=viewURL,proto3" json:"viewURL,omitempty"`
 }
 
 func (x *UploadLogBundleResponse) Reset() {
@@ -88,6 +91,7 @@ type ListAvaliableLogsResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
+	// buf:lint:ignore FIELD_LOWER_SNAKE_CASE
 	LogIDs []string `protobuf:"bytes,1,rep,name=logIDs,proto3" json:"logIDs,omitempty"`
 }
 
