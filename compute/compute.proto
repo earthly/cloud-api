@@ -152,7 +152,8 @@ message ListCloudsResponse {
     string cloud_name = 1;
     int32 num_satellites = 2;
     bool is_default = 3;
-    CloudStatusWithContext status_with_context = 4;
+    CloudStatus status = 4;
+    string status_context = 5;
   }
   repeated CloudInstallation clouds = 1;
 }
@@ -172,13 +173,20 @@ message ConfigureCloudRequest {
 
 enum CloudStatus {
   CLOUD_STATUS_UNKNOWN = 0; // Preserve the 0 value
-  CLOUD_STATUS_PROBLEM = 1; // There is a problem with this cloud configuration
-  CLOUD_STATUS_ACCOUNT_CONNECTED = 2; // We can assume a role in the account and start configuration
-  CLOUD_STATUS_ACCOUNT_ACTIVE = 3; // We have all the parts we need from the account to create a cloud configuration
+
+  CLOUD_STATUS_PROBLEM = 1           [deprecated = true]; // There is a problem with this cloud configuration
+  CLOUD_STATUS_ACCOUNT_CONNECTED = 2 [deprecated = true]; // We can assume a role in the account and start configuration
+  CLOUD_STATUS_ACCOUNT_ACTIVE = 3    [deprecated = true]; // We have all the parts we need from the account to create a cloud configuration
+
+  CLOUD_STATUS_GREEN = 4;  // Everything is OK
+  CLOUD_STATUS_YELLOW = 5; // We had some access, but there was a problem
+  CLOUD_STATUS_RED = 6;    // No access
 }
 
+
 message ConfigureCloudResponse {
-  CloudStatusWithContext status_with_context = 1;
+  CloudStatus status = 1;
+  string message = 2;
 }
 
 message UseCloudRequest {
@@ -187,10 +195,6 @@ message UseCloudRequest {
 }
 
 message UseCloudResponse {
-  CloudStatusWithContext status_with_context = 1;
-}
-
-message CloudStatusWithContext {
   CloudStatus status = 1;
   string message = 2;
 }
@@ -379,8 +383,8 @@ message ReserveSatelliteRequest {
   google.protobuf.Duration update_interval = 5;
   string git_config_email = 6;
   message Metadata {
-    repeated string env_entry_names = 1;
-    string cli_version = 2;
+   repeated string env_entry_names = 1;
+   string cli_version = 2;
   }
   Metadata metadata = 7;
 }
