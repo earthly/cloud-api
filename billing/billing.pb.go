@@ -22,6 +22,7 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// buf:lint:ignore ENUM_VALUE_PREFIX
 type CreateSubscriptionLinkRequest_Type int32
 
 const (

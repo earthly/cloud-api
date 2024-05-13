@@ -9,6 +9,7 @@ package secrets
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	durationpb "google.golang.org/protobuf/types/known/durationpb"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 	reflect "reflect"
 	sync "sync"
@@ -21,6 +22,8 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// buf:lint:ignore ENUM_ZERO_VALUE_SUFFIX
+// buf:lint:ignore ENUM_VALUE_PREFIX
 type OrgType int32
 
 const (
@@ -67,6 +70,7 @@ func (OrgType) EnumDescriptor() ([]byte, []int) {
 	return file_secrets_proto_rawDescGZIP(), []int{0}
 }
 
+// buf:lint:ignore ENUM_VALUE_PREFIX
 type BillingPlanTier int32
 
 const (
@@ -131,6 +135,7 @@ func (BillingPlanTier) EnumDescriptor() ([]byte, []int) {
 	return file_secrets_proto_rawDescGZIP(), []int{1}
 }
 
+// buf:lint:ignore ENUM_VALUE_PREFIX
 type EmailType int32
 
 const (
@@ -185,13 +190,18 @@ type CreateAccountRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Email                 string `protobuf:"bytes,1,opt,name=email,proto3" json:"email,omitempty"`
-	VerificationToken     string `protobuf:"bytes,2,opt,name=verificationToken,proto3" json:"verificationToken,omitempty"`
-	Password              string `protobuf:"bytes,3,opt,name=password,proto3" json:"password,omitempty"`
-	PublicKey             string `protobuf:"bytes,4,opt,name=publicKey,proto3" json:"publicKey,omitempty"`
-	AcceptTermsConditions bool   `protobuf:"varint,5,opt,name=acceptTermsConditions,proto3" json:"acceptTermsConditions,omitempty"`
-	AcceptPrivacyPolicy   bool   `protobuf:"varint,6,opt,name=acceptPrivacyPolicy,proto3" json:"acceptPrivacyPolicy,omitempty"`
-	DisplayName           string `protobuf:"bytes,7,opt,name=displayName,proto3" json:"displayName,omitempty"`
+	Email string `protobuf:"bytes,1,opt,name=email,proto3" json:"email,omitempty"`
+	// buf:lint:ignore FIELD_LOWER_SNAKE_CASE
+	VerificationToken string `protobuf:"bytes,2,opt,name=verificationToken,proto3" json:"verificationToken,omitempty"`
+	Password          string `protobuf:"bytes,3,opt,name=password,proto3" json:"password,omitempty"`
+	// buf:lint:ignore FIELD_LOWER_SNAKE_CASE
+	PublicKey string `protobuf:"bytes,4,opt,name=publicKey,proto3" json:"publicKey,omitempty"`
+	// buf:lint:ignore FIELD_LOWER_SNAKE_CASE
+	AcceptTermsConditions bool `protobuf:"varint,5,opt,name=acceptTermsConditions,proto3" json:"acceptTermsConditions,omitempty"`
+	// buf:lint:ignore FIELD_LOWER_SNAKE_CASE
+	AcceptPrivacyPolicy bool `protobuf:"varint,6,opt,name=acceptPrivacyPolicy,proto3" json:"acceptPrivacyPolicy,omitempty"`
+	// buf:lint:ignore FIELD_LOWER_SNAKE_CASE
+	DisplayName string `protobuf:"bytes,7,opt,name=displayName,proto3" json:"displayName,omitempty"`
 }
 
 func (x *CreateAccountRequest) Reset() {
@@ -327,7 +337,8 @@ type ResetPasswordRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Email             string `protobuf:"bytes,1,opt,name=email,proto3" json:"email,omitempty"`
+	Email string `protobuf:"bytes,1,opt,name=email,proto3" json:"email,omitempty"`
+	// buf:lint:ignore FIELD_LOWER_SNAKE_CASE
 	VerificationToken string `protobuf:"bytes,2,opt,name=verificationToken,proto3" json:"verificationToken,omitempty"`
 	Password          string `protobuf:"bytes,3,opt,name=password,proto3" json:"password,omitempty"`
 }
@@ -863,8 +874,9 @@ type PingResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Message           string               `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
-	Email             string               `protobuf:"bytes,2,opt,name=email,proto3" json:"email,omitempty"`
+	Message string `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
+	Email   string `protobuf:"bytes,2,opt,name=email,proto3" json:"email,omitempty"`
+	// buf:lint:ignore FIELD_LOWER_SNAKE_CASE
 	WriteAccess       bool                 `protobuf:"varint,3,opt,name=writeAccess,proto3" json:"writeAccess,omitempty"`
 	ConnectedAccounts []*ConnectedAccounts `protobuf:"bytes,4,rep,name=connected_accounts,json=connectedAccounts,proto3" json:"connected_accounts,omitempty"`
 }
@@ -2909,12 +2921,225 @@ func (x *ListInvitationsResponse) GetInvitations() []*Invitation {
 	return nil
 }
 
+type GetAWSCredentialsRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	// the role to assume/get a token for
+	RoleArn string `protobuf:"bytes,1,opt,name=role_arn,json=roleArn,proto3" json:"role_arn,omitempty"`
+	// the duration the return session token should be valid for. default is 900 seconds per AWS settings
+	SessionDuration *durationpb.Duration `protobuf:"bytes,2,opt,name=session_duration,json=sessionDuration,proto3" json:"session_duration,omitempty"`
+	// the aws region from which to call the sts service. if empty, use the global sts service (optional)
+	Region string `protobuf:"bytes,3,opt,name=region,proto3" json:"region,omitempty"`
+	// the org name that will be sent in the subject to AWS
+	OrgName string `protobuf:"bytes,4,opt,name=org_name,json=orgName,proto3" json:"org_name,omitempty"`
+	// the project name that will be sent in the subject to AWS
+	ProjectName string `protobuf:"bytes,5,opt,name=project_name,json=projectName,proto3" json:"project_name,omitempty"`
+	// an identifier for the session (useful in aws cloudtrail)
+	SessionName string `protobuf:"bytes,6,opt,name=session_name,json=sessionName,proto3" json:"session_name,omitempty"`
+}
+
+func (x *GetAWSCredentialsRequest) Reset() {
+	*x = GetAWSCredentialsRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_secrets_proto_msgTypes[45]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetAWSCredentialsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetAWSCredentialsRequest) ProtoMessage() {}
+
+func (x *GetAWSCredentialsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_secrets_proto_msgTypes[45]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetAWSCredentialsRequest.ProtoReflect.Descriptor instead.
+func (*GetAWSCredentialsRequest) Descriptor() ([]byte, []int) {
+	return file_secrets_proto_rawDescGZIP(), []int{45}
+}
+
+func (x *GetAWSCredentialsRequest) GetRoleArn() string {
+	if x != nil {
+		return x.RoleArn
+	}
+	return ""
+}
+
+func (x *GetAWSCredentialsRequest) GetSessionDuration() *durationpb.Duration {
+	if x != nil {
+		return x.SessionDuration
+	}
+	return nil
+}
+
+func (x *GetAWSCredentialsRequest) GetRegion() string {
+	if x != nil {
+		return x.Region
+	}
+	return ""
+}
+
+func (x *GetAWSCredentialsRequest) GetOrgName() string {
+	if x != nil {
+		return x.OrgName
+	}
+	return ""
+}
+
+func (x *GetAWSCredentialsRequest) GetProjectName() string {
+	if x != nil {
+		return x.ProjectName
+	}
+	return ""
+}
+
+func (x *GetAWSCredentialsRequest) GetSessionName() string {
+	if x != nil {
+		return x.SessionName
+	}
+	return ""
+}
+
+type GetAWSCredentialsResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Credentials *GetAWSCredentialsResponse_Credentials `protobuf:"bytes,1,opt,name=credentials,proto3" json:"credentials,omitempty"`
+}
+
+func (x *GetAWSCredentialsResponse) Reset() {
+	*x = GetAWSCredentialsResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_secrets_proto_msgTypes[46]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetAWSCredentialsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetAWSCredentialsResponse) ProtoMessage() {}
+
+func (x *GetAWSCredentialsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_secrets_proto_msgTypes[46]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetAWSCredentialsResponse.ProtoReflect.Descriptor instead.
+func (*GetAWSCredentialsResponse) Descriptor() ([]byte, []int) {
+	return file_secrets_proto_rawDescGZIP(), []int{46}
+}
+
+func (x *GetAWSCredentialsResponse) GetCredentials() *GetAWSCredentialsResponse_Credentials {
+	if x != nil {
+		return x.Credentials
+	}
+	return nil
+}
+
+type GetAWSCredentialsResponse_Credentials struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	AccessKeyId     string                 `protobuf:"bytes,1,opt,name=access_key_id,json=accessKeyId,proto3" json:"access_key_id,omitempty"`
+	SecretAccessKey string                 `protobuf:"bytes,2,opt,name=secret_access_key,json=secretAccessKey,proto3" json:"secret_access_key,omitempty"`
+	SessionToken    string                 `protobuf:"bytes,3,opt,name=session_token,json=sessionToken,proto3" json:"session_token,omitempty"`
+	Expiry          *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=expiry,proto3" json:"expiry,omitempty"`
+}
+
+func (x *GetAWSCredentialsResponse_Credentials) Reset() {
+	*x = GetAWSCredentialsResponse_Credentials{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_secrets_proto_msgTypes[47]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetAWSCredentialsResponse_Credentials) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetAWSCredentialsResponse_Credentials) ProtoMessage() {}
+
+func (x *GetAWSCredentialsResponse_Credentials) ProtoReflect() protoreflect.Message {
+	mi := &file_secrets_proto_msgTypes[47]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetAWSCredentialsResponse_Credentials.ProtoReflect.Descriptor instead.
+func (*GetAWSCredentialsResponse_Credentials) Descriptor() ([]byte, []int) {
+	return file_secrets_proto_rawDescGZIP(), []int{46, 0}
+}
+
+func (x *GetAWSCredentialsResponse_Credentials) GetAccessKeyId() string {
+	if x != nil {
+		return x.AccessKeyId
+	}
+	return ""
+}
+
+func (x *GetAWSCredentialsResponse_Credentials) GetSecretAccessKey() string {
+	if x != nil {
+		return x.SecretAccessKey
+	}
+	return ""
+}
+
+func (x *GetAWSCredentialsResponse_Credentials) GetSessionToken() string {
+	if x != nil {
+		return x.SessionToken
+	}
+	return ""
+}
+
+func (x *GetAWSCredentialsResponse_Credentials) GetExpiry() *timestamppb.Timestamp {
+	if x != nil {
+		return x.Expiry
+	}
+	return nil
+}
+
 var File_secrets_proto protoreflect.FileDescriptor
 
 var file_secrets_proto_rawDesc = []byte{
 	0x0a, 0x0d, 0x73, 0x65, 0x63, 0x72, 0x65, 0x74, 0x73, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12,
 	0x12, 0x61, 0x70, 0x69, 0x2e, 0x70, 0x75, 0x62, 0x6c, 0x69, 0x63, 0x2e, 0x73, 0x65, 0x63, 0x72,
-	0x65, 0x74, 0x73, 0x1a, 0x1f, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2f, 0x70, 0x72, 0x6f, 0x74,
+	0x65, 0x74, 0x73, 0x1a, 0x1e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2f, 0x70, 0x72, 0x6f, 0x74,
+	0x6f, 0x62, 0x75, 0x66, 0x2f, 0x64, 0x75, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x70, 0x72,
+	0x6f, 0x74, 0x6f, 0x1a, 0x1f, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2f, 0x70, 0x72, 0x6f, 0x74,
 	0x6f, 0x62, 0x75, 0x66, 0x2f, 0x74, 0x69, 0x6d, 0x65, 0x73, 0x74, 0x61, 0x6d, 0x70, 0x2e, 0x70,
 	0x72, 0x6f, 0x74, 0x6f, 0x22, 0x9e, 0x02, 0x0a, 0x14, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x41,
 	0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x14, 0x0a,
@@ -3272,26 +3497,69 @@ var file_secrets_proto_rawDesc = []byte{
 	0x6e, 0x76, 0x69, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b,
 	0x32, 0x1e, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x70, 0x75, 0x62, 0x6c, 0x69, 0x63, 0x2e, 0x73, 0x65,
 	0x63, 0x72, 0x65, 0x74, 0x73, 0x2e, 0x49, 0x6e, 0x76, 0x69, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e,
-	0x52, 0x0b, 0x69, 0x6e, 0x76, 0x69, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x2a, 0x28, 0x0a,
-	0x07, 0x4f, 0x72, 0x67, 0x54, 0x79, 0x70, 0x65, 0x12, 0x0f, 0x0a, 0x0b, 0x55, 0x4e, 0x53, 0x50,
-	0x45, 0x43, 0x49, 0x46, 0x49, 0x45, 0x44, 0x10, 0x00, 0x12, 0x0c, 0x0a, 0x08, 0x50, 0x45, 0x52,
-	0x53, 0x4f, 0x4e, 0x41, 0x4c, 0x10, 0x01, 0x2a, 0xa4, 0x01, 0x0a, 0x0f, 0x42, 0x69, 0x6c, 0x6c,
-	0x69, 0x6e, 0x67, 0x50, 0x6c, 0x61, 0x6e, 0x54, 0x69, 0x65, 0x72, 0x12, 0x10, 0x0a, 0x0c, 0x54,
-	0x49, 0x45, 0x52, 0x5f, 0x55, 0x4e, 0x4b, 0x4e, 0x4f, 0x57, 0x4e, 0x10, 0x00, 0x12, 0x13, 0x0a,
-	0x0f, 0x54, 0x49, 0x45, 0x52, 0x5f, 0x53, 0x41, 0x54, 0x45, 0x4c, 0x4c, 0x49, 0x54, 0x45, 0x53,
-	0x10, 0x01, 0x12, 0x0b, 0x0a, 0x07, 0x54, 0x49, 0x45, 0x52, 0x5f, 0x43, 0x49, 0x10, 0x02, 0x12,
-	0x1a, 0x0a, 0x16, 0x54, 0x49, 0x45, 0x52, 0x5f, 0x4c, 0x49, 0x4d, 0x49, 0x54, 0x45, 0x44, 0x5f,
-	0x46, 0x52, 0x45, 0x45, 0x5f, 0x54, 0x49, 0x45, 0x52, 0x10, 0x03, 0x12, 0x12, 0x0a, 0x0e, 0x54,
-	0x49, 0x45, 0x52, 0x5f, 0x46, 0x52, 0x45, 0x45, 0x5f, 0x54, 0x49, 0x45, 0x52, 0x10, 0x04, 0x12,
-	0x10, 0x0a, 0x0c, 0x54, 0x49, 0x45, 0x52, 0x5f, 0x53, 0x54, 0x41, 0x52, 0x54, 0x45, 0x52, 0x10,
-	0x05, 0x12, 0x0c, 0x0a, 0x08, 0x54, 0x49, 0x45, 0x52, 0x5f, 0x50, 0x52, 0x4f, 0x10, 0x06, 0x12,
-	0x0d, 0x0a, 0x09, 0x54, 0x49, 0x45, 0x52, 0x5f, 0x54, 0x45, 0x41, 0x4d, 0x10, 0x07, 0x2a, 0x3f,
-	0x0a, 0x09, 0x45, 0x6d, 0x61, 0x69, 0x6c, 0x54, 0x79, 0x70, 0x65, 0x12, 0x12, 0x0a, 0x0e, 0x49,
-	0x4e, 0x56, 0x49, 0x54, 0x45, 0x5f, 0x55, 0x4e, 0x4b, 0x4e, 0x4f, 0x57, 0x4e, 0x10, 0x00, 0x12,
-	0x0e, 0x0a, 0x0a, 0x49, 0x4e, 0x56, 0x49, 0x54, 0x45, 0x5f, 0x43, 0x4c, 0x49, 0x10, 0x01, 0x12,
-	0x0e, 0x0a, 0x0a, 0x49, 0x4e, 0x56, 0x49, 0x54, 0x45, 0x5f, 0x57, 0x45, 0x42, 0x10, 0x02, 0x42,
-	0x0b, 0x5a, 0x09, 0x2e, 0x2f, 0x73, 0x65, 0x63, 0x72, 0x65, 0x74, 0x73, 0x62, 0x06, 0x70, 0x72,
-	0x6f, 0x74, 0x6f, 0x33,
+	0x52, 0x0b, 0x69, 0x6e, 0x76, 0x69, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x22, 0xf4, 0x01,
+	0x0a, 0x18, 0x47, 0x65, 0x74, 0x41, 0x57, 0x53, 0x43, 0x72, 0x65, 0x64, 0x65, 0x6e, 0x74, 0x69,
+	0x61, 0x6c, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x19, 0x0a, 0x08, 0x72, 0x6f,
+	0x6c, 0x65, 0x5f, 0x61, 0x72, 0x6e, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x72, 0x6f,
+	0x6c, 0x65, 0x41, 0x72, 0x6e, 0x12, 0x44, 0x0a, 0x10, 0x73, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e,
+	0x5f, 0x64, 0x75, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32,
+	0x19, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75,
+	0x66, 0x2e, 0x44, 0x75, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x0f, 0x73, 0x65, 0x73, 0x73,
+	0x69, 0x6f, 0x6e, 0x44, 0x75, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x16, 0x0a, 0x06, 0x72,
+	0x65, 0x67, 0x69, 0x6f, 0x6e, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x72, 0x65, 0x67,
+	0x69, 0x6f, 0x6e, 0x12, 0x19, 0x0a, 0x08, 0x6f, 0x72, 0x67, 0x5f, 0x6e, 0x61, 0x6d, 0x65, 0x18,
+	0x04, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x6f, 0x72, 0x67, 0x4e, 0x61, 0x6d, 0x65, 0x12, 0x21,
+	0x0a, 0x0c, 0x70, 0x72, 0x6f, 0x6a, 0x65, 0x63, 0x74, 0x5f, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x05,
+	0x20, 0x01, 0x28, 0x09, 0x52, 0x0b, 0x70, 0x72, 0x6f, 0x6a, 0x65, 0x63, 0x74, 0x4e, 0x61, 0x6d,
+	0x65, 0x12, 0x21, 0x0a, 0x0c, 0x73, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x5f, 0x6e, 0x61, 0x6d,
+	0x65, 0x18, 0x06, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0b, 0x73, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e,
+	0x4e, 0x61, 0x6d, 0x65, 0x22, 0xb1, 0x02, 0x0a, 0x19, 0x47, 0x65, 0x74, 0x41, 0x57, 0x53, 0x43,
+	0x72, 0x65, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x61, 0x6c, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e,
+	0x73, 0x65, 0x12, 0x5b, 0x0a, 0x0b, 0x63, 0x72, 0x65, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x61, 0x6c,
+	0x73, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x39, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x70, 0x75,
+	0x62, 0x6c, 0x69, 0x63, 0x2e, 0x73, 0x65, 0x63, 0x72, 0x65, 0x74, 0x73, 0x2e, 0x47, 0x65, 0x74,
+	0x41, 0x57, 0x53, 0x43, 0x72, 0x65, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x61, 0x6c, 0x73, 0x52, 0x65,
+	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x2e, 0x43, 0x72, 0x65, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x61,
+	0x6c, 0x73, 0x52, 0x0b, 0x63, 0x72, 0x65, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x61, 0x6c, 0x73, 0x1a,
+	0xb6, 0x01, 0x0a, 0x0b, 0x43, 0x72, 0x65, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x61, 0x6c, 0x73, 0x12,
+	0x22, 0x0a, 0x0d, 0x61, 0x63, 0x63, 0x65, 0x73, 0x73, 0x5f, 0x6b, 0x65, 0x79, 0x5f, 0x69, 0x64,
+	0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0b, 0x61, 0x63, 0x63, 0x65, 0x73, 0x73, 0x4b, 0x65,
+	0x79, 0x49, 0x64, 0x12, 0x2a, 0x0a, 0x11, 0x73, 0x65, 0x63, 0x72, 0x65, 0x74, 0x5f, 0x61, 0x63,
+	0x63, 0x65, 0x73, 0x73, 0x5f, 0x6b, 0x65, 0x79, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0f,
+	0x73, 0x65, 0x63, 0x72, 0x65, 0x74, 0x41, 0x63, 0x63, 0x65, 0x73, 0x73, 0x4b, 0x65, 0x79, 0x12,
+	0x23, 0x0a, 0x0d, 0x73, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x5f, 0x74, 0x6f, 0x6b, 0x65, 0x6e,
+	0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0c, 0x73, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x54,
+	0x6f, 0x6b, 0x65, 0x6e, 0x12, 0x32, 0x0a, 0x06, 0x65, 0x78, 0x70, 0x69, 0x72, 0x79, 0x18, 0x04,
+	0x20, 0x01, 0x28, 0x0b, 0x32, 0x1a, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72,
+	0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x54, 0x69, 0x6d, 0x65, 0x73, 0x74, 0x61, 0x6d, 0x70,
+	0x52, 0x06, 0x65, 0x78, 0x70, 0x69, 0x72, 0x79, 0x2a, 0x28, 0x0a, 0x07, 0x4f, 0x72, 0x67, 0x54,
+	0x79, 0x70, 0x65, 0x12, 0x0f, 0x0a, 0x0b, 0x55, 0x4e, 0x53, 0x50, 0x45, 0x43, 0x49, 0x46, 0x49,
+	0x45, 0x44, 0x10, 0x00, 0x12, 0x0c, 0x0a, 0x08, 0x50, 0x45, 0x52, 0x53, 0x4f, 0x4e, 0x41, 0x4c,
+	0x10, 0x01, 0x2a, 0xa4, 0x01, 0x0a, 0x0f, 0x42, 0x69, 0x6c, 0x6c, 0x69, 0x6e, 0x67, 0x50, 0x6c,
+	0x61, 0x6e, 0x54, 0x69, 0x65, 0x72, 0x12, 0x10, 0x0a, 0x0c, 0x54, 0x49, 0x45, 0x52, 0x5f, 0x55,
+	0x4e, 0x4b, 0x4e, 0x4f, 0x57, 0x4e, 0x10, 0x00, 0x12, 0x13, 0x0a, 0x0f, 0x54, 0x49, 0x45, 0x52,
+	0x5f, 0x53, 0x41, 0x54, 0x45, 0x4c, 0x4c, 0x49, 0x54, 0x45, 0x53, 0x10, 0x01, 0x12, 0x0b, 0x0a,
+	0x07, 0x54, 0x49, 0x45, 0x52, 0x5f, 0x43, 0x49, 0x10, 0x02, 0x12, 0x1a, 0x0a, 0x16, 0x54, 0x49,
+	0x45, 0x52, 0x5f, 0x4c, 0x49, 0x4d, 0x49, 0x54, 0x45, 0x44, 0x5f, 0x46, 0x52, 0x45, 0x45, 0x5f,
+	0x54, 0x49, 0x45, 0x52, 0x10, 0x03, 0x12, 0x12, 0x0a, 0x0e, 0x54, 0x49, 0x45, 0x52, 0x5f, 0x46,
+	0x52, 0x45, 0x45, 0x5f, 0x54, 0x49, 0x45, 0x52, 0x10, 0x04, 0x12, 0x10, 0x0a, 0x0c, 0x54, 0x49,
+	0x45, 0x52, 0x5f, 0x53, 0x54, 0x41, 0x52, 0x54, 0x45, 0x52, 0x10, 0x05, 0x12, 0x0c, 0x0a, 0x08,
+	0x54, 0x49, 0x45, 0x52, 0x5f, 0x50, 0x52, 0x4f, 0x10, 0x06, 0x12, 0x0d, 0x0a, 0x09, 0x54, 0x49,
+	0x45, 0x52, 0x5f, 0x54, 0x45, 0x41, 0x4d, 0x10, 0x07, 0x2a, 0x3f, 0x0a, 0x09, 0x45, 0x6d, 0x61,
+	0x69, 0x6c, 0x54, 0x79, 0x70, 0x65, 0x12, 0x12, 0x0a, 0x0e, 0x49, 0x4e, 0x56, 0x49, 0x54, 0x45,
+	0x5f, 0x55, 0x4e, 0x4b, 0x4e, 0x4f, 0x57, 0x4e, 0x10, 0x00, 0x12, 0x0e, 0x0a, 0x0a, 0x49, 0x4e,
+	0x56, 0x49, 0x54, 0x45, 0x5f, 0x43, 0x4c, 0x49, 0x10, 0x01, 0x12, 0x0e, 0x0a, 0x0a, 0x49, 0x4e,
+	0x56, 0x49, 0x54, 0x45, 0x5f, 0x57, 0x45, 0x42, 0x10, 0x02, 0x32, 0x84, 0x01, 0x0a, 0x0e, 0x53,
+	0x65, 0x63, 0x72, 0x65, 0x74, 0x73, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x72, 0x0a,
+	0x11, 0x47, 0x65, 0x74, 0x41, 0x57, 0x53, 0x43, 0x72, 0x65, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x61,
+	0x6c, 0x73, 0x12, 0x2c, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x70, 0x75, 0x62, 0x6c, 0x69, 0x63, 0x2e,
+	0x73, 0x65, 0x63, 0x72, 0x65, 0x74, 0x73, 0x2e, 0x47, 0x65, 0x74, 0x41, 0x57, 0x53, 0x43, 0x72,
+	0x65, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x61, 0x6c, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
+	0x1a, 0x2d, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x70, 0x75, 0x62, 0x6c, 0x69, 0x63, 0x2e, 0x73, 0x65,
+	0x63, 0x72, 0x65, 0x74, 0x73, 0x2e, 0x47, 0x65, 0x74, 0x41, 0x57, 0x53, 0x43, 0x72, 0x65, 0x64,
+	0x65, 0x6e, 0x74, 0x69, 0x61, 0x6c, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22,
+	0x00, 0x42, 0x0b, 0x5a, 0x09, 0x2e, 0x2f, 0x73, 0x65, 0x63, 0x72, 0x65, 0x74, 0x73, 0x62, 0x06,
+	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -3307,57 +3575,61 @@ func file_secrets_proto_rawDescGZIP() []byte {
 }
 
 var file_secrets_proto_enumTypes = make([]protoimpl.EnumInfo, 3)
-var file_secrets_proto_msgTypes = make([]protoimpl.MessageInfo, 45)
+var file_secrets_proto_msgTypes = make([]protoimpl.MessageInfo, 48)
 var file_secrets_proto_goTypes = []interface{}{
-	(OrgType)(0),                              // 0: api.public.secrets.OrgType
-	(BillingPlanTier)(0),                      // 1: api.public.secrets.BillingPlanTier
-	(EmailType)(0),                            // 2: api.public.secrets.EmailType
-	(*CreateAccountRequest)(nil),              // 3: api.public.secrets.CreateAccountRequest
-	(*CreateAccountResponse)(nil),             // 4: api.public.secrets.CreateAccountResponse
-	(*ResetPasswordRequest)(nil),              // 5: api.public.secrets.ResetPasswordRequest
-	(*ResetPasswordResponse)(nil),             // 6: api.public.secrets.ResetPasswordResponse
-	(*ResetPasswordVerificationRequest)(nil),  // 7: api.public.secrets.ResetPasswordVerificationRequest
-	(*ResetPasswordVerificationResponse)(nil), // 8: api.public.secrets.ResetPasswordVerificationResponse
-	(*CreateEmailVerificationRequest)(nil),    // 9: api.public.secrets.CreateEmailVerificationRequest
-	(*CreateEmailVerificationResponse)(nil),   // 10: api.public.secrets.CreateEmailVerificationResponse
-	(*VerifyEmailUpdateRequest)(nil),          // 11: api.public.secrets.VerifyEmailUpdateRequest
-	(*VerifyEmailUpdateResponse)(nil),         // 12: api.public.secrets.VerifyEmailUpdateResponse
-	(*AuthChallengeResponse)(nil),             // 13: api.public.secrets.AuthChallengeResponse
-	(*ConnectedAccounts)(nil),                 // 14: api.public.secrets.ConnectedAccounts
-	(*PingResponse)(nil),                      // 15: api.public.secrets.PingResponse
-	(*OrgPermissions)(nil),                    // 16: api.public.secrets.OrgPermissions
-	(*ListOrgPermissionsResponse)(nil),        // 17: api.public.secrets.ListOrgPermissionsResponse
-	(*OrgMember)(nil),                         // 18: api.public.secrets.OrgMember
-	(*ListOrgMembersResponse)(nil),            // 19: api.public.secrets.ListOrgMembersResponse
-	(*UpdateOrgMemberRequest)(nil),            // 20: api.public.secrets.UpdateOrgMemberRequest
-	(*CreateInvitationRequest)(nil),           // 21: api.public.secrets.CreateInvitationRequest
-	(*CreateInvitationResponse)(nil),          // 22: api.public.secrets.CreateInvitationResponse
-	(*OrgDetail)(nil),                         // 23: api.public.secrets.OrgDetail
-	(*ListOrgsResponse)(nil),                  // 24: api.public.secrets.ListOrgsResponse
-	(*GetPersonalOrgRequest)(nil),             // 25: api.public.secrets.GetPersonalOrgRequest
-	(*GetPersonalOrgResponse)(nil),            // 26: api.public.secrets.GetPersonalOrgResponse
-	(*AuthToken)(nil),                         // 27: api.public.secrets.AuthToken
-	(*ListAuthTokensResponse)(nil),            // 28: api.public.secrets.ListAuthTokensResponse
-	(*OAuthConnectRequest)(nil),               // 29: api.public.secrets.OAuthConnectRequest
-	(*OAuthConnectResponse)(nil),              // 30: api.public.secrets.OAuthConnectResponse
-	(*LoginRequest)(nil),                      // 31: api.public.secrets.LoginRequest
-	(*LoginResponse)(nil),                     // 32: api.public.secrets.LoginResponse
-	(*Project)(nil),                           // 33: api.public.secrets.Project
-	(*ProjectMember)(nil),                     // 34: api.public.secrets.ProjectMember
-	(*CreateProjectRequest)(nil),              // 35: api.public.secrets.CreateProjectRequest
-	(*CreateProjectResponse)(nil),             // 36: api.public.secrets.CreateProjectResponse
-	(*GetProjectResponse)(nil),                // 37: api.public.secrets.GetProjectResponse
-	(*ListProjectsResponse)(nil),              // 38: api.public.secrets.ListProjectsResponse
-	(*AddProjectMemberRequest)(nil),           // 39: api.public.secrets.AddProjectMemberRequest
-	(*ListProjectMembersResponse)(nil),        // 40: api.public.secrets.ListProjectMembersResponse
-	(*Secret)(nil),                            // 41: api.public.secrets.Secret
-	(*ListSecretsResponse)(nil),               // 42: api.public.secrets.ListSecretsResponse
-	(*SecretPermission)(nil),                  // 43: api.public.secrets.SecretPermission
-	(*ListSecretPermissionsResponse)(nil),     // 44: api.public.secrets.ListSecretPermissionsResponse
-	(*UpdateSecretPermissionRequest)(nil),     // 45: api.public.secrets.UpdateSecretPermissionRequest
-	(*Invitation)(nil),                        // 46: api.public.secrets.Invitation
-	(*ListInvitationsResponse)(nil),           // 47: api.public.secrets.ListInvitationsResponse
-	(*timestamppb.Timestamp)(nil),             // 48: google.protobuf.Timestamp
+	(OrgType)(0),                                  // 0: api.public.secrets.OrgType
+	(BillingPlanTier)(0),                          // 1: api.public.secrets.BillingPlanTier
+	(EmailType)(0),                                // 2: api.public.secrets.EmailType
+	(*CreateAccountRequest)(nil),                  // 3: api.public.secrets.CreateAccountRequest
+	(*CreateAccountResponse)(nil),                 // 4: api.public.secrets.CreateAccountResponse
+	(*ResetPasswordRequest)(nil),                  // 5: api.public.secrets.ResetPasswordRequest
+	(*ResetPasswordResponse)(nil),                 // 6: api.public.secrets.ResetPasswordResponse
+	(*ResetPasswordVerificationRequest)(nil),      // 7: api.public.secrets.ResetPasswordVerificationRequest
+	(*ResetPasswordVerificationResponse)(nil),     // 8: api.public.secrets.ResetPasswordVerificationResponse
+	(*CreateEmailVerificationRequest)(nil),        // 9: api.public.secrets.CreateEmailVerificationRequest
+	(*CreateEmailVerificationResponse)(nil),       // 10: api.public.secrets.CreateEmailVerificationResponse
+	(*VerifyEmailUpdateRequest)(nil),              // 11: api.public.secrets.VerifyEmailUpdateRequest
+	(*VerifyEmailUpdateResponse)(nil),             // 12: api.public.secrets.VerifyEmailUpdateResponse
+	(*AuthChallengeResponse)(nil),                 // 13: api.public.secrets.AuthChallengeResponse
+	(*ConnectedAccounts)(nil),                     // 14: api.public.secrets.ConnectedAccounts
+	(*PingResponse)(nil),                          // 15: api.public.secrets.PingResponse
+	(*OrgPermissions)(nil),                        // 16: api.public.secrets.OrgPermissions
+	(*ListOrgPermissionsResponse)(nil),            // 17: api.public.secrets.ListOrgPermissionsResponse
+	(*OrgMember)(nil),                             // 18: api.public.secrets.OrgMember
+	(*ListOrgMembersResponse)(nil),                // 19: api.public.secrets.ListOrgMembersResponse
+	(*UpdateOrgMemberRequest)(nil),                // 20: api.public.secrets.UpdateOrgMemberRequest
+	(*CreateInvitationRequest)(nil),               // 21: api.public.secrets.CreateInvitationRequest
+	(*CreateInvitationResponse)(nil),              // 22: api.public.secrets.CreateInvitationResponse
+	(*OrgDetail)(nil),                             // 23: api.public.secrets.OrgDetail
+	(*ListOrgsResponse)(nil),                      // 24: api.public.secrets.ListOrgsResponse
+	(*GetPersonalOrgRequest)(nil),                 // 25: api.public.secrets.GetPersonalOrgRequest
+	(*GetPersonalOrgResponse)(nil),                // 26: api.public.secrets.GetPersonalOrgResponse
+	(*AuthToken)(nil),                             // 27: api.public.secrets.AuthToken
+	(*ListAuthTokensResponse)(nil),                // 28: api.public.secrets.ListAuthTokensResponse
+	(*OAuthConnectRequest)(nil),                   // 29: api.public.secrets.OAuthConnectRequest
+	(*OAuthConnectResponse)(nil),                  // 30: api.public.secrets.OAuthConnectResponse
+	(*LoginRequest)(nil),                          // 31: api.public.secrets.LoginRequest
+	(*LoginResponse)(nil),                         // 32: api.public.secrets.LoginResponse
+	(*Project)(nil),                               // 33: api.public.secrets.Project
+	(*ProjectMember)(nil),                         // 34: api.public.secrets.ProjectMember
+	(*CreateProjectRequest)(nil),                  // 35: api.public.secrets.CreateProjectRequest
+	(*CreateProjectResponse)(nil),                 // 36: api.public.secrets.CreateProjectResponse
+	(*GetProjectResponse)(nil),                    // 37: api.public.secrets.GetProjectResponse
+	(*ListProjectsResponse)(nil),                  // 38: api.public.secrets.ListProjectsResponse
+	(*AddProjectMemberRequest)(nil),               // 39: api.public.secrets.AddProjectMemberRequest
+	(*ListProjectMembersResponse)(nil),            // 40: api.public.secrets.ListProjectMembersResponse
+	(*Secret)(nil),                                // 41: api.public.secrets.Secret
+	(*ListSecretsResponse)(nil),                   // 42: api.public.secrets.ListSecretsResponse
+	(*SecretPermission)(nil),                      // 43: api.public.secrets.SecretPermission
+	(*ListSecretPermissionsResponse)(nil),         // 44: api.public.secrets.ListSecretPermissionsResponse
+	(*UpdateSecretPermissionRequest)(nil),         // 45: api.public.secrets.UpdateSecretPermissionRequest
+	(*Invitation)(nil),                            // 46: api.public.secrets.Invitation
+	(*ListInvitationsResponse)(nil),               // 47: api.public.secrets.ListInvitationsResponse
+	(*GetAWSCredentialsRequest)(nil),              // 48: api.public.secrets.GetAWSCredentialsRequest
+	(*GetAWSCredentialsResponse)(nil),             // 49: api.public.secrets.GetAWSCredentialsResponse
+	(*GetAWSCredentialsResponse_Credentials)(nil), // 50: api.public.secrets.GetAWSCredentialsResponse.Credentials
+	(*timestamppb.Timestamp)(nil),                 // 51: google.protobuf.Timestamp
+	(*durationpb.Duration)(nil),                   // 52: google.protobuf.Duration
 }
 var file_secrets_proto_depIdxs = []int32{
 	2,  // 0: api.public.secrets.ResetPasswordVerificationRequest.email_type:type_name -> api.public.secrets.EmailType
@@ -3372,35 +3644,40 @@ var file_secrets_proto_depIdxs = []int32{
 	1,  // 9: api.public.secrets.OrgDetail.plan_tier:type_name -> api.public.secrets.BillingPlanTier
 	23, // 10: api.public.secrets.ListOrgsResponse.details:type_name -> api.public.secrets.OrgDetail
 	23, // 11: api.public.secrets.GetPersonalOrgResponse.org:type_name -> api.public.secrets.OrgDetail
-	48, // 12: api.public.secrets.AuthToken.expiry:type_name -> google.protobuf.Timestamp
-	48, // 13: api.public.secrets.AuthToken.last_accessed_at:type_name -> google.protobuf.Timestamp
+	51, // 12: api.public.secrets.AuthToken.expiry:type_name -> google.protobuf.Timestamp
+	51, // 13: api.public.secrets.AuthToken.last_accessed_at:type_name -> google.protobuf.Timestamp
 	27, // 14: api.public.secrets.ListAuthTokensResponse.tokens:type_name -> api.public.secrets.AuthToken
-	48, // 15: api.public.secrets.OAuthConnectResponse.expiry:type_name -> google.protobuf.Timestamp
-	48, // 16: api.public.secrets.LoginResponse.expiry:type_name -> google.protobuf.Timestamp
-	48, // 17: api.public.secrets.LoginResponse.auth_method_expiry:type_name -> google.protobuf.Timestamp
-	48, // 18: api.public.secrets.Project.created_at:type_name -> google.protobuf.Timestamp
-	48, // 19: api.public.secrets.Project.modified_at:type_name -> google.protobuf.Timestamp
-	48, // 20: api.public.secrets.ProjectMember.created_at:type_name -> google.protobuf.Timestamp
-	48, // 21: api.public.secrets.ProjectMember.modified_at:type_name -> google.protobuf.Timestamp
+	51, // 15: api.public.secrets.OAuthConnectResponse.expiry:type_name -> google.protobuf.Timestamp
+	51, // 16: api.public.secrets.LoginResponse.expiry:type_name -> google.protobuf.Timestamp
+	51, // 17: api.public.secrets.LoginResponse.auth_method_expiry:type_name -> google.protobuf.Timestamp
+	51, // 18: api.public.secrets.Project.created_at:type_name -> google.protobuf.Timestamp
+	51, // 19: api.public.secrets.Project.modified_at:type_name -> google.protobuf.Timestamp
+	51, // 20: api.public.secrets.ProjectMember.created_at:type_name -> google.protobuf.Timestamp
+	51, // 21: api.public.secrets.ProjectMember.modified_at:type_name -> google.protobuf.Timestamp
 	33, // 22: api.public.secrets.CreateProjectRequest.project:type_name -> api.public.secrets.Project
 	33, // 23: api.public.secrets.CreateProjectResponse.project:type_name -> api.public.secrets.Project
 	33, // 24: api.public.secrets.GetProjectResponse.project:type_name -> api.public.secrets.Project
 	33, // 25: api.public.secrets.ListProjectsResponse.projects:type_name -> api.public.secrets.Project
 	34, // 26: api.public.secrets.ListProjectMembersResponse.members:type_name -> api.public.secrets.ProjectMember
-	48, // 27: api.public.secrets.Secret.created_at:type_name -> google.protobuf.Timestamp
-	48, // 28: api.public.secrets.Secret.modified_at:type_name -> google.protobuf.Timestamp
+	51, // 27: api.public.secrets.Secret.created_at:type_name -> google.protobuf.Timestamp
+	51, // 28: api.public.secrets.Secret.modified_at:type_name -> google.protobuf.Timestamp
 	41, // 29: api.public.secrets.ListSecretsResponse.secrets:type_name -> api.public.secrets.Secret
-	48, // 30: api.public.secrets.SecretPermission.created_at:type_name -> google.protobuf.Timestamp
-	48, // 31: api.public.secrets.SecretPermission.modified_at:type_name -> google.protobuf.Timestamp
+	51, // 30: api.public.secrets.SecretPermission.created_at:type_name -> google.protobuf.Timestamp
+	51, // 31: api.public.secrets.SecretPermission.modified_at:type_name -> google.protobuf.Timestamp
 	43, // 32: api.public.secrets.ListSecretPermissionsResponse.secret_permissions:type_name -> api.public.secrets.SecretPermission
-	48, // 33: api.public.secrets.Invitation.created_at:type_name -> google.protobuf.Timestamp
-	48, // 34: api.public.secrets.Invitation.accepted_at:type_name -> google.protobuf.Timestamp
+	51, // 33: api.public.secrets.Invitation.created_at:type_name -> google.protobuf.Timestamp
+	51, // 34: api.public.secrets.Invitation.accepted_at:type_name -> google.protobuf.Timestamp
 	46, // 35: api.public.secrets.ListInvitationsResponse.invitations:type_name -> api.public.secrets.Invitation
-	36, // [36:36] is the sub-list for method output_type
-	36, // [36:36] is the sub-list for method input_type
-	36, // [36:36] is the sub-list for extension type_name
-	36, // [36:36] is the sub-list for extension extendee
-	0,  // [0:36] is the sub-list for field type_name
+	52, // 36: api.public.secrets.GetAWSCredentialsRequest.session_duration:type_name -> google.protobuf.Duration
+	50, // 37: api.public.secrets.GetAWSCredentialsResponse.credentials:type_name -> api.public.secrets.GetAWSCredentialsResponse.Credentials
+	51, // 38: api.public.secrets.GetAWSCredentialsResponse.Credentials.expiry:type_name -> google.protobuf.Timestamp
+	48, // 39: api.public.secrets.SecretsService.GetAWSCredentials:input_type -> api.public.secrets.GetAWSCredentialsRequest
+	49, // 40: api.public.secrets.SecretsService.GetAWSCredentials:output_type -> api.public.secrets.GetAWSCredentialsResponse
+	40, // [40:41] is the sub-list for method output_type
+	39, // [39:40] is the sub-list for method input_type
+	39, // [39:39] is the sub-list for extension type_name
+	39, // [39:39] is the sub-list for extension extendee
+	0,  // [0:39] is the sub-list for field type_name
 }
 
 func init() { file_secrets_proto_init() }
@@ -3949,6 +4226,42 @@ func file_secrets_proto_init() {
 				return nil
 			}
 		}
+		file_secrets_proto_msgTypes[45].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetAWSCredentialsRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_secrets_proto_msgTypes[46].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetAWSCredentialsResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_secrets_proto_msgTypes[47].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetAWSCredentialsResponse_Credentials); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -3956,9 +4269,9 @@ func file_secrets_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_secrets_proto_rawDesc,
 			NumEnums:      3,
-			NumMessages:   45,
+			NumMessages:   48,
 			NumExtensions: 0,
-			NumServices:   0,
+			NumServices:   1,
 		},
 		GoTypes:           file_secrets_proto_goTypes,
 		DependencyIndexes: file_secrets_proto_depIdxs,

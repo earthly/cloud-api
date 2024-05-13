@@ -6,6 +6,7 @@ import "google/api/annotations.proto";
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/duration.proto";
 
+// buf:lint:ignore SERVICE_SUFFIX
 service Compute {
   // LaunchSatellite starts a new Earthly Satellite instance on the latest version.
   // The instance can be used by users to build their local, Cloud, or 3rd-party CI builds.
@@ -109,6 +110,15 @@ service Compute {
     };
   }
 
+  // UseCloud sets the cloud with the given name as default, assuming it passes validation.
+  rpc UseCloud(UseCloudRequest) returns (UseCloudResponse) {
+    option (google.api.http) = {
+      post: "/api/v0/clouds/{name}"
+      body: "*"
+    };
+  }
+
+
   // ListClouds lists all the clouds available. Listing the clouds also checks the status of each cloud.
   rpc ListClouds(ListCloudsRequest) returns (ListCloudsResponse) {
     option (google.api.http) = {
@@ -152,6 +162,13 @@ message ConfigureCloudRequest {
   string org_id = 1;
   string name = 2;
   bool set_default = 3;
+  string ssh_key_name = 4;
+  string compute_role_arn = 5;
+  string account_id = 6;
+  repeated string allowed_subnet_ids = 7;
+  string security_group_id = 8;
+  string region = 9;
+  string instance_profile_arn = 10;
 }
 
 enum CloudStatus {
@@ -163,6 +180,17 @@ enum CloudStatus {
 
 message ConfigureCloudResponse {
   CloudStatus status = 1;
+  string message = 2;
+}
+
+message UseCloudRequest {
+  string org_id = 1;
+  string name = 2;
+}
+
+message UseCloudResponse {
+  CloudStatus status = 1;
+  string message = 2;
 }
 
 message SetGithubTokenRequest{
@@ -196,6 +224,7 @@ message PickGithubJobsResponse {
     string pre_script_message = 3;
     int32 pre_script_exit_code = 4;
     repeated string cache_folders = 5;
+    string org_name = 6;
   }
   Job job = 1;
 }

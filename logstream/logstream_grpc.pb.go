@@ -41,6 +41,8 @@ type LogStreamClient interface {
 	// 4. The final stream message from the client is an eof=true message.
 	// 5. Server responds with eof_ack=true.
 	// 6. Client closes the channel. (optionally, the client can wait for server_exit_status)
+	// buf:lint:ignore RPC_REQUEST_STANDARD_NAME
+	// buf:lint:ignore RPC_RESPONSE_STANDARD_NAME
 	StreamLogs(ctx context.Context, opts ...grpc.CallOption) (LogStream_StreamLogsClient, error)
 	GetLogs(ctx context.Context, in *GetLogsRequest, opts ...grpc.CallOption) (LogStream_GetLogsClient, error)
 	GetLogMetadata(ctx context.Context, in *GetLogMetadataRequest, opts ...grpc.CallOption) (*GetLogMetadataResponse, error)
@@ -226,6 +228,8 @@ type LogStreamServer interface {
 	// 4. The final stream message from the client is an eof=true message.
 	// 5. Server responds with eof_ack=true.
 	// 6. Client closes the channel. (optionally, the client can wait for server_exit_status)
+	// buf:lint:ignore RPC_REQUEST_STANDARD_NAME
+	// buf:lint:ignore RPC_RESPONSE_STANDARD_NAME
 	StreamLogs(LogStream_StreamLogsServer) error
 	GetLogs(*GetLogsRequest, LogStream_GetLogsServer) error
 	GetLogMetadata(context.Context, *GetLogMetadataRequest) (*GetLogMetadataResponse, error)
