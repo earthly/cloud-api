@@ -118,7 +118,6 @@ service Compute {
     };
   }
 
-
   // ListClouds lists all the clouds available. Listing the clouds also checks the status of each cloud.
   rpc ListClouds(ListCloudsRequest) returns (ListCloudsResponse) {
     option (google.api.http) = {
@@ -154,6 +153,7 @@ message ListCloudsResponse {
     int32 num_satellites = 2;
     bool is_default = 3;
     CloudStatus status = 4;
+    string status_context = 5;
   }
   repeated CloudInstallation clouds = 1;
 }
@@ -173,10 +173,16 @@ message ConfigureCloudRequest {
 
 enum CloudStatus {
   CLOUD_STATUS_UNKNOWN = 0; // Preserve the 0 value
-  CLOUD_STATUS_PROBLEM = 1; // There is a problem with this cloud configuration
-  CLOUD_STATUS_ACCOUNT_CONNECTED = 2; // We can assume a role in the account and start configuration
-  CLOUD_STATUS_ACCOUNT_ACTIVE = 3; // We have all the parts we need from the account to create a cloud configuration
+
+  CLOUD_STATUS_PROBLEM = 1           [deprecated = true]; // There is a problem with this cloud configuration
+  CLOUD_STATUS_ACCOUNT_CONNECTED = 2 [deprecated = true]; // We can assume a role in the account and start configuration
+  CLOUD_STATUS_ACCOUNT_ACTIVE = 3    [deprecated = true]; // We have all the parts we need from the account to create a cloud configuration
+
+  CLOUD_STATUS_GREEN = 4;  // Everything is OK
+  CLOUD_STATUS_YELLOW = 5; // We had some access, but there was a problem
+  CLOUD_STATUS_RED = 6;    // No access
 }
+
 
 message ConfigureCloudResponse {
   CloudStatus status = 1;
