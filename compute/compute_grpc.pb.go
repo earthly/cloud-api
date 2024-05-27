@@ -19,23 +19,25 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	Compute_LaunchSatellite_FullMethodName     = "/api.public.compute.Compute/LaunchSatellite"
-	Compute_ListSatellites_FullMethodName      = "/api.public.compute.Compute/ListSatellites"
-	Compute_UpdateSatellite_FullMethodName     = "/api.public.compute.Compute/UpdateSatellite"
-	Compute_DeleteSatellite_FullMethodName     = "/api.public.compute.Compute/DeleteSatellite"
-	Compute_GetSatellite_FullMethodName        = "/api.public.compute.Compute/GetSatellite"
-	Compute_RegisterSatellite_FullMethodName   = "/api.public.compute.Compute/RegisterSatellite"
-	Compute_DeregisterSatellite_FullMethodName = "/api.public.compute.Compute/DeregisterSatellite"
-	Compute_SatelliteHeartbeat_FullMethodName  = "/api.public.compute.Compute/SatelliteHeartbeat"
-	Compute_WakeSatellite_FullMethodName       = "/api.public.compute.Compute/WakeSatellite"
-	Compute_SleepSatellite_FullMethodName      = "/api.public.compute.Compute/SleepSatellite"
-	Compute_ReserveSatellite_FullMethodName    = "/api.public.compute.Compute/ReserveSatellite"
-	Compute_SetGithubToken_FullMethodName      = "/api.public.compute.Compute/SetGithubToken"
-	Compute_PickGithubJobs_FullMethodName      = "/api.public.compute.Compute/PickGithubJobs"
-	Compute_ConfigureCloud_FullMethodName      = "/api.public.compute.Compute/ConfigureCloud"
-	Compute_UseCloud_FullMethodName            = "/api.public.compute.Compute/UseCloud"
-	Compute_ListClouds_FullMethodName          = "/api.public.compute.Compute/ListClouds"
-	Compute_DeleteCloud_FullMethodName         = "/api.public.compute.Compute/DeleteCloud"
+	Compute_LaunchSatellite_FullMethodName      = "/api.public.compute.Compute/LaunchSatellite"
+	Compute_ListSatellites_FullMethodName       = "/api.public.compute.Compute/ListSatellites"
+	Compute_UpdateSatellite_FullMethodName      = "/api.public.compute.Compute/UpdateSatellite"
+	Compute_DeleteSatellite_FullMethodName      = "/api.public.compute.Compute/DeleteSatellite"
+	Compute_GetSatellite_FullMethodName         = "/api.public.compute.Compute/GetSatellite"
+	Compute_RegisterSatellite_FullMethodName    = "/api.public.compute.Compute/RegisterSatellite"
+	Compute_DeregisterSatellite_FullMethodName  = "/api.public.compute.Compute/DeregisterSatellite"
+	Compute_SatelliteHeartbeat_FullMethodName   = "/api.public.compute.Compute/SatelliteHeartbeat"
+	Compute_WakeSatellite_FullMethodName        = "/api.public.compute.Compute/WakeSatellite"
+	Compute_SleepSatellite_FullMethodName       = "/api.public.compute.Compute/SleepSatellite"
+	Compute_ReserveSatellite_FullMethodName     = "/api.public.compute.Compute/ReserveSatellite"
+	Compute_SetGithubToken_FullMethodName       = "/api.public.compute.Compute/SetGithubToken"
+	Compute_CreateGHAIntegration_FullMethodName = "/api.public.compute.Compute/CreateGHAIntegration"
+	Compute_RemoveGHAIntegration_FullMethodName = "/api.public.compute.Compute/RemoveGHAIntegration"
+	Compute_PickGithubJobs_FullMethodName       = "/api.public.compute.Compute/PickGithubJobs"
+	Compute_ConfigureCloud_FullMethodName       = "/api.public.compute.Compute/ConfigureCloud"
+	Compute_UseCloud_FullMethodName             = "/api.public.compute.Compute/UseCloud"
+	Compute_ListClouds_FullMethodName           = "/api.public.compute.Compute/ListClouds"
+	Compute_DeleteCloud_FullMethodName          = "/api.public.compute.Compute/DeleteCloud"
 )
 
 // ComputeClient is the client API for Compute service.
@@ -104,8 +106,13 @@ type ComputeClient interface {
 	//
 	//	STOPPING -> ... -> STARTING -> ... -> OPERATIONAL -> EOF
 	ReserveSatellite(ctx context.Context, in *ReserveSatelliteRequest, opts ...grpc.CallOption) (Compute_ReserveSatelliteClient, error)
-	// SetGithubTokenRequest sets the configuration to enable triggering satellite builds from GHA (GitHub Actions).
+	// Deprecated: Do not use.
+	// deprecated. Use CreateGHAIntegration instead.
 	SetGithubToken(ctx context.Context, in *SetGithubTokenRequest, opts ...grpc.CallOption) (*SetGithubTokenResponse, error)
+	// CreateGHAIntegration creates an integration to enable triggering satellite builds from GHA (GitHub Actions).
+	CreateGHAIntegration(ctx context.Context, in *CreateGHAIntegrationRequest, opts ...grpc.CallOption) (*CreateGHAIntegrationResponse, error)
+	// RemoveGHAIntegration deletes a GHA integration, previously created via CreateGHAIntegration().
+	RemoveGHAIntegration(ctx context.Context, in *RemoveGHAIntegrationRequest, opts ...grpc.CallOption) (*RemoveGHAIntegrationResponse, error)
 	// PickGithubJobs lets satellites retrieve the GHA job information and run a JIT runner
 	// Jobs returned are marked as picked, and won't be returned in another request for a limited period of time.
 	PickGithubJobs(ctx context.Context, in *PickGithubJobsRequest, opts ...grpc.CallOption) (Compute_PickGithubJobsClient, error)
@@ -297,9 +304,28 @@ func (x *computeReserveSatelliteClient) Recv() (*ReserveSatelliteResponse, error
 	return m, nil
 }
 
+// Deprecated: Do not use.
 func (c *computeClient) SetGithubToken(ctx context.Context, in *SetGithubTokenRequest, opts ...grpc.CallOption) (*SetGithubTokenResponse, error) {
 	out := new(SetGithubTokenResponse)
 	err := c.cc.Invoke(ctx, Compute_SetGithubToken_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *computeClient) CreateGHAIntegration(ctx context.Context, in *CreateGHAIntegrationRequest, opts ...grpc.CallOption) (*CreateGHAIntegrationResponse, error) {
+	out := new(CreateGHAIntegrationResponse)
+	err := c.cc.Invoke(ctx, Compute_CreateGHAIntegration_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *computeClient) RemoveGHAIntegration(ctx context.Context, in *RemoveGHAIntegrationRequest, opts ...grpc.CallOption) (*RemoveGHAIntegrationResponse, error) {
+	out := new(RemoveGHAIntegrationResponse)
+	err := c.cc.Invoke(ctx, Compute_RemoveGHAIntegration_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -440,8 +466,13 @@ type ComputeServer interface {
 	//
 	//	STOPPING -> ... -> STARTING -> ... -> OPERATIONAL -> EOF
 	ReserveSatellite(*ReserveSatelliteRequest, Compute_ReserveSatelliteServer) error
-	// SetGithubTokenRequest sets the configuration to enable triggering satellite builds from GHA (GitHub Actions).
+	// Deprecated: Do not use.
+	// deprecated. Use CreateGHAIntegration instead.
 	SetGithubToken(context.Context, *SetGithubTokenRequest) (*SetGithubTokenResponse, error)
+	// CreateGHAIntegration creates an integration to enable triggering satellite builds from GHA (GitHub Actions).
+	CreateGHAIntegration(context.Context, *CreateGHAIntegrationRequest) (*CreateGHAIntegrationResponse, error)
+	// RemoveGHAIntegration deletes a GHA integration, previously created via CreateGHAIntegration().
+	RemoveGHAIntegration(context.Context, *RemoveGHAIntegrationRequest) (*RemoveGHAIntegrationResponse, error)
 	// PickGithubJobs lets satellites retrieve the GHA job information and run a JIT runner
 	// Jobs returned are marked as picked, and won't be returned in another request for a limited period of time.
 	PickGithubJobs(*PickGithubJobsRequest, Compute_PickGithubJobsServer) error
@@ -497,6 +528,12 @@ func (UnimplementedComputeServer) ReserveSatellite(*ReserveSatelliteRequest, Com
 }
 func (UnimplementedComputeServer) SetGithubToken(context.Context, *SetGithubTokenRequest) (*SetGithubTokenResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SetGithubToken not implemented")
+}
+func (UnimplementedComputeServer) CreateGHAIntegration(context.Context, *CreateGHAIntegrationRequest) (*CreateGHAIntegrationResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateGHAIntegration not implemented")
+}
+func (UnimplementedComputeServer) RemoveGHAIntegration(context.Context, *RemoveGHAIntegrationRequest) (*RemoveGHAIntegrationResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RemoveGHAIntegration not implemented")
 }
 func (UnimplementedComputeServer) PickGithubJobs(*PickGithubJobsRequest, Compute_PickGithubJobsServer) error {
 	return status.Errorf(codes.Unimplemented, "method PickGithubJobs not implemented")
@@ -751,6 +788,42 @@ func _Compute_SetGithubToken_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Compute_CreateGHAIntegration_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateGHAIntegrationRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ComputeServer).CreateGHAIntegration(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Compute_CreateGHAIntegration_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ComputeServer).CreateGHAIntegration(ctx, req.(*CreateGHAIntegrationRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Compute_RemoveGHAIntegration_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RemoveGHAIntegrationRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ComputeServer).RemoveGHAIntegration(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Compute_RemoveGHAIntegration_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ComputeServer).RemoveGHAIntegration(ctx, req.(*RemoveGHAIntegrationRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Compute_PickGithubJobs_Handler(srv interface{}, stream grpc.ServerStream) error {
 	m := new(PickGithubJobsRequest)
 	if err := stream.RecvMsg(m); err != nil {
@@ -886,6 +959,14 @@ var Compute_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SetGithubToken",
 			Handler:    _Compute_SetGithubToken_Handler,
+		},
+		{
+			MethodName: "CreateGHAIntegration",
+			Handler:    _Compute_CreateGHAIntegration_Handler,
+		},
+		{
+			MethodName: "RemoveGHAIntegration",
+			Handler:    _Compute_RemoveGHAIntegration_Handler,
 		},
 		{
 			MethodName: "ConfigureCloud",
