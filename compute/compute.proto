@@ -112,6 +112,13 @@ service Compute {
     };
   }
 
+  // ListGHAIntegrations lists organization GHA integrations.
+  rpc ListGHAIntegrations(ListGHAIntegrationsRequest) returns (ListGHAIntegrationsResponse) {
+    option (google.api.http) = {
+      get: "/api/v0/github/integrations"
+    };
+  }
+
   // PickGithubJobs lets satellites retrieve the GHA job information and run a JIT runner
   // Jobs returned are marked as picked, and won't be returned in another request for a limited period of time.
   rpc PickGithubJobs(PickGithubJobsRequest) returns (stream PickGithubJobsResponse) {}
@@ -263,6 +270,22 @@ message RemoveGHAIntegrationRequest{
 }
 
 message RemoveGHAIntegrationResponse {
+}
+
+message ListGHAIntegrationsRequest{
+  // Earthly org id
+  string org_id = 1;
+}
+
+message ListGHAIntegrationsResponse {
+  message Integration {
+    string github_org_name = 1;
+    //  Empty to set an org-wide integrations
+    string github_repo_name = 2;
+    string created_by = 3;
+    google.protobuf.Timestamp created_at = 4;
+  }
+  repeated Integration integrations = 1;
 }
 
 message PickGithubJobsRequest{

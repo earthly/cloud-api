@@ -33,6 +33,7 @@ const (
 	Compute_SetGithubToken_FullMethodName       = "/api.public.compute.Compute/SetGithubToken"
 	Compute_CreateGHAIntegration_FullMethodName = "/api.public.compute.Compute/CreateGHAIntegration"
 	Compute_RemoveGHAIntegration_FullMethodName = "/api.public.compute.Compute/RemoveGHAIntegration"
+	Compute_ListGHAIntegrations_FullMethodName  = "/api.public.compute.Compute/ListGHAIntegrations"
 	Compute_PickGithubJobs_FullMethodName       = "/api.public.compute.Compute/PickGithubJobs"
 	Compute_ConfigureCloud_FullMethodName       = "/api.public.compute.Compute/ConfigureCloud"
 	Compute_UseCloud_FullMethodName             = "/api.public.compute.Compute/UseCloud"
@@ -113,6 +114,8 @@ type ComputeClient interface {
 	CreateGHAIntegration(ctx context.Context, in *CreateGHAIntegrationRequest, opts ...grpc.CallOption) (*CreateGHAIntegrationResponse, error)
 	// RemoveGHAIntegration deletes a GHA integration, previously created via CreateGHAIntegration().
 	RemoveGHAIntegration(ctx context.Context, in *RemoveGHAIntegrationRequest, opts ...grpc.CallOption) (*RemoveGHAIntegrationResponse, error)
+	// ListGHAIntegrations lists organization GHA integrations.
+	ListGHAIntegrations(ctx context.Context, in *ListGHAIntegrationsRequest, opts ...grpc.CallOption) (*ListGHAIntegrationsResponse, error)
 	// PickGithubJobs lets satellites retrieve the GHA job information and run a JIT runner
 	// Jobs returned are marked as picked, and won't be returned in another request for a limited period of time.
 	PickGithubJobs(ctx context.Context, in *PickGithubJobsRequest, opts ...grpc.CallOption) (Compute_PickGithubJobsClient, error)
@@ -332,6 +335,15 @@ func (c *computeClient) RemoveGHAIntegration(ctx context.Context, in *RemoveGHAI
 	return out, nil
 }
 
+func (c *computeClient) ListGHAIntegrations(ctx context.Context, in *ListGHAIntegrationsRequest, opts ...grpc.CallOption) (*ListGHAIntegrationsResponse, error) {
+	out := new(ListGHAIntegrationsResponse)
+	err := c.cc.Invoke(ctx, Compute_ListGHAIntegrations_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *computeClient) PickGithubJobs(ctx context.Context, in *PickGithubJobsRequest, opts ...grpc.CallOption) (Compute_PickGithubJobsClient, error) {
 	stream, err := c.cc.NewStream(ctx, &Compute_ServiceDesc.Streams[3], Compute_PickGithubJobs_FullMethodName, opts...)
 	if err != nil {
@@ -473,6 +485,8 @@ type ComputeServer interface {
 	CreateGHAIntegration(context.Context, *CreateGHAIntegrationRequest) (*CreateGHAIntegrationResponse, error)
 	// RemoveGHAIntegration deletes a GHA integration, previously created via CreateGHAIntegration().
 	RemoveGHAIntegration(context.Context, *RemoveGHAIntegrationRequest) (*RemoveGHAIntegrationResponse, error)
+	// ListGHAIntegrations lists organization GHA integrations.
+	ListGHAIntegrations(context.Context, *ListGHAIntegrationsRequest) (*ListGHAIntegrationsResponse, error)
 	// PickGithubJobs lets satellites retrieve the GHA job information and run a JIT runner
 	// Jobs returned are marked as picked, and won't be returned in another request for a limited period of time.
 	PickGithubJobs(*PickGithubJobsRequest, Compute_PickGithubJobsServer) error
@@ -534,6 +548,9 @@ func (UnimplementedComputeServer) CreateGHAIntegration(context.Context, *CreateG
 }
 func (UnimplementedComputeServer) RemoveGHAIntegration(context.Context, *RemoveGHAIntegrationRequest) (*RemoveGHAIntegrationResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RemoveGHAIntegration not implemented")
+}
+func (UnimplementedComputeServer) ListGHAIntegrations(context.Context, *ListGHAIntegrationsRequest) (*ListGHAIntegrationsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListGHAIntegrations not implemented")
 }
 func (UnimplementedComputeServer) PickGithubJobs(*PickGithubJobsRequest, Compute_PickGithubJobsServer) error {
 	return status.Errorf(codes.Unimplemented, "method PickGithubJobs not implemented")
@@ -824,6 +841,24 @@ func _Compute_RemoveGHAIntegration_Handler(srv interface{}, ctx context.Context,
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Compute_ListGHAIntegrations_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListGHAIntegrationsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ComputeServer).ListGHAIntegrations(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Compute_ListGHAIntegrations_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ComputeServer).ListGHAIntegrations(ctx, req.(*ListGHAIntegrationsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Compute_PickGithubJobs_Handler(srv interface{}, stream grpc.ServerStream) error {
 	m := new(PickGithubJobsRequest)
 	if err := stream.RecvMsg(m); err != nil {
@@ -967,6 +1002,10 @@ var Compute_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "RemoveGHAIntegration",
 			Handler:    _Compute_RemoveGHAIntegration_Handler,
+		},
+		{
+			MethodName: "ListGHAIntegrations",
+			Handler:    _Compute_ListGHAIntegrations_Handler,
 		},
 		{
 			MethodName: "ConfigureCloud",
