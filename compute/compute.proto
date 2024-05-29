@@ -100,7 +100,7 @@ service Compute {
   // CreateGHAIntegration creates an integration to enable triggering satellite builds from GHA (GitHub Actions).
   rpc CreateGHAIntegration(CreateGHAIntegrationRequest) returns (CreateGHAIntegrationResponse) {
     option (google.api.http) = {
-      post: "/api/v0/github/integration"
+      post: "/api/v0/github/integrations"
       body: "*"
     };
   }
@@ -108,7 +108,7 @@ service Compute {
   // RemoveGHAIntegration deletes a GHA integration, previously created via CreateGHAIntegration().
   rpc RemoveGHAIntegration(RemoveGHAIntegrationRequest) returns (RemoveGHAIntegrationResponse) {
     option (google.api.http) = {
-      delete: "/api/v0/github/integration"
+      delete: "/api/v0/github/integrations/{github_repo_name}"
     };
   }
 
