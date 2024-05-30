@@ -88,11 +88,34 @@ service Compute {
   //   STOPPING -> ... -> STARTING -> ... -> OPERATIONAL -> EOF
   rpc ReserveSatellite(ReserveSatelliteRequest) returns (stream ReserveSatelliteResponse) {}
 
-  // SetGithubTokenRequest sets the configuration to enable triggering satellite builds from GHA (GitHub Actions).
+  // deprecated. Use CreateGHAIntegration instead.
   rpc SetGithubToken(SetGithubTokenRequest) returns (SetGithubTokenResponse) {
+    option deprecated = true;
     option (google.api.http) = {
       post: "/api/v0/github/token"
       body: "*"
+    };
+  }
+
+  // CreateGHAIntegration creates an integration to enable triggering satellite builds from GHA (GitHub Actions).
+  rpc CreateGHAIntegration(CreateGHAIntegrationRequest) returns (CreateGHAIntegrationResponse) {
+    option (google.api.http) = {
+      post: "/api/v0/github/integrations"
+      body: "*"
+    };
+  }
+
+  // RemoveGHAIntegration deletes a GHA integration, previously created via CreateGHAIntegration().
+  rpc RemoveGHAIntegration(RemoveGHAIntegrationRequest) returns (RemoveGHAIntegrationResponse) {
+    option (google.api.http) = {
+      delete: "/api/v0/github/integrations/{github_repo_name}"
+    };
+  }
+
+  // ListGHAIntegrations lists organization GHA integrations.
+  rpc ListGHAIntegrations(ListGHAIntegrationsRequest) returns (ListGHAIntegrationsResponse) {
+    option (google.api.http) = {
+      get: "/api/v0/github/integrations"
     };
   }
 
@@ -200,6 +223,7 @@ message UseCloudResponse {
 }
 
 message SetGithubTokenRequest{
+  option deprecated = true;
   // Earthly org id
   string org_id = 1;
   // Org name is required
@@ -215,6 +239,53 @@ message SetGithubTokenRequest{
 }
 
 message SetGithubTokenResponse {
+  option deprecated = true;
+}
+
+message CreateGHAIntegrationRequest{
+  // Earthly org id
+  string org_id = 1;
+  // Org name is required
+  string github_org_name = 2;
+  // Repo name is optional. Leave it empty to set an org-wide token
+  string github_repo_name = 3;
+  // https://github.com/settings/tokens. The token is required to have permissions to:
+  // - Register a repo/org -scoped webhook to retrieve GHA job status events
+  // - Create a JIT GHA self hosted runner associated to the org/repo
+  //   - https://docs.github.com/en/rest/actions/self-hosted-runners?apiVersion=2022-11-28#create-configuration-for-a-just-in-time-runner-for-an-organization
+  //   - https://docs.github.com/en/rest/actions/self-hosted-runners?apiVersion=2022-11-28#create-configuration-for-a-just-in-time-runner-for-a-repository
+  string github_token = 4;
+}
+
+message CreateGHAIntegrationResponse {
+}
+
+message RemoveGHAIntegrationRequest{
+  // Earthly org id
+  string org_id = 1;
+  // Org name is required
+  string github_org_name = 2;
+  // Repo name is optional. Leave it empty to set an org-wide token
+  string github_repo_name = 3;
+}
+
+message RemoveGHAIntegrationResponse {
+}
+
+message ListGHAIntegrationsRequest{
+  // Earthly org id
+  string org_id = 1;
+}
+
+message ListGHAIntegrationsResponse {
+  message Integration {
+    string github_org_name = 1;
+    //  Empty to set an org-wide integrations
+    string github_repo_name = 2;
+    string created_by = 3;
+    google.protobuf.Timestamp created_at = 4;
+  }
+  repeated Integration integrations = 1;
 }
 
 message PickGithubJobsRequest{
