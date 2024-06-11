@@ -122,6 +122,4 @@ message BillingPlan {
   bool self_hosted_disabled = 22;
   // Whether this org can use GHA-Satellites integration
   bool gha_disabled = 23;
-  // Whether this org can use BYOC
-  bool byoc_disabled = 24;
 }
