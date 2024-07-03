@@ -289,9 +289,9 @@ message ListGHAIntegrationsResponse {
 }
 
 message PickGithubJobsRequest{
-  // Earthly org id
-  string org_id = 1;
-  string satellite_name = 2;
+  string org_id = 1 [deprecated = true];
+  string satellite_name = 2 [deprecated = true];
+  string registration_token = 3;
 }
 
 message PickGithubJobsResponse {
