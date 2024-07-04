@@ -479,6 +479,7 @@ message RegisterSatelliteRequest {
   string version = 6;
   TLSCertificate certificate = 7;
   string registration_token = 8; // Optional registration token, when re-registering
+  string internal_ip = 9; // Optional, mainly used for BYOC
 }
 
 message RegisterSatelliteResponse {
