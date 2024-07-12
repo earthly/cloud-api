@@ -181,6 +181,14 @@ message ListCloudsResponse {
   repeated CloudInstallation clouds = 1;
 }
 
+// AddressResolution indicates how the connection
+// from earthly client to EC2 instance is established in BYOC.
+enum AddressResolution {
+  ADDRESS_RESOLUTION_UNKNOWN = 0;
+  ADDRESS_RESOLUTION_PRIVATE_IP = 1;
+  ADDRESS_RESOLUTION_PRIVATE_DNS = 2;
+}
+
 message ConfigureCloudRequest {
   string org_id = 1;
   string name = 2;
@@ -192,6 +200,7 @@ message ConfigureCloudRequest {
   string security_group_id = 8;
   string region = 9;
   string instance_profile_arn = 10;
+  AddressResolution address_resolution = 11;
 }
 
 enum CloudStatus {
@@ -205,7 +214,6 @@ enum CloudStatus {
   CLOUD_STATUS_YELLOW = 5; // We had some access, but there was a problem
   CLOUD_STATUS_RED = 6;    // No access
 }
-
 
 message ConfigureCloudResponse {
   CloudStatus status = 1;
