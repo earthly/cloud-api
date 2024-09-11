@@ -310,6 +310,9 @@ message PickGithubJobsResponse {
     int32 pre_script_exit_code = 4;
     repeated string cache_folders = 5;
     string org_name = 6;
+    string gh_org = 7;
+    string gh_repo = 8;
+    string cancel_token = 9;
   }
   Job job = 1;
 }
